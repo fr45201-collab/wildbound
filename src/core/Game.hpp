@@ -1,11 +1,10 @@
 #pragma once
 
 #include "EngineConfig.hpp"
+#include "../graphics/Renderer.hpp"
+#include "../graphics/Camera2D.hpp"
+#include "../graphics/TestScene.hpp"
 #include <memory>
-
-namespace wildbound::graphics {
-    class RenderManager;
-}
 
 namespace wildbound::scripting {
     class LuaManager;
@@ -33,22 +32,25 @@ public:
     bool IsRunning() const { return m_running; }
 
     const EngineConfig& GetConfig() const { return m_config; }
+    graphics::Renderer& GetRenderer() { return *m_renderer; }
+    graphics::Camera2DSystem& GetCamera() { return *m_camera; }
     scripting::LuaManager& GetScripting() { return *m_luaManager; }
 
 private:
-    void ProcessInput();
+    void ProcessInput(float dt);
     void FixedUpdate(float fixedDt);
     void Update(float dt);
-    void Render();
+    void Render(float dt);
 
     EngineConfig m_config;
     bool m_running = false;
     float m_runningTime = 0.0f;
 
-    std::unique_ptr<graphics::RenderManager> m_renderManager;
+    std::unique_ptr<graphics::Renderer> m_renderer;
+    std::unique_ptr<graphics::Camera2DSystem> m_camera;
+    std::unique_ptr<graphics::TestScene> m_testScene;
     std::unique_ptr<scripting::LuaManager> m_luaManager;
     std::unique_ptr<ui::DevUI> m_devUI;
 };
 
 } // namespace wildbound::core
-

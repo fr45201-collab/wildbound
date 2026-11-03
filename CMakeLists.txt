@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.20)
 
 # ============================================================================
 # WILDBOUND — 2D Fantasy Survival Adventure Engine
-# Phase 0: Project Foundation & Architecture
+# Phase 1: Rendering Engine, Game Loop & Camera Foundation
 # ============================================================================
 
 project(Wildbound
-    VERSION 0.1.0
+    VERSION 0.2.0
     DESCRIPTION "2D top-down fantasy survival adventure game engine"
     LANGUAGES CXX C
 )
@@ -119,8 +119,18 @@ set(WILDBOUND_SOURCES
     src/core/EngineConfig.hpp
     src/core/Logger.cpp
     src/core/Logger.hpp
-    src/graphics/RenderManager.cpp
-    src/graphics/RenderManager.hpp
+    src/graphics/Viewport.cpp
+    src/graphics/Viewport.hpp
+    src/graphics/RenderTexture.cpp
+    src/graphics/RenderTexture.hpp
+    src/graphics/Camera2D.cpp
+    src/graphics/Camera2D.hpp
+    src/graphics/TestScene.cpp
+    src/graphics/TestScene.hpp
+    src/graphics/Renderer.cpp
+    src/graphics/Renderer.hpp
+    src/graphics/ColorPalette.hpp
+    src/graphics/DrawContext.hpp
     src/scripting/LuaManager.cpp
     src/scripting/LuaManager.hpp
     src/ui/DevUI.cpp
@@ -166,4 +176,3 @@ if(WILDBOUND_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
 endif()
-

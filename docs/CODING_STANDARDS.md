@@ -30,3 +30,4 @@
 - **Tables & Keys**: `snake_case` (e.g., `window_width`, `target_fps`).
 - **Global Variables**: Avoid globals; encapsulate in modules or tables.
 - Return explicit tables from configuration files.
+

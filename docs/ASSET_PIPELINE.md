@@ -23,3 +23,4 @@
 - `assets/ui/` - 9-slice frames, buttons, cursors, font atlases.
 - `assets/audio/` - Music tracks and SFX clips.
 - `assets/manifests/` - Manifest definitions linking assets to engine IDs.
+

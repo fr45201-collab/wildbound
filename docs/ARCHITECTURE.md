@@ -49,3 +49,4 @@ Wildbound is designed with a modular, data-driven, and decoupled architecture. T
 
 ## 3. Dependency Decoupling & Extension Points
 All subsystems communicate through explicit C++ interfaces rather than global state. Future modules (Input, Audio, Physics, Entities, World) plug directly into the `Game` update and render cycles.
+

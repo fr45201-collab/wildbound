@@ -13,3 +13,4 @@
 | **Testing** | CTest | CMake CTest | Automated headless unit and integration testing. |
 | **Version Control** | Git | 2.x | Source tracking and branch management. |
 | **Map Editor** | Tiled Map Editor | TMX / JSON | Standard 2D tilemap authoring tool. |
+
