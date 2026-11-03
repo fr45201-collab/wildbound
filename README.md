@@ -1,25 +1,24 @@
 # Wildbound
 
-> **Wildbound** is a 2D top-down fantasy survival adventure game built with C++20, raylib, and Lua.
+> **Wildbound** is a 2D top-down fantasy survival adventure game built with C++20, raylib, Lua 5.4, and sol2.
 
-## Current Status: Phase 1 — Rendering Engine, Game Loop & Camera Foundation
+## Current Status: Phase 2 — Asset Management System & Graphics Pipeline
 
 ### Key Features
-- **Modern C++20 Core**: Conforming MSVC architecture with strict modularity.
-- **Controlled Timestep Game Loop**: Fixed simulation timestep with smooth delta-time interpolation.
-- **Pixel-Art Virtual Canvas**: Native 640x360 internal canvas scaled (2x) to 1280x720 with letterboxing and point texture filtering.
-- **2D Camera System**: Raylib `Camera2D` abstraction featuring target following, smoothing, zoom clamping, and world boundary enforcement.
-- **Coordinate Space Conversion**: Bi-directional conversions between World, Screen, and Virtual coordinate systems.
-- **Scripting Integration**: Embedded Lua 5.4 engine via `sol2` for data-driven configuration.
-- **Developer Overlay**: Integrated Dear ImGui via `rlImGui` for real-time diagnostics (`F1`).
-- **Reproducible Build System**: CMake FetchContent with pinned dependencies and CTest automated testing.
+- **Asset Management System (AMS)**: Centralized resource registry with manifest serialization (`asset_manifest.json`), validation, and provenance tracking.
+- **Resource Caching & Deduplication**: RAII `TextureManager`, `FontManager`, and `AudioManager` preventing redundant disk I/O and GPU allocations.
+- **Spritesheet & Animation Foundation**: Grid-based and variable-layout frame calculators with sequential frame interpolation and looping.
+- **Pixel-Art Graphics Pipeline**: 640x360 virtual canvas, letterboxing viewport, and strict `TEXTURE_FILTER_POINT` nearest-neighbor filtering.
+- **Developer Asset Browser & Diagnostics (`F1`)**: Interactive Dear ImGui panel with category filtering, search, metadata inspection, texture previews, and spritesheet frame scrubber.
+- **Automated Verification**: Multi-target CTest suite covering core config, Lua runtime, viewport/camera math, and asset metadata.
 
 ## Technology Stack
-- **Language**: C++20
-- **Graphics**: raylib 5.5
+- **Language**: C++20 (MSVC `/std:c++20`)
+- **Graphics & Audio**: raylib 5.5
 - **Scripting**: Lua 5.4.7 + sol2 v3.3.1
-- **Dev UI**: Dear ImGui v1.93.0 + rlImGui
-- **Build System**: CMake 3.20+ / MSVC
+- **Developer UI**: Dear ImGui v1.93.0 + rlImGui
+- **JSON Parsing**: nlohmann/json v3.11.3
+- **Build System**: CMake 3.20+ with FetchContent
 - **Testing**: CTest
 
 ## Quick Start
@@ -30,7 +29,7 @@ cmake -B build -S .
 # Compile (Debug)
 cmake --build build --config Debug
 
-# Run tests
+# Run automated tests
 ctest --test-dir build -C Debug --output-on-failure
 
 # Launch Wildbound
@@ -47,4 +46,8 @@ ctest --test-dir build -C Debug --output-on-failure
 - [Camera System](docs/CAMERA_SYSTEM.md)
 - [Coordinate Systems](docs/COORDINATE_SYSTEMS.md)
 - [Performance Guidelines](docs/PERFORMANCE_GUIDELINES.md)
-
+- [Asset Management](docs/ASSET_MANAGEMENT.md)
+- [Spritesheet Format](docs/SPRITESHEET_FORMAT.md)
+- [Asset Licensing](docs/ASSET_LICENSING.md)
+- [Asset Import Pipeline](docs/ASSET_IMPORT_PIPELINE.md)
+- [Resource Lifecycle](docs/RESOURCE_LIFECYCLE.md)

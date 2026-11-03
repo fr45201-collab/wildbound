@@ -1,5 +1,6 @@
 #include "Renderer.hpp"
 #include "../core/Logger.hpp"
+#include <cmath>
 
 using wildbound::core::Logger;
 
@@ -17,7 +18,6 @@ bool Renderer::Initialize(const core::EngineConfig& config) {
         return true;
     }
 
-    // Configure window creation flags
     unsigned int flags = FLAG_WINDOW_HIGHDPI;
     if (config.resizable) {
         flags |= FLAG_WINDOW_RESIZABLE;
@@ -39,23 +39,20 @@ bool Renderer::Initialize(const core::EngineConfig& config) {
         SetTargetFPS(config.targetFps);
     }
 
-    // Initialize Viewport with virtual and window dimensions
     m_viewport = Viewport(
         config.internalWidth,
         config.internalHeight,
         config.windowWidth,
         config.windowHeight,
-        false // Uniform scaling with integer alignment
+        false
     );
 
-    // Allocate virtual render target
     if (!m_canvas.Load(config.internalWidth, config.internalHeight)) {
         Logger::Error("RENDERER", "Failed to allocate virtual canvas RenderTexture.");
         CloseWindow();
         return false;
     }
 
-    // Initialize DrawContext
     m_drawContext.virtualWidth = config.internalWidth;
     m_drawContext.virtualHeight = config.internalHeight;
     m_drawContext.debugMode = config.debugMode;
@@ -113,7 +110,6 @@ void Renderer::EndWorld(Camera2DSystem& camera) {
 }
 
 void Renderer::BeginUI() {
-    // 2D rendering in virtual canvas coordinate space (640x360)
 }
 
 void Renderer::EndUI() {
@@ -130,7 +126,6 @@ void Renderer::Present() {
     BeginDrawing();
     ClearBackground(BLACK); // Letterbox border area
 
-    // Draw the virtual canvas scaled and centered to the window
     DrawTexturePro(
         m_canvas.GetTexture(),
         m_viewport.GetSourceRect(),
@@ -139,7 +134,51 @@ void Renderer::Present() {
         0.0f,
         WHITE
     );
-    // Note: Caller may draw screen-space overlays (e.g. ImGui) before calling EndDrawing()
+}
+
+void Renderer::DrawSprite(
+    const Texture2D& texture,
+    Rectangle sourceRect,
+    Rectangle destRect,
+    Vector2 origin,
+    float rotation,
+    Color tint,
+    bool flipX,
+    bool flipY)
+{
+    if (texture.id == 0) return;
+
+    Rectangle src = sourceRect;
+    if (flipX) src.width = -src.width;
+    if (flipY) src.height = -src.height;
+
+    DrawTexturePro(texture, src, destRect, origin, rotation, tint);
+}
+
+void Renderer::DrawSprite(
+    const Texture2D& texture,
+    Rectangle sourceRect,
+    Vector2 worldPosition,
+    Vector2 origin,
+    float scale,
+    float rotation,
+    Color tint,
+    bool flipX,
+    bool flipY)
+{
+    if (texture.id == 0) return;
+
+    float destWidth = std::abs(sourceRect.width) * scale;
+    float destHeight = std::abs(sourceRect.height) * scale;
+
+    Rectangle destRect{
+        worldPosition.x,
+        worldPosition.y,
+        destWidth,
+        destHeight
+    };
+
+    DrawSprite(texture, sourceRect, destRect, origin, rotation, tint, flipX, flipY);
 }
 
 bool Renderer::IsWindowClosed() const {
@@ -147,4 +186,3 @@ bool Renderer::IsWindowClosed() const {
 }
 
 } // namespace wildbound::graphics
-

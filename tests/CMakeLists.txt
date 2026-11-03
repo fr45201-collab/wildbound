@@ -48,6 +48,25 @@ target_link_libraries(test_rendering PRIVATE raylib)
 add_test(NAME RenderingCameraTest COMMAND test_rendering)
 set_tests_properties(RenderingCameraTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
-# 4. Executable Launch / Smoke Test (--test-run)
+# 4. Asset Management System & Metadata Test (Phase 2)
+add_executable(test_assets
+    resources/test_assets.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AnimationMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
+)
+target_include_directories(test_assets PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_features(test_assets PRIVATE cxx_std_20)
+target_link_libraries(test_assets PRIVATE raylib nlohmann_json::nlohmann_json)
+
+add_test(NAME AssetManagementTest COMMAND test_assets)
+set_tests_properties(AssetManagementTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 5. Executable Launch / Smoke Test (--test-run)
 add_test(NAME ExecutableSmokeTest COMMAND wildbound --test-run)
 set_tests_properties(ExecutableSmokeTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

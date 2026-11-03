@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.20)
 
 # ============================================================================
 # WILDBOUND — 2D Fantasy Survival Adventure Engine
-# Phase 1: Rendering Engine, Game Loop & Camera Foundation
+# Phase 2: Asset Management System & Graphics Pipeline
 # ============================================================================
 
 project(Wildbound
-    VERSION 0.2.0
+    VERSION 0.3.0
     DESCRIPTION "2D top-down fantasy survival adventure game engine"
     LANGUAGES CXX C
 )
@@ -37,7 +37,7 @@ endif()
 # ============================================================================
 include(FetchContent)
 
-# 1. raylib (Graphics Framework) — Tag: 5.5
+# 1. raylib (Graphics & Audio Framework) — Tag: 5.5
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BUILD_GAMES OFF CACHE BOOL "" FORCE)
 FetchContent_Declare(
@@ -78,8 +78,16 @@ FetchContent_Declare(
     GIT_TAG        Raylib_5_5
 )
 
+# 6. nlohmann/json (JSON Manifest & Metadata Parser) — Tag: v3.11.3
+set(JSON_BuildTests OFF CACHE BOOL "" FORCE)
+FetchContent_Declare(
+    nlohmann_json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG        v3.11.3
+)
+
 # Populate dependencies
-FetchContent_MakeAvailable(raylib lua imgui rlimgui)
+FetchContent_MakeAvailable(raylib lua imgui rlimgui nlohmann_json)
 
 # Setup sol2 interface target
 FetchContent_GetProperties(sol2)
@@ -113,12 +121,15 @@ target_link_libraries(rlimgui PUBLIC raylib imgui)
 # ============================================================================
 
 set(WILDBOUND_SOURCES
+    # Core
     src/core/Game.cpp
     src/core/Game.hpp
     src/core/EngineConfig.cpp
     src/core/EngineConfig.hpp
     src/core/Logger.cpp
     src/core/Logger.hpp
+
+    # Graphics
     src/graphics/Viewport.cpp
     src/graphics/Viewport.hpp
     src/graphics/RenderTexture.cpp
@@ -131,6 +142,28 @@ set(WILDBOUND_SOURCES
     src/graphics/Renderer.hpp
     src/graphics/ColorPalette.hpp
     src/graphics/DrawContext.hpp
+
+    # Resources & Asset Management
+    src/resources/AssetMetadata.cpp
+    src/resources/AssetMetadata.hpp
+    src/resources/AssetRegistry.cpp
+    src/resources/AssetRegistry.hpp
+    src/resources/TextureManager.cpp
+    src/resources/TextureManager.hpp
+    src/resources/SpriteSheet.cpp
+    src/resources/SpriteSheet.hpp
+    src/resources/AnimationMetadata.cpp
+    src/resources/AnimationMetadata.hpp
+    src/resources/FontManager.cpp
+    src/resources/FontManager.hpp
+    src/resources/AudioManager.cpp
+    src/resources/AudioManager.hpp
+    src/resources/AssetValidator.cpp
+    src/resources/AssetValidator.hpp
+    src/resources/AssetManager.cpp
+    src/resources/AssetManager.hpp
+
+    # Scripting & UI
     src/scripting/LuaManager.cpp
     src/scripting/LuaManager.hpp
     src/ui/DevUI.cpp
@@ -156,17 +189,21 @@ target_link_libraries(wildbound PRIVATE
     lua_static
     imgui
     rlimgui
+    nlohmann_json::nlohmann_json
 )
 
-# Copy engine configuration and scripts to build output folder for seamless execution
+# Copy runtime assets, scripts, and configs to build target output directory
 add_custom_command(TARGET wildbound POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:wildbound>/assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/scripts
         $<TARGET_FILE_DIR:wildbound>/scripts
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/config
         $<TARGET_FILE_DIR:wildbound>/config
-    COMMENT "Deploying runtime scripts and config to target output directory"
+    COMMENT "Deploying runtime assets, scripts, and config to target output directory"
 )
 
 # ============================================================================

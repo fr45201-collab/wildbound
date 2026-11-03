@@ -5,6 +5,10 @@
 #include "../graphics/Viewport.hpp"
 #include <string>
 
+namespace wildbound::resources {
+    class AssetManager;
+}
+
 namespace wildbound::ui {
 
 class DevUI {
@@ -29,7 +33,8 @@ public:
         const graphics::Viewport& viewport,
         Vector2 mouseScreen,
         Vector2 mouseVirtual,
-        Vector2 mouseWorld
+        Vector2 mouseWorld,
+        resources::AssetManager* assetMgr = nullptr
     );
 
     void ToggleVisible() { m_visible = !m_visible; }
@@ -37,8 +42,17 @@ public:
     void SetVisible(bool visible) { m_visible = visible; }
 
 private:
+    void RenderAssetBrowser(resources::AssetManager* assetMgr);
+    void RenderAssetValidation(resources::AssetManager* assetMgr);
+
     bool m_initialized = false;
     bool m_visible = false;
+
+    // Asset Browser state
+    char m_searchBuffer[64]{ 0 };
+    std::string m_selectedCategory = "All";
+    std::string m_selectedAssetId;
+    int m_previewFrameIndex = 0;
 };
 
 } // namespace wildbound::ui

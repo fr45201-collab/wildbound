@@ -4,6 +4,7 @@
 #include "../graphics/Renderer.hpp"
 #include "../graphics/Camera2D.hpp"
 #include "../graphics/TestScene.hpp"
+#include "../resources/AssetManager.hpp"
 #include <memory>
 
 namespace wildbound::scripting {
@@ -34,6 +35,7 @@ public:
     const EngineConfig& GetConfig() const { return m_config; }
     graphics::Renderer& GetRenderer() { return *m_renderer; }
     graphics::Camera2DSystem& GetCamera() { return *m_camera; }
+    resources::AssetManager& GetAssetManager() { return *m_assetManager; }
     scripting::LuaManager& GetScripting() { return *m_luaManager; }
 
 private:
@@ -49,6 +51,7 @@ private:
     std::unique_ptr<graphics::Renderer> m_renderer;
     std::unique_ptr<graphics::Camera2DSystem> m_camera;
     std::unique_ptr<graphics::TestScene> m_testScene;
+    std::unique_ptr<resources::AssetManager> m_assetManager;
     std::unique_ptr<scripting::LuaManager> m_luaManager;
     std::unique_ptr<ui::DevUI> m_devUI;
 };

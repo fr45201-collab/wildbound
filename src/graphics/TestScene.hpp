@@ -4,20 +4,26 @@
 #include "DrawContext.hpp"
 #include <raylib.h>
 
+namespace wildbound::resources {
+    class AssetManager;
+}
+
 namespace wildbound::graphics {
 
+class Renderer;
+
 /**
- * Temporary verification test scene for Phase 1.
- * Provides world boundaries, grids, geometric shapes, animated follow target,
- * and coordinate indicators.
+ * Temporary verification test scene for Phase 1 & Phase 2.
+ * Renders environment geometry, world boundaries, grid lines, and
+ * registered spritesheet/texture assets from the AssetManager.
  */
 class TestScene {
 public:
     TestScene();
 
     void Update(float dt);
-    void RenderWorld(const Camera2DSystem& camera, const DrawContext& ctx);
-    void RenderUI(const DrawContext& ctx, const Camera2DSystem& camera, const Viewport& viewport);
+    void RenderWorld(Renderer& renderer, const Camera2DSystem& camera, const DrawContext& ctx, resources::AssetManager* assetMgr = nullptr);
+    void RenderUI(const DrawContext& ctx, const Camera2DSystem& camera, const Viewport& viewport, resources::AssetManager* assetMgr = nullptr);
 
     Rectangle GetWorldBounds() const { return m_worldBounds; }
     Vector2 GetTargetPos() const { return m_targetPos; }
@@ -32,4 +38,3 @@ private:
 };
 
 } // namespace wildbound::graphics
-

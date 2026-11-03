@@ -13,6 +13,7 @@ Game::Game(const EngineConfig& initialConfig)
     , m_renderer(std::make_unique<graphics::Renderer>())
     , m_camera(std::make_unique<graphics::Camera2DSystem>(m_config.internalWidth, m_config.internalHeight))
     , m_testScene(std::make_unique<graphics::TestScene>())
+    , m_assetManager(std::make_unique<resources::AssetManager>())
     , m_luaManager(std::make_unique<scripting::LuaManager>())
     , m_devUI(std::make_unique<ui::DevUI>())
 {
@@ -42,16 +43,27 @@ bool Game::Initialize() {
         return false;
     }
 
-    // 4. Configure Camera system
+    // 4. Initialize Asset Management System
+    if (!m_assetManager->Initialize("assets")) {
+        Logger::Error("ENGINE", "Failed to initialize Asset Management System.");
+        return false;
+    }
+
+    // Load registered spritesheet metadata and animations
+    m_assetManager->LoadSpriteSheetMetadata("characters/player/player_spritesheet.json");
+    m_assetManager->LoadSpriteSheetMetadata("ui/icons/item_icons.json");
+    m_assetManager->LoadAnimationMetadata("characters/player/player_walk.json");
+
+    // 5. Configure Camera system
     m_camera->SetVirtualDimensions(m_config.internalWidth, m_config.internalHeight);
     m_camera->SetWorldBounds(m_testScene->GetWorldBounds());
-    m_camera->SetTarget(Vector2{ 800.0f, 600.0f }); // Center on world
+    m_camera->SetTarget(Vector2{ 800.0f, 600.0f });
     m_camera->SetZoomLimits(0.5f, 4.0f);
     m_camera->SetFollowSpeed(4.5f);
     m_camera->SetFollowTarget(m_testScene->GetTargetPosPtr());
     m_camera->SetMode(graphics::CameraMode::Follow);
 
-    // 5. Initialize DevUI (Dear ImGui + rlImGui)
+    // 6. Initialize DevUI (Dear ImGui + rlImGui)
     if (m_config.debugMode) {
         if (!m_devUI->Initialize()) {
             Logger::Warn("ENGINE", "Failed to initialize Developer ImGui overlay.");
@@ -76,28 +88,22 @@ void Game::Run() {
     float accumulator = 0.0f;
 
     while (m_running && !m_renderer->IsWindowClosed()) {
-        // Calculate frame timing
         float frameTime = GetFrameTime();
         if (frameTime > 0.25f) {
-            frameTime = 0.25f; // Prevent spiral of death
+            frameTime = 0.25f;
         }
 
         m_runningTime += frameTime;
 
-        // Process Input
         ProcessInput(frameTime);
 
-        // Fixed timestep simulation updates
         accumulator += frameTime;
         while (accumulator >= fixedDeltaTime) {
             FixedUpdate(fixedDeltaTime);
             accumulator -= fixedDeltaTime;
         }
 
-        // Variable frame updates
         Update(frameTime);
-
-        // Render frame
         Render(frameTime);
     }
 
@@ -110,14 +116,12 @@ void Game::ProcessInput(float dt) {
         return;
     }
 
-    // Toggle DevUI overlay (F1)
     if (IsKeyPressed(KEY_F1)) {
         if (m_devUI) {
             m_devUI->ToggleVisible();
         }
     }
 
-    // Toggle Camera follow mode (F2)
     if (IsKeyPressed(KEY_F2)) {
         if (m_camera->GetMode() == graphics::CameraMode::Follow) {
             m_camera->SetMode(graphics::CameraMode::Free);
@@ -129,14 +133,12 @@ void Game::ProcessInput(float dt) {
         }
     }
 
-    // Camera Reset (R)
     if (IsKeyPressed(KEY_R)) {
         m_camera->SetTarget(Vector2{ 800.0f, 600.0f });
         m_camera->SetZoom(1.0f);
         Logger::Info("CAMERA", "Camera reset to center (800, 600) @ 1.0x zoom");
     }
 
-    // Manual camera pan in Free mode (WASD)
     if (m_camera->GetMode() == graphics::CameraMode::Free) {
         float zoom = m_camera->GetZoom();
         float moveSpeed = (350.0f / (zoom > 0.1f ? zoom : 1.0f)) * dt;
@@ -152,7 +154,6 @@ void Game::ProcessInput(float dt) {
         }
     }
 
-    // Camera Zoom (Q = zoom out, E = zoom in)
     float zoomSpeed = 1.2f * dt;
     if (IsKeyDown(KEY_Q)) {
         m_camera->ZoomBy(-zoomSpeed);
@@ -163,31 +164,27 @@ void Game::ProcessInput(float dt) {
 }
 
 void Game::FixedUpdate(float /*fixedDt*/) {
-    // Reserved for deterministic physics and logic
 }
 
 void Game::Update(float dt) {
-    // Update test scene (target animation)
     m_testScene->Update(dt);
-
-    // Update camera smoothing and tracking
     m_camera->Update(dt);
 }
 
 void Game::Render(float dt) {
     float fps = static_cast<float>(GetFPS());
 
-    // 1. Begin virtual resolution frame (renders to 640x360 texture)
+    // 1. Begin virtual resolution frame
     m_renderer->BeginFrame();
 
-    // 2. Render World Layer (transformed through Camera2D)
+    // 2. Render World Layer with Camera and AssetManager sprites
     m_renderer->BeginWorld(*m_camera);
-    m_testScene->RenderWorld(*m_camera, m_renderer->GetDrawContext());
+    m_testScene->RenderWorld(*m_renderer, *m_camera, m_renderer->GetDrawContext(), m_assetManager.get());
     m_renderer->EndWorld(*m_camera);
 
-    // 3. Render In-Game UI Layer (Virtual Canvas coordinates)
+    // 3. Render In-Game UI Layer
     m_renderer->BeginUI();
-    m_testScene->RenderUI(m_renderer->GetDrawContext(), *m_camera, m_renderer->GetViewport());
+    m_testScene->RenderUI(m_renderer->GetDrawContext(), *m_camera, m_renderer->GetViewport(), m_assetManager.get());
     m_renderer->EndUI();
 
     // 4. End virtual canvas render target
@@ -196,7 +193,7 @@ void Game::Render(float dt) {
     // 5. Present scaled canvas to window
     m_renderer->Present();
 
-    // 6. Developer overlay (Dear ImGui) in window coordinate space
+    // 6. Developer overlay (Dear ImGui with Asset Browser & Validation)
     if (m_config.debugMode && m_devUI && m_devUI->IsVisible()) {
         Vector2 mouseScreen = GetMousePosition();
         Vector2 mouseVirtual = m_renderer->GetViewport().ScreenToVirtual(mouseScreen);
@@ -211,7 +208,8 @@ void Game::Render(float dt) {
             m_renderer->GetViewport(),
             mouseScreen,
             mouseVirtual,
-            mouseWorld
+            mouseWorld,
+            m_assetManager.get()
         );
         m_devUI->EndFrame();
     }
@@ -226,6 +224,10 @@ void Game::Shutdown() {
 
     if (m_devUI) {
         m_devUI->Shutdown();
+    }
+
+    if (m_assetManager) {
+        m_assetManager->Shutdown();
     }
 
     if (m_renderer) {

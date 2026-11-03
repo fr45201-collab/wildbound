@@ -1,0 +1,8 @@
+{
+    "animation": "player_walk_down",
+    "spritesheet": "player_spritesheet",
+    "frames": [0, 1, 2, 3],
+    "frame_duration": 0.15,
+    "loop": true
+}
+

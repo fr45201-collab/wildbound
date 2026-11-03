@@ -1,0 +1,96 @@
+{
+    "version": "1.0.0",
+    "assets": [
+        {
+            "id": "tex_player",
+            "file": "characters/player/player_spritesheet.png",
+            "type": "texture",
+            "category": "characters/player",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound Art Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "a1b2c3d4e5f601",
+            "width": 128,
+            "height": 32,
+            "status": "approved"
+        },
+        {
+            "id": "sheet_player",
+            "file": "characters/player/player_spritesheet.json",
+            "type": "spritesheet",
+            "category": "characters/player",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound Art Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "b2c3d4e5f602",
+            "width": 32,
+            "height": 32,
+            "status": "approved"
+        },
+        {
+            "id": "tex_oak_tree",
+            "file": "environment/trees/oak_tree.png",
+            "type": "texture",
+            "category": "environment/trees",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound Art Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "c3d4e5f603",
+            "width": 48,
+            "height": 64,
+            "status": "approved"
+        },
+        {
+            "id": "tex_item_icons",
+            "file": "ui/icons/item_icons.png",
+            "type": "texture",
+            "category": "ui/icons",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound UI Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "d4e5f604",
+            "width": 64,
+            "height": 16,
+            "status": "approved"
+        },
+        {
+            "id": "sheet_item_icons",
+            "file": "ui/icons/item_icons.json",
+            "type": "spritesheet",
+            "category": "ui/icons",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound UI Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "e5f605",
+            "width": 16,
+            "height": 16,
+            "status": "approved"
+        },
+        {
+            "id": "sfx_chime",
+            "file": "audio/sfx/sample_chime.wav",
+            "type": "sound",
+            "category": "audio/sfx",
+            "source": "Wildbound Audio Lab",
+            "author": "Wildbound Sound Architect",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "f606a7",
+            "width": 0,
+            "height": 0,
+            "status": "approved"
+        }
+    ]
+}
+

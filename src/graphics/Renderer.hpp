@@ -37,6 +37,30 @@ public:
 
     void HandleWindowResize();
 
+    // Reusable Sprite Rendering Pipeline (Phase 2)
+    void DrawSprite(
+        const Texture2D& texture,
+        Rectangle sourceRect,
+        Rectangle destRect,
+        Vector2 origin = { 0.0f, 0.0f },
+        float rotation = 0.0f,
+        Color tint = WHITE,
+        bool flipX = false,
+        bool flipY = false
+    );
+
+    void DrawSprite(
+        const Texture2D& texture,
+        Rectangle sourceRect,
+        Vector2 worldPosition,
+        Vector2 origin = { 0.0f, 0.0f },
+        float scale = 1.0f,
+        float rotation = 0.0f,
+        Color tint = WHITE,
+        bool flipX = false,
+        bool flipY = false
+    );
+
     // Accessors
     const Viewport& GetViewport() const { return m_viewport; }
     Viewport& GetViewport() { return m_viewport; }
@@ -58,4 +82,3 @@ private:
 };
 
 } // namespace wildbound::graphics
-
