@@ -44,3 +44,4 @@ Every map is verified using `MapValidator::Validate(tilemap, assetMgr)`:
 * **Tileset Completeness**: Every tileset referenced must exist in `AssetManager`.
 * **GID Integrity**: Every non-zero GID in each layer must map to a valid tileset within `[firstGid, firstGid + tileCount)`.
 * **Object Properties**: Validates that objects with collision enabled have positive collision bounds.
+

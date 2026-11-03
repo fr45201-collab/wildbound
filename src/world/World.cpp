@@ -51,6 +51,13 @@ const std::string& World::GetMapName() const {
     return emptyName;
 }
 
+Vector2 World::GetSpawnPosition(const std::string& spawnName) const {
+    if (m_tilemap) {
+        return m_tilemap->GetSpawnPosition(spawnName);
+    }
+    return Vector2{ 256.0f, 960.0f };
+}
+
 void World::RebuildCollisionCache() {
     m_staticCollisionCache.clear();
     if (!m_tilemap) return;

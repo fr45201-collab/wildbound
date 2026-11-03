@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.20)
 
 # ============================================================================
 # WILDBOUND — 2D Fantasy Survival Adventure Engine
-# Phase 3: Tilemap System & World Environment Foundation
+# Phase 4: Player Character System & Animation Engine
 # ============================================================================
 
 project(Wildbound
-    VERSION 0.4.0
+    VERSION 0.5.0
     DESCRIPTION "2D top-down fantasy survival adventure game engine"
     LANGUAGES CXX C
 )
@@ -183,6 +183,27 @@ set(WILDBOUND_SOURCES
     src/world/WorldRenderer.cpp
     src/world/WorldRenderer.hpp
 
+    # Animation Subsystem (Phase 4)
+    src/graphics/animation/Direction.hpp
+    src/graphics/animation/AnimationState.hpp
+    src/graphics/animation/AnimationController.cpp
+    src/graphics/animation/AnimationController.hpp
+    src/graphics/animation/AnimationStateMachine.cpp
+    src/graphics/animation/AnimationStateMachine.hpp
+
+    # Entities & Character System (Phase 4)
+    src/entities/Entity.cpp
+    src/entities/Entity.hpp
+    src/entities/CharacterStats.hpp
+    src/entities/CharacterConfig.cpp
+    src/entities/CharacterConfig.hpp
+    src/entities/CharacterController.cpp
+    src/entities/CharacterController.hpp
+    src/entities/Character.cpp
+    src/entities/Character.hpp
+    src/entities/Player.cpp
+    src/entities/Player.hpp
+
     # Scripting & UI
     src/scripting/LuaManager.cpp
     src/scripting/LuaManager.hpp
@@ -226,6 +247,9 @@ add_custom_command(TARGET wildbound POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/maps
         $<TARGET_FILE_DIR:wildbound>/maps
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/data
+        $<TARGET_FILE_DIR:wildbound>/data
     COMMENT "Deploying runtime assets, scripts, and config to target output directory"
 )
 

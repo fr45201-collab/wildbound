@@ -1,0 +1,32 @@
+{
+  "id": "player",
+  "name": "Explorer",
+  "spritesheet": "player_spritesheet",
+  "movement": {
+    "walk_speed": 100.0,
+    "run_speed": 165.0,
+    "diagonal_normalization": true
+  },
+  "collision": {
+    "enabled": true,
+    "width": 16.0,
+    "height": 12.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "animations": {
+    "idle_down": "player_idle_down",
+    "idle_up": "player_idle_up",
+    "idle_left": "player_idle_left",
+    "idle_right": "player_idle_right",
+    "walk_down": "player_walk_down",
+    "walk_up": "player_walk_up",
+    "walk_left": "player_walk_left",
+    "walk_right": "player_walk_right",
+    "run_down": "player_run_down",
+    "run_up": "player_run_up",
+    "run_left": "player_run_left",
+    "run_right": "player_run_right"
+  }
+}
+

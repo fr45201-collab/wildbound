@@ -27,3 +27,4 @@ When `World::LoadMap()` completes:
 3. The resulting spatial cache supports fast broad-phase collision tests:
    * `World::GetCollisionBoxes(queryArea)`: Returns only boxes that intersect the queried rectangle.
    * `World::CheckCollision(queryBox)`: Fast boolean test for solid collision.
+

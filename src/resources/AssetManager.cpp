@@ -180,8 +180,25 @@ bool AssetManager::LoadAnimationMetadata(const std::string& jsonFilePath) {
         std::ifstream file(resolved);
         nlohmann::json j;
         file >> j;
-        AnimationClip clip = AnimationClip::FromJson(j);
-        return RegisterAnimation(clip);
+
+        if (j.is_array()) {
+            bool allOk = true;
+            for (const auto& item : j) {
+                AnimationClip clip = AnimationClip::FromJson(item);
+                if (!RegisterAnimation(clip)) allOk = false;
+            }
+            return allOk;
+        } else if (j.contains("animations") && j["animations"].is_array()) {
+            bool allOk = true;
+            for (const auto& item : j["animations"]) {
+                AnimationClip clip = AnimationClip::FromJson(item);
+                if (!RegisterAnimation(clip)) allOk = false;
+            }
+            return allOk;
+        } else {
+            AnimationClip clip = AnimationClip::FromJson(j);
+            return RegisterAnimation(clip);
+        }
     }
     catch (const std::exception& ex) {
         Logger::Error("ASSET_MGR", "Failed parsing animation JSON '" + resolved + "': " + ex.what());

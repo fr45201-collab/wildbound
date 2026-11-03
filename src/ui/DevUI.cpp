@@ -4,6 +4,7 @@
 #include "../resources/AssetValidator.hpp"
 #include "../world/World.hpp"
 #include "../world/WorldRenderer.hpp"
+#include "../entities/Player.hpp"
 
 #include <imgui.h>
 #include <rlImGui.h>
@@ -68,8 +69,13 @@ void DevUI::RenderDebugOverlay(
     Vector2 mouseWorld,
     resources::AssetManager* assetMgr,
     world::World* world,
-    world::WorldRenderer* worldRenderer)
+    world::WorldRenderer* worldRenderer,
+    entities::Player* player)
 {
+    if (m_showAnimDebug) {
+        RenderAnimationHUD(player);
+    }
+
     if (!m_initialized || !m_visible) {
         return;
     }
@@ -110,23 +116,29 @@ void DevUI::RenderDebugOverlay(
                 ImGui::Text("World Space:      (%.1f, %.1f)", mouseWorld.x, mouseWorld.y);
                 ImGui::Separator();
 
-                ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "Controls: WASD=Pan, Q/E=Zoom, R=Reset, F2=Toggle Follow, F1=Toggle Overlay");
+                ImGui::TextColored(ImVec4(0.8f, 0.8f, 0.8f, 1.0f), "Controls: WASD=Pan/Move, Shift=Run, Q/E=Zoom, R=Reset, F1=DevUI, F2=Follow, F3=Col, F4=Origin, F5=AnimHUD");
                 ImGui::EndTabItem();
             }
 
-            // Tab 2: World & Map System (Phase 3)
+            // Tab 2: Player & Character Controller (Phase 4)
+            if (ImGui::BeginTabItem("Player & Character")) {
+                RenderPlayerDebug(player);
+                ImGui::EndTabItem();
+            }
+
+            // Tab 3: World & Map System (Phase 3)
             if (ImGui::BeginTabItem("World & Map")) {
                 RenderWorldAndMap(world, worldRenderer, mouseWorld);
                 ImGui::EndTabItem();
             }
 
-            // Tab 3: Asset Browser
+            // Tab 4: Asset Browser
             if (ImGui::BeginTabItem("Asset Browser")) {
                 RenderAssetBrowser(assetMgr);
                 ImGui::EndTabItem();
             }
 
-            // Tab 4: Asset Validation & Licensing
+            // Tab 5: Asset Validation & Licensing
             if (ImGui::BeginTabItem("Asset Validation")) {
                 RenderAssetValidation(assetMgr);
                 ImGui::EndTabItem();
@@ -415,6 +427,90 @@ void DevUI::RenderAssetValidation(resources::AssetManager* assetMgr) {
         }
     }
     ImGui::EndChild();
+}
+
+void DevUI::RenderPlayerDebug(entities::Player* player) {
+    if (!player) {
+        ImGui::TextColored(ImVec4(0.9f, 0.4f, 0.4f, 1.0f), "Player entity is not active.");
+        return;
+    }
+
+    // 1. Transform & Motion
+    if (ImGui::CollapsingHeader("Transform & Motion", ImGuiTreeNodeFlags_DefaultOpen)) {
+        Vector2 pos = player->GetPosition();
+        Vector2 vel = player->GetVelocity();
+        float speed = std::sqrt(vel.x * vel.x + vel.y * vel.y);
+
+        ImGui::Text("Position (Feet): (%.2f, %.2f)", pos.x, pos.y);
+        ImGui::Text("Velocity:        (%.2f, %.2f)", vel.x, vel.y);
+        ImGui::Text("Current Speed:   %.1f px/s", speed);
+
+        const auto& controller = player->GetController();
+        Vector2 inputDir = controller.GetMovementDirection();
+        ImGui::Text("Input Vector:    (%.2f, %.2f) [%s]",
+                    inputDir.x, inputDir.y, controller.IsMoving() ? "MOVING" : "IDLE");
+        ImGui::Text("Running Status:  %s", controller.IsRunning() ? "ACTIVE (Shift)" : "WALKING");
+    }
+
+    // 2. Animation State Machine
+    if (ImGui::CollapsingHeader("Animation State Machine", ImGuiTreeNodeFlags_DefaultOpen)) {
+        const auto& animCtrl = player->GetAnimController();
+        ImGui::Text("State:           %s", graphics::animation::MovementStateToString(player->GetMovementState()).data());
+        ImGui::Text("Facing:          %s", graphics::animation::DirectionToString(player->GetFacing()).data());
+        ImGui::Text("Current Clip:    %s", animCtrl.GetCurrentClipName().c_str());
+        ImGui::Text("Clip Frame:      #%d", animCtrl.GetCurrentFrameIndex());
+        ImGui::Text("Sheet Frame GID: #%d", animCtrl.GetSpritesheetFrameIndex());
+        ImGui::Text("Elapsed Time:    %.3f s", animCtrl.GetElapsedTime());
+        ImGui::Text("Playback Speed:  %.2fx", animCtrl.GetPlaybackSpeed());
+    }
+
+    // 3. Collision Bounds
+    if (ImGui::CollapsingHeader("Collision Bounds", ImGuiTreeNodeFlags_DefaultOpen)) {
+        Rectangle col = player->GetCollisionBounds();
+        const auto& cfg = player->GetCollisionConfig();
+        ImGui::Text("Status:          %s", cfg.enabled ? "ENABLED" : "DISABLED");
+        ImGui::Text("Bounds Rect:     [%.1f, %.1f, %.1f, %.1f]", col.x, col.y, col.width, col.height);
+        ImGui::Text("Dimensions:      %.1f x %.1f px", cfg.width, cfg.height);
+        ImGui::Text("Offset:          (%.1f, %.1f)", cfg.offsetX, cfg.offsetY);
+    }
+
+    // 4. Movement Tuning & Configuration
+    if (ImGui::CollapsingHeader("Movement Tuning", ImGuiTreeNodeFlags_DefaultOpen)) {
+        auto& stats = player->GetStats();
+        ImGui::SliderFloat("Walk Speed", &stats.walkSpeed, 30.0f, 250.0f, "%.1f px/s");
+        ImGui::SliderFloat("Run Speed", &stats.runSpeed, 60.0f, 350.0f, "%.1f px/s");
+        ImGui::Checkbox("Normalize Diagonal", &stats.normalizeDiagonal);
+
+        auto& ctrl = player->GetController();
+        ctrl.SetNormalizeDiagonal(stats.normalizeDiagonal);
+    }
+}
+
+void DevUI::RenderAnimationHUD(entities::Player* player) {
+    if (!player) return;
+
+    ImGui::SetNextWindowPos(ImVec2(16, 50), ImGuiCond_Always);
+    ImGui::SetNextWindowBgAlpha(0.70f);
+
+    ImGuiWindowFlags flags = ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize |
+                            ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoFocusOnAppearing |
+                            ImGuiWindowFlags_NoNav;
+
+    if (ImGui::Begin("Animation HUD (F5)", nullptr, flags)) {
+        const auto& animCtrl = player->GetAnimController();
+        Vector2 vel = player->GetVelocity();
+        float speed = std::sqrt(vel.x * vel.x + vel.y * vel.y);
+
+        ImGui::TextColored(ImVec4(0.4f, 0.9f, 0.5f, 1.0f), "PLAYER ANIMATION HUD (F5)");
+        ImGui::Separator();
+        ImGui::Text("State:  %s (%s)",
+                    graphics::animation::MovementStateToString(player->GetMovementState()).data(),
+                    graphics::animation::DirectionToString(player->GetFacing()).data());
+        ImGui::Text("Clip:   %s", animCtrl.GetCurrentClipName().c_str());
+        ImGui::Text("Frame:  #%d (Sheet #%d)", animCtrl.GetCurrentFrameIndex(), animCtrl.GetSpritesheetFrameIndex());
+        ImGui::Text("Speed:  %.1f px/s (Anim %.2fx)", speed, animCtrl.GetPlaybackSpeed());
+    }
+    ImGui::End();
 }
 
 } // namespace wildbound::ui

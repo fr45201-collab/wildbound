@@ -1,6 +1,7 @@
 #include "WorldRenderer.hpp"
 #include "../resources/AssetManager.hpp"
 #include "../graphics/ColorPalette.hpp"
+#include "../entities/Entity.hpp"
 #include <algorithm>
 #include <cmath>
 
@@ -9,7 +10,7 @@ namespace wildbound::world {
 WorldRenderer::WorldRenderer() = default;
 
 void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, const graphics::Camera2DSystem& camera,
-                           resources::AssetManager& assetMgr)
+                           resources::AssetManager& assetMgr, entities::Entity* playerEntity)
 {
     const Tilemap* tilemap = world.GetTilemap();
     if (!tilemap) return;
@@ -81,14 +82,23 @@ void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, con
         }
     }
 
-    // 3. Render Environmental Objects with Depth Y-Sorting
+    // 3. Render Environmental Objects with Depth Y-Sorting and Entity Interleaving
     std::vector<const EnvironmentObject*> visibleObjs = world.GetVisibleObjects(m_lastVisibleArea);
 
     std::sort(visibleObjs.begin(), visibleObjs.end(), [](const EnvironmentObject* a, const EnvironmentObject* b) {
         return a->GetZOrder() < b->GetZOrder();
     });
 
+    bool playerRendered = (playerEntity == nullptr);
+    float playerY = playerEntity ? playerEntity->GetPosition().y : 0.0f;
+
     for (const auto* obj : visibleObjs) {
+        // If player is behind this object (lower Y world coordinate), render player first
+        if (!playerRendered && playerY <= obj->GetZOrder()) {
+            playerEntity->Render(renderer, assetMgr);
+            playerRendered = true;
+        }
+
         Texture2D tex = assetMgr.GetTexture(obj->GetTextureId());
         if (tex.id != 0) {
             Rectangle srcRect = obj->GetSourceRect();
@@ -98,11 +108,19 @@ void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, con
         m_renderedObjectCount++;
     }
 
+    // If player is in front of all visible objects (lowest on screen)
+    if (!playerRendered) {
+        playerEntity->Render(renderer, assetMgr);
+        playerRendered = true;
+    }
+
     // 4. Debug Visualization Passes
-    RenderDebug(world, camera);
+    RenderDebug(world, camera, playerEntity);
 }
 
-void WorldRenderer::RenderDebug(const World& world, const graphics::Camera2DSystem& /*camera*/) {
+void WorldRenderer::RenderDebug(const World& world, const graphics::Camera2DSystem& /*camera*/,
+                                const entities::Entity* playerEntity)
+{
     const Tilemap* tilemap = world.GetTilemap();
     if (!tilemap) return;
 
@@ -138,6 +156,12 @@ void WorldRenderer::RenderDebug(const World& world, const graphics::Camera2DSyst
             DrawRectangleRec(box.bounds, fill);
             DrawRectangleLinesEx(box.bounds, 1.0f, outline);
         }
+
+        if (playerEntity) {
+            Rectangle pCol = playerEntity->GetCollisionBounds();
+            DrawRectangleRec(pCol, Color{ 50, 220, 100, 110 });
+            DrawRectangleLinesEx(pCol, 1.0f, Color{ 80, 255, 120, 240 });
+        }
     }
 
     // 3. World Boundaries Overlay
@@ -152,6 +176,12 @@ void WorldRenderer::RenderDebug(const World& world, const graphics::Camera2DSyst
             Vector2 p = obj.GetPosition();
             DrawCircle(static_cast<int>(p.x), static_cast<int>(p.y), 3.0f, YELLOW);
             DrawCircleLines(static_cast<int>(p.x), static_cast<int>(p.y), 6.0f, ORANGE);
+        }
+
+        if (playerEntity) {
+            Vector2 pPos = playerEntity->GetPosition();
+            DrawCircle(static_cast<int>(pPos.x), static_cast<int>(pPos.y), 3.0f, GREEN);
+            DrawCircleLines(static_cast<int>(pPos.x), static_cast<int>(pPos.y), 7.0f, LIME);
         }
     }
 }

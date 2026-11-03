@@ -34,6 +34,7 @@ public:
 
     Rectangle GetWorldBounds() const;
     const std::string& GetMapName() const;
+    Vector2 GetSpawnPosition(const std::string& spawnName = "player_spawn") const;
 
     // Collision queries
     std::vector<CollisionBox> GetCollisionBoxes(const Rectangle& queryArea) const;

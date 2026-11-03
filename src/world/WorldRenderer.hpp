@@ -9,6 +9,10 @@ namespace wildbound::resources {
     class AssetManager;
 }
 
+namespace wildbound::entities {
+    class Entity;
+}
+
 namespace wildbound::world {
 
 /**
@@ -20,9 +24,10 @@ public:
     WorldRenderer();
 
     void Render(graphics::Renderer& renderer, const World& world, const graphics::Camera2DSystem& camera,
-                resources::AssetManager& assetMgr);
+                resources::AssetManager& assetMgr, entities::Entity* playerEntity = nullptr);
 
-    void RenderDebug(const World& world, const graphics::Camera2DSystem& camera);
+    void RenderDebug(const World& world, const graphics::Camera2DSystem& camera,
+                     const entities::Entity* playerEntity = nullptr);
 
     // Debug visualization toggles
     void SetShowGrid(bool show) { m_showGrid = show; }

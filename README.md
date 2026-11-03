@@ -2,18 +2,18 @@
 
 > **Wildbound** is a 2D top-down fantasy survival adventure game built with C++20, raylib, Lua 5.4, and sol2.
 
-## Current Status: Phase 3 — Tilemap System & World Environment Foundation
+## Current Status: Phase 4 — Player Character System & Animation Engine
 
 ### Key Features
-- **2D Tilemap Subsystem**: Robust grid architecture (32×32 pixels per tile) with layer management (`Ground`, `Terrain`, `Water`, `Ground Decorations`, `Environmental Objects`, `Collision`).
-- **Tiled Map Editor Integration**: Native loader supporting both Tiled JSON (`.json`/`.tmj`) and TMX XML (`.tmx`) with CSV tile decompression.
-- **Camera Visibility Culling**: Frustum bounds calculation and visible coordinate clamping reducing per-frame tile draw calls by >94%.
-- **Environmental Object Depth (Y-Sorting)**: Dynamic entity z-ordering anchored at bottom-center entity baselines for visual depth.
-- **Spatial Collision Cache**: Pre-indexed collision boundaries for solid terrain, water hazards, and map limits with intersection query APIs.
-- **Automated Map Validation (`MapValidator`)**: Diagnostics auditing map dimensions, tile sizes, missing tilesets, out-of-range GIDs, and object collision metadata.
-- **Playable Forest Environment (`forest_01 — The Whispering Woods`)**: 80×60 tile world (2560×1920 pixels) featuring dirt pathways, cobblestone courtyards, winding river with a wooden crossing bridge, woodland pond, pine/oak tree groves, mossy granite boulders, berry bushes, and an abandoned forest cabin.
-- **Interactive DevUI World Debugger (`F1`)**: Real-time toggles for 32×32 tile grid, collision bounds, world boundaries, object origins, per-layer visibility/opacity sliders, culling performance stats, and a live cursor tile inspector.
-- **Automated Verification**: Comprehensive 6-target CTest suite covering core config, Lua runtime, viewport/camera math, asset metadata, world/tilemap architecture, and executable smoke testing.
+- **Player & Character Entity Architecture**: Clean C++20 entity hierarchy (`Entity` -> `Character` -> `Player`) decoupling stats, collision configuration, animation controllers, and input polling.
+- **2D Animation Subsystem**: Framerate-independent animation engine supporting 4-directional spritesheets (`Down`, `Up`, `Left`, `Right`) across `Idle`, `Walk`, and `Run` states (12 animation states) with directional tie-breaker bias and automatic run-to-walk fallback at 1.65× speed.
+- **Locomotion Mechanics**: Responsive 4-directional movement with WASD and arrow keys, Shift sprint modifier (100 px/s walk to 165 px/s run), and strict diagonal velocity normalization eliminating diagonal speedup.
+- **Swept AABB Collision & Wall Sliding**: Axis-decoupled collision detection and pushout resolution against static tilemap obstacles, water bodies, and environmental objects (trees, rocks, fences, buildings) with feet-anchored hitboxes enabling visual depth overlap.
+- **Map Spawn Integration**: Automatic player positioning based on Tiled map `player_spawn` markers with safe world boundary fallbacks.
+- **Camera Follow Tracking**: Smooth exponential spring follow camera (`CameraMode::Follow`) keeping the player centered with map boundary clamping and integer sub-pixel snapping to avoid pixel-art shimmering.
+- **Y-Sorted World Interleaving**: Dynamic rendering pass interleaving player sprites into the environmental object render queue based on feet Y baseline, enabling natural front/behind depth sorting against trees and buildings.
+- **Interactive DevUI & Diagnostics (`F1`-`F5`, `R`)**: Real-time controls for player speed, manual input toggles, collision bounds overlay (`F3`), player ground anchor marker (`F4`), live animation HUD overlay (`F5`), and quick teleport reset (`R`).
+- **Comprehensive Automated Test Suite**: 7 CTest suites (including 15 dedicated Player, Character, and Animation unit tests in `test_player`) achieving 100% pass rates across both Debug and Release configurations.
 
 ## Technology Stack
 - **Language**: C++20 (MSVC `/std:c++20`)
@@ -23,7 +23,7 @@
 - **Map Editor**: Tiled Map Editor 1.10+
 - **JSON Parsing**: nlohmann/json v3.11.3
 - **Build System**: CMake 3.20+ with FetchContent
-- **Testing**: CTest
+- **Testing**: CTest (7 test suites, 100% pass)
 
 ## Quick Start
 ```powershell
@@ -41,6 +41,12 @@ ctest --test-dir build -C Debug --output-on-failure
 ```
 
 ## Documentation
+- [Player Character System](docs/PLAYER_SYSTEM.md)
+- [Animation Subsystem](docs/ANIMATION_SYSTEM.md)
+- [Character Controller](docs/CHARACTER_CONTROLLER.md)
+- [Collision & Wall Sliding](docs/COLLISION_SYSTEM.md)
+- [Player Input & Key Bindings](docs/PLAYER_INPUT.md)
+- [Camera Follow Tracking](docs/CAMERA_FOLLOW.md)
 - [World Architecture](docs/WORLD_ARCHITECTURE.md)
 - [Tilemap System](docs/TILEMAP_SYSTEM.md)
 - [Tiled Map Editor Integration](docs/TILED_INTEGRATION.md)

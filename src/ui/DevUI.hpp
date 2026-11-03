@@ -14,6 +14,10 @@ namespace wildbound::world {
     class WorldRenderer;
 }
 
+namespace wildbound::entities {
+    class Player;
+}
+
 namespace wildbound::ui {
 
 class DevUI {
@@ -41,20 +45,27 @@ public:
         Vector2 mouseWorld,
         resources::AssetManager* assetMgr = nullptr,
         world::World* world = nullptr,
-        world::WorldRenderer* worldRenderer = nullptr
+        world::WorldRenderer* worldRenderer = nullptr,
+        entities::Player* player = nullptr
     );
 
     void ToggleVisible() { m_visible = !m_visible; }
     bool IsVisible() const { return m_visible; }
     void SetVisible(bool visible) { m_visible = visible; }
 
+    void ToggleAnimDebug() { m_showAnimDebug = !m_showAnimDebug; }
+    bool IsAnimDebug() const { return m_showAnimDebug; }
+
 private:
     void RenderWorldAndMap(world::World* world, world::WorldRenderer* worldRenderer, Vector2 mouseWorld);
+    void RenderPlayerDebug(entities::Player* player);
     void RenderAssetBrowser(resources::AssetManager* assetMgr);
     void RenderAssetValidation(resources::AssetManager* assetMgr);
+    void RenderAnimationHUD(entities::Player* player);
 
     bool m_initialized = false;
     bool m_visible = false;
+    bool m_showAnimDebug = false;
 
     // Asset Browser state
     char m_searchBuffer[64]{ 0 };

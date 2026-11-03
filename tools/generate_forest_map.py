@@ -224,9 +224,24 @@ def generate_forest_01():
                     continue
                 set_tile(collision_layer, x, y, G_COLLISION_SOLID)
 
-    # 6. Environmental Objects
+    # 6. Environmental Objects & Spawns
     objects = []
     obj_id = 1
+
+    # Player Spawn Marker
+    objects.append({
+        "id": obj_id,
+        "name": "player_spawn",
+        "type": "spawn",
+        "x": 256.0,
+        "y": 960.0,
+        "width": 32.0,
+        "height": 32.0,
+        "properties": [
+            { "name": "facing", "type": "string", "value": "right" }
+        ]
+    })
+    obj_id += 1
 
     # Abandoned Cabin (128x128)
     objects.append({

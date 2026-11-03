@@ -28,3 +28,4 @@ This enables natural depth sorting and accurate collision footings:
 | `cabin` | `tex_cabin` | 128 × 128 px | 110 × 55 px (foundation) | Abandoned forest cabin |
 | `rock_large` | `tex_rock_large`| 64 × 48 px | 52 × 32 px (boulder base)| Granite river stone |
 | `bush_large` | `tex_bush_large`| 48 × 36 px | 36 × 20 px (shrub base) | Berry vegetation |
+

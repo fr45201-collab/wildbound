@@ -46,3 +46,4 @@ Vector2 tileCoords = tilemap.WorldToTile(worldPos);
 Vector2 worldPos = tilemap.TileToWorld(col, row);
 ```
 Out-of-bounds tile lookups via `TileLayer::GetTileGid(col, row)` return `0` safely without throwing exceptions or causing memory corruption.
+

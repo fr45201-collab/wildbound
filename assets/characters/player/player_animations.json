@@ -1,0 +1,89 @@
+{
+    "animations": [
+        {
+            "animation": "player_idle_down",
+            "spritesheet": "player_spritesheet",
+            "frames": [16, 17, 18, 19],
+            "frame_duration": 0.20,
+            "loop": true
+        },
+        {
+            "animation": "player_idle_up",
+            "spritesheet": "player_spritesheet",
+            "frames": [20, 21, 22, 23],
+            "frame_duration": 0.20,
+            "loop": true
+        },
+        {
+            "animation": "player_idle_left",
+            "spritesheet": "player_spritesheet",
+            "frames": [24, 25, 26, 27],
+            "frame_duration": 0.20,
+            "loop": true
+        },
+        {
+            "animation": "player_idle_right",
+            "spritesheet": "player_spritesheet",
+            "frames": [28, 29, 30, 31],
+            "frame_duration": 0.20,
+            "loop": true
+        },
+        {
+            "animation": "player_walk_down",
+            "spritesheet": "player_spritesheet",
+            "frames": [0, 1, 2, 3],
+            "frame_duration": 0.14,
+            "loop": true
+        },
+        {
+            "animation": "player_walk_up",
+            "spritesheet": "player_spritesheet",
+            "frames": [4, 5, 6, 7],
+            "frame_duration": 0.14,
+            "loop": true
+        },
+        {
+            "animation": "player_walk_left",
+            "spritesheet": "player_spritesheet",
+            "frames": [8, 9, 10, 11],
+            "frame_duration": 0.14,
+            "loop": true
+        },
+        {
+            "animation": "player_walk_right",
+            "spritesheet": "player_spritesheet",
+            "frames": [12, 13, 14, 15],
+            "frame_duration": 0.14,
+            "loop": true
+        },
+        {
+            "animation": "player_run_down",
+            "spritesheet": "player_spritesheet",
+            "frames": [0, 1, 2, 3],
+            "frame_duration": 0.085,
+            "loop": true
+        },
+        {
+            "animation": "player_run_up",
+            "spritesheet": "player_spritesheet",
+            "frames": [4, 5, 6, 7],
+            "frame_duration": 0.085,
+            "loop": true
+        },
+        {
+            "animation": "player_run_left",
+            "spritesheet": "player_spritesheet",
+            "frames": [8, 9, 10, 11],
+            "frame_duration": 0.085,
+            "loop": true
+        },
+        {
+            "animation": "player_run_right",
+            "spritesheet": "player_spritesheet",
+            "frames": [12, 13, 14, 15],
+            "frame_duration": 0.085,
+            "loop": true
+        }
+    ]
+}
+

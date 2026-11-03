@@ -33,6 +33,11 @@ void EnvironmentObject::SetPosition(Vector2 pos) {
 void EnvironmentObject::SetCollision(const CollisionBox& box) {
     m_collision = box;
     m_hasCollision = (box.type != CollisionType::None && box.bounds.width > 0.0f && box.bounds.height > 0.0f);
+    if (m_hasCollision) {
+        // Adjust collision box position to align with object footprint base
+        m_collision.bounds.x = m_position.x - m_origin.x + (m_size.x - m_collision.bounds.width) * 0.5f;
+        m_collision.bounds.y = m_position.y - m_collision.bounds.height;
+    }
 }
 
 CollisionBox EnvironmentObject::GetWorldCollision() const {

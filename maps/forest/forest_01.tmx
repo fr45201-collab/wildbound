@@ -260,7 +260,12 @@
   </data>
  </layer>
  <objectgroup id="5" name="Environmental Objects">
-  <object id="1" name="Abandoned Cabin" type="cabin" x="1920.0" y="448.0" width="128.0" height="128.0">
+  <object id="1" name="player_spawn" type="spawn" x="256.0" y="960.0" width="32.0" height="32.0">
+   <properties>
+    <property name="facing" type="string" value="right"/>
+   </properties>
+  </object>
+  <object id="2" name="Abandoned Cabin" type="cabin" x="1920.0" y="448.0" width="128.0" height="128.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -268,7 +273,7 @@
     <property name="collision_height" type="float" value="55.0"/>
    </properties>
   </object>
-  <object id="2" name="Pine_Border_N_2" type="pine_tree" x="80.0" y="80.0" width="48.0" height="80.0">
+  <object id="3" name="Pine_Border_N_2" type="pine_tree" x="80.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -276,7 +281,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="3" name="Pine_Border_N_5" type="pine_tree" x="176.0" y="80.0" width="48.0" height="80.0">
+  <object id="4" name="Pine_Border_N_5" type="pine_tree" x="176.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -284,7 +289,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="4" name="Pine_Border_N_8" type="pine_tree" x="272.0" y="80.0" width="48.0" height="80.0">
+  <object id="5" name="Pine_Border_N_8" type="pine_tree" x="272.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -292,7 +297,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="5" name="Pine_Border_N_11" type="pine_tree" x="368.0" y="80.0" width="48.0" height="80.0">
+  <object id="6" name="Pine_Border_N_11" type="pine_tree" x="368.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -300,7 +305,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="6" name="Pine_Border_N_14" type="pine_tree" x="464.0" y="80.0" width="48.0" height="80.0">
+  <object id="7" name="Pine_Border_N_14" type="pine_tree" x="464.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -308,7 +313,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="7" name="Pine_Border_N_17" type="pine_tree" x="560.0" y="80.0" width="48.0" height="80.0">
+  <object id="8" name="Pine_Border_N_17" type="pine_tree" x="560.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -316,7 +321,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="8" name="Pine_Border_N_20" type="pine_tree" x="656.0" y="80.0" width="48.0" height="80.0">
+  <object id="9" name="Pine_Border_N_20" type="pine_tree" x="656.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -324,7 +329,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="9" name="Pine_Border_N_23" type="pine_tree" x="752.0" y="80.0" width="48.0" height="80.0">
+  <object id="10" name="Pine_Border_N_23" type="pine_tree" x="752.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -332,7 +337,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="10" name="Pine_Border_N_26" type="pine_tree" x="848.0" y="80.0" width="48.0" height="80.0">
+  <object id="11" name="Pine_Border_N_26" type="pine_tree" x="848.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -340,7 +345,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="11" name="Pine_Border_N_29" type="pine_tree" x="944.0" y="80.0" width="48.0" height="80.0">
+  <object id="12" name="Pine_Border_N_29" type="pine_tree" x="944.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -348,7 +353,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="12" name="Pine_Border_N_32" type="pine_tree" x="1040.0" y="80.0" width="48.0" height="80.0">
+  <object id="13" name="Pine_Border_N_32" type="pine_tree" x="1040.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -356,7 +361,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="13" name="Pine_Border_N_35" type="pine_tree" x="1136.0" y="80.0" width="48.0" height="80.0">
+  <object id="14" name="Pine_Border_N_35" type="pine_tree" x="1136.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -364,7 +369,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="14" name="Pine_Border_N_38" type="pine_tree" x="1232.0" y="80.0" width="48.0" height="80.0">
+  <object id="15" name="Pine_Border_N_38" type="pine_tree" x="1232.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -372,7 +377,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="15" name="Pine_Border_N_41" type="pine_tree" x="1328.0" y="80.0" width="48.0" height="80.0">
+  <object id="16" name="Pine_Border_N_41" type="pine_tree" x="1328.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -380,7 +385,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="16" name="Pine_Border_N_44" type="pine_tree" x="1424.0" y="80.0" width="48.0" height="80.0">
+  <object id="17" name="Pine_Border_N_44" type="pine_tree" x="1424.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -388,7 +393,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="17" name="Pine_Border_N_47" type="pine_tree" x="1520.0" y="80.0" width="48.0" height="80.0">
+  <object id="18" name="Pine_Border_N_47" type="pine_tree" x="1520.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -396,7 +401,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="18" name="Pine_Border_N_50" type="pine_tree" x="1616.0" y="80.0" width="48.0" height="80.0">
+  <object id="19" name="Pine_Border_N_50" type="pine_tree" x="1616.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -404,7 +409,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="19" name="Pine_Border_N_53" type="pine_tree" x="1712.0" y="80.0" width="48.0" height="80.0">
+  <object id="20" name="Pine_Border_N_53" type="pine_tree" x="1712.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -412,7 +417,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="20" name="Pine_Border_N_56" type="pine_tree" x="1808.0" y="80.0" width="48.0" height="80.0">
+  <object id="21" name="Pine_Border_N_56" type="pine_tree" x="1808.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -420,7 +425,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="21" name="Pine_Border_N_59" type="pine_tree" x="1904.0" y="80.0" width="48.0" height="80.0">
+  <object id="22" name="Pine_Border_N_59" type="pine_tree" x="1904.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -428,7 +433,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="22" name="Pine_Border_N_62" type="pine_tree" x="2000.0" y="80.0" width="48.0" height="80.0">
+  <object id="23" name="Pine_Border_N_62" type="pine_tree" x="2000.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -436,7 +441,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="23" name="Pine_Border_N_65" type="pine_tree" x="2096.0" y="80.0" width="48.0" height="80.0">
+  <object id="24" name="Pine_Border_N_65" type="pine_tree" x="2096.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -444,7 +449,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="24" name="Pine_Border_N_68" type="pine_tree" x="2192.0" y="80.0" width="48.0" height="80.0">
+  <object id="25" name="Pine_Border_N_68" type="pine_tree" x="2192.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -452,7 +457,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="25" name="Pine_Border_N_71" type="pine_tree" x="2288.0" y="80.0" width="48.0" height="80.0">
+  <object id="26" name="Pine_Border_N_71" type="pine_tree" x="2288.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -460,7 +465,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="26" name="Pine_Border_N_74" type="pine_tree" x="2384.0" y="80.0" width="48.0" height="80.0">
+  <object id="27" name="Pine_Border_N_74" type="pine_tree" x="2384.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -468,7 +473,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="27" name="Pine_Border_N_77" type="pine_tree" x="2480.0" y="80.0" width="48.0" height="80.0">
+  <object id="28" name="Pine_Border_N_77" type="pine_tree" x="2480.0" y="80.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -476,7 +481,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="28" name="Pine_Border_S_2" type="pine_tree" x="80.0" y="1856.0" width="48.0" height="80.0">
+  <object id="29" name="Pine_Border_S_2" type="pine_tree" x="80.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -484,7 +489,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="29" name="Pine_Border_S_5" type="pine_tree" x="176.0" y="1856.0" width="48.0" height="80.0">
+  <object id="30" name="Pine_Border_S_5" type="pine_tree" x="176.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -492,7 +497,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="30" name="Pine_Border_S_8" type="pine_tree" x="272.0" y="1856.0" width="48.0" height="80.0">
+  <object id="31" name="Pine_Border_S_8" type="pine_tree" x="272.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -500,7 +505,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="31" name="Pine_Border_S_11" type="pine_tree" x="368.0" y="1856.0" width="48.0" height="80.0">
+  <object id="32" name="Pine_Border_S_11" type="pine_tree" x="368.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -508,7 +513,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="32" name="Pine_Border_S_14" type="pine_tree" x="464.0" y="1856.0" width="48.0" height="80.0">
+  <object id="33" name="Pine_Border_S_14" type="pine_tree" x="464.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -516,7 +521,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="33" name="Pine_Border_S_17" type="pine_tree" x="560.0" y="1856.0" width="48.0" height="80.0">
+  <object id="34" name="Pine_Border_S_17" type="pine_tree" x="560.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -524,7 +529,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="34" name="Pine_Border_S_20" type="pine_tree" x="656.0" y="1856.0" width="48.0" height="80.0">
+  <object id="35" name="Pine_Border_S_20" type="pine_tree" x="656.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -532,7 +537,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="35" name="Pine_Border_S_23" type="pine_tree" x="752.0" y="1856.0" width="48.0" height="80.0">
+  <object id="36" name="Pine_Border_S_23" type="pine_tree" x="752.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -540,7 +545,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="36" name="Pine_Border_S_26" type="pine_tree" x="848.0" y="1856.0" width="48.0" height="80.0">
+  <object id="37" name="Pine_Border_S_26" type="pine_tree" x="848.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -548,7 +553,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="37" name="Pine_Border_S_29" type="pine_tree" x="944.0" y="1856.0" width="48.0" height="80.0">
+  <object id="38" name="Pine_Border_S_29" type="pine_tree" x="944.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -556,7 +561,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="38" name="Pine_Border_S_32" type="pine_tree" x="1040.0" y="1856.0" width="48.0" height="80.0">
+  <object id="39" name="Pine_Border_S_32" type="pine_tree" x="1040.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -564,7 +569,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="39" name="Pine_Border_S_35" type="pine_tree" x="1136.0" y="1856.0" width="48.0" height="80.0">
+  <object id="40" name="Pine_Border_S_35" type="pine_tree" x="1136.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -572,7 +577,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="40" name="Pine_Border_S_38" type="pine_tree" x="1232.0" y="1856.0" width="48.0" height="80.0">
+  <object id="41" name="Pine_Border_S_38" type="pine_tree" x="1232.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -580,7 +585,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="41" name="Pine_Border_S_41" type="pine_tree" x="1328.0" y="1856.0" width="48.0" height="80.0">
+  <object id="42" name="Pine_Border_S_41" type="pine_tree" x="1328.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -588,7 +593,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="42" name="Pine_Border_S_44" type="pine_tree" x="1424.0" y="1856.0" width="48.0" height="80.0">
+  <object id="43" name="Pine_Border_S_44" type="pine_tree" x="1424.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -596,7 +601,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="43" name="Pine_Border_S_47" type="pine_tree" x="1520.0" y="1856.0" width="48.0" height="80.0">
+  <object id="44" name="Pine_Border_S_47" type="pine_tree" x="1520.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -604,7 +609,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="44" name="Pine_Border_S_50" type="pine_tree" x="1616.0" y="1856.0" width="48.0" height="80.0">
+  <object id="45" name="Pine_Border_S_50" type="pine_tree" x="1616.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -612,7 +617,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="45" name="Pine_Border_S_53" type="pine_tree" x="1712.0" y="1856.0" width="48.0" height="80.0">
+  <object id="46" name="Pine_Border_S_53" type="pine_tree" x="1712.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -620,7 +625,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="46" name="Pine_Border_S_56" type="pine_tree" x="1808.0" y="1856.0" width="48.0" height="80.0">
+  <object id="47" name="Pine_Border_S_56" type="pine_tree" x="1808.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -628,7 +633,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="47" name="Pine_Border_S_59" type="pine_tree" x="1904.0" y="1856.0" width="48.0" height="80.0">
+  <object id="48" name="Pine_Border_S_59" type="pine_tree" x="1904.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -636,7 +641,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="48" name="Pine_Border_S_62" type="pine_tree" x="2000.0" y="1856.0" width="48.0" height="80.0">
+  <object id="49" name="Pine_Border_S_62" type="pine_tree" x="2000.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -644,7 +649,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="49" name="Pine_Border_S_65" type="pine_tree" x="2096.0" y="1856.0" width="48.0" height="80.0">
+  <object id="50" name="Pine_Border_S_65" type="pine_tree" x="2096.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -652,7 +657,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="50" name="Pine_Border_S_68" type="pine_tree" x="2192.0" y="1856.0" width="48.0" height="80.0">
+  <object id="51" name="Pine_Border_S_68" type="pine_tree" x="2192.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -660,7 +665,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="51" name="Pine_Border_S_71" type="pine_tree" x="2288.0" y="1856.0" width="48.0" height="80.0">
+  <object id="52" name="Pine_Border_S_71" type="pine_tree" x="2288.0" y="1856.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -668,7 +673,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="52" name="Oak_Border_W_3" type="oak_tree" x="64.0" y="96.0" width="48.0" height="64.0">
+  <object id="53" name="Oak_Border_W_3" type="oak_tree" x="64.0" y="96.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -676,7 +681,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="53" name="Oak_Border_W_6" type="oak_tree" x="64.0" y="192.0" width="48.0" height="64.0">
+  <object id="54" name="Oak_Border_W_6" type="oak_tree" x="64.0" y="192.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -684,7 +689,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="54" name="Oak_Border_W_9" type="oak_tree" x="64.0" y="288.0" width="48.0" height="64.0">
+  <object id="55" name="Oak_Border_W_9" type="oak_tree" x="64.0" y="288.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -692,7 +697,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="55" name="Oak_Border_W_12" type="oak_tree" x="64.0" y="384.0" width="48.0" height="64.0">
+  <object id="56" name="Oak_Border_W_12" type="oak_tree" x="64.0" y="384.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -700,7 +705,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="56" name="Oak_Border_W_15" type="oak_tree" x="64.0" y="480.0" width="48.0" height="64.0">
+  <object id="57" name="Oak_Border_W_15" type="oak_tree" x="64.0" y="480.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -708,7 +713,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="57" name="Oak_Border_W_18" type="oak_tree" x="64.0" y="576.0" width="48.0" height="64.0">
+  <object id="58" name="Oak_Border_W_18" type="oak_tree" x="64.0" y="576.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -716,7 +721,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="58" name="Oak_Border_W_21" type="oak_tree" x="64.0" y="672.0" width="48.0" height="64.0">
+  <object id="59" name="Oak_Border_W_21" type="oak_tree" x="64.0" y="672.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -724,7 +729,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="59" name="Oak_Border_W_24" type="oak_tree" x="64.0" y="768.0" width="48.0" height="64.0">
+  <object id="60" name="Oak_Border_W_24" type="oak_tree" x="64.0" y="768.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -732,7 +737,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="60" name="Oak_Border_W_36" type="oak_tree" x="64.0" y="1152.0" width="48.0" height="64.0">
+  <object id="61" name="Oak_Border_W_36" type="oak_tree" x="64.0" y="1152.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -740,7 +745,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="61" name="Oak_Border_W_39" type="oak_tree" x="64.0" y="1248.0" width="48.0" height="64.0">
+  <object id="62" name="Oak_Border_W_39" type="oak_tree" x="64.0" y="1248.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -748,7 +753,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="62" name="Oak_Border_W_42" type="oak_tree" x="64.0" y="1344.0" width="48.0" height="64.0">
+  <object id="63" name="Oak_Border_W_42" type="oak_tree" x="64.0" y="1344.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -756,7 +761,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="63" name="Oak_Border_W_45" type="oak_tree" x="64.0" y="1440.0" width="48.0" height="64.0">
+  <object id="64" name="Oak_Border_W_45" type="oak_tree" x="64.0" y="1440.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -764,7 +769,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="64" name="Oak_Border_W_48" type="oak_tree" x="64.0" y="1536.0" width="48.0" height="64.0">
+  <object id="65" name="Oak_Border_W_48" type="oak_tree" x="64.0" y="1536.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -772,7 +777,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="65" name="Oak_Border_W_51" type="oak_tree" x="64.0" y="1632.0" width="48.0" height="64.0">
+  <object id="66" name="Oak_Border_W_51" type="oak_tree" x="64.0" y="1632.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -780,7 +785,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="66" name="Oak_Border_W_54" type="oak_tree" x="64.0" y="1728.0" width="48.0" height="64.0">
+  <object id="67" name="Oak_Border_W_54" type="oak_tree" x="64.0" y="1728.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -788,7 +793,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="67" name="Oak_Border_E_3" type="oak_tree" x="2496.0" y="96.0" width="48.0" height="64.0">
+  <object id="68" name="Oak_Border_E_3" type="oak_tree" x="2496.0" y="96.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -796,7 +801,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="68" name="Oak_Border_E_6" type="oak_tree" x="2496.0" y="192.0" width="48.0" height="64.0">
+  <object id="69" name="Oak_Border_E_6" type="oak_tree" x="2496.0" y="192.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -804,7 +809,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="69" name="Oak_Border_E_9" type="oak_tree" x="2496.0" y="288.0" width="48.0" height="64.0">
+  <object id="70" name="Oak_Border_E_9" type="oak_tree" x="2496.0" y="288.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -812,7 +817,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="70" name="Oak_Border_E_12" type="oak_tree" x="2496.0" y="384.0" width="48.0" height="64.0">
+  <object id="71" name="Oak_Border_E_12" type="oak_tree" x="2496.0" y="384.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -820,7 +825,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="71" name="Oak_Border_E_15" type="oak_tree" x="2496.0" y="480.0" width="48.0" height="64.0">
+  <object id="72" name="Oak_Border_E_15" type="oak_tree" x="2496.0" y="480.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -828,7 +833,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="72" name="Oak_Border_E_18" type="oak_tree" x="2496.0" y="576.0" width="48.0" height="64.0">
+  <object id="73" name="Oak_Border_E_18" type="oak_tree" x="2496.0" y="576.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -836,7 +841,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="73" name="Oak_Border_E_21" type="oak_tree" x="2496.0" y="672.0" width="48.0" height="64.0">
+  <object id="74" name="Oak_Border_E_21" type="oak_tree" x="2496.0" y="672.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -844,7 +849,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="74" name="Oak_Border_E_24" type="oak_tree" x="2496.0" y="768.0" width="48.0" height="64.0">
+  <object id="75" name="Oak_Border_E_24" type="oak_tree" x="2496.0" y="768.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -852,7 +857,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="75" name="Oak_Border_E_27" type="oak_tree" x="2496.0" y="864.0" width="48.0" height="64.0">
+  <object id="76" name="Oak_Border_E_27" type="oak_tree" x="2496.0" y="864.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -860,7 +865,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="76" name="Oak_Border_E_30" type="oak_tree" x="2496.0" y="960.0" width="48.0" height="64.0">
+  <object id="77" name="Oak_Border_E_30" type="oak_tree" x="2496.0" y="960.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -868,7 +873,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="77" name="Oak_Border_E_33" type="oak_tree" x="2496.0" y="1056.0" width="48.0" height="64.0">
+  <object id="78" name="Oak_Border_E_33" type="oak_tree" x="2496.0" y="1056.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -876,7 +881,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="78" name="Oak_Border_E_36" type="oak_tree" x="2496.0" y="1152.0" width="48.0" height="64.0">
+  <object id="79" name="Oak_Border_E_36" type="oak_tree" x="2496.0" y="1152.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -884,7 +889,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="79" name="Oak_Border_E_39" type="oak_tree" x="2496.0" y="1248.0" width="48.0" height="64.0">
+  <object id="80" name="Oak_Border_E_39" type="oak_tree" x="2496.0" y="1248.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -892,7 +897,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="80" name="Oak_Border_E_42" type="oak_tree" x="2496.0" y="1344.0" width="48.0" height="64.0">
+  <object id="81" name="Oak_Border_E_42" type="oak_tree" x="2496.0" y="1344.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -900,7 +905,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="81" name="Oak_Border_E_45" type="oak_tree" x="2496.0" y="1440.0" width="48.0" height="64.0">
+  <object id="82" name="Oak_Border_E_45" type="oak_tree" x="2496.0" y="1440.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -908,7 +913,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="82" name="Oak_Border_E_48" type="oak_tree" x="2496.0" y="1536.0" width="48.0" height="64.0">
+  <object id="83" name="Oak_Border_E_48" type="oak_tree" x="2496.0" y="1536.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -916,7 +921,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="83" name="Oak_Border_E_51" type="oak_tree" x="2496.0" y="1632.0" width="48.0" height="64.0">
+  <object id="84" name="Oak_Border_E_51" type="oak_tree" x="2496.0" y="1632.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -924,7 +929,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="84" name="Oak_Border_E_54" type="oak_tree" x="2496.0" y="1728.0" width="48.0" height="64.0">
+  <object id="85" name="Oak_Border_E_54" type="oak_tree" x="2496.0" y="1728.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -932,7 +937,7 @@
     <property name="collision_height" type="float" value="16.0"/>
    </properties>
   </object>
-  <object id="85" name="oak_tree_8_6" type="oak_tree" x="272.0" y="208.0" width="48.0" height="64.0">
+  <object id="86" name="oak_tree_8_6" type="oak_tree" x="272.0" y="208.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -940,7 +945,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="86" name="pine_tree_12_5" type="pine_tree" x="400.0" y="176.0" width="48.0" height="80.0">
+  <object id="87" name="pine_tree_12_5" type="pine_tree" x="400.0" y="176.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -948,7 +953,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="87" name="oak_tree_16_7" type="oak_tree" x="528.0" y="240.0" width="48.0" height="64.0">
+  <object id="88" name="oak_tree_16_7" type="oak_tree" x="528.0" y="240.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -956,7 +961,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="88" name="pine_tree_26_8" type="pine_tree" x="848.0" y="272.0" width="48.0" height="80.0">
+  <object id="89" name="pine_tree_26_8" type="pine_tree" x="848.0" y="272.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -964,7 +969,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="89" name="oak_tree_29_12" type="oak_tree" x="944.0" y="400.0" width="48.0" height="64.0">
+  <object id="90" name="oak_tree_29_12" type="oak_tree" x="944.0" y="400.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -972,7 +977,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="90" name="pine_tree_32_7" type="pine_tree" x="1040.0" y="240.0" width="48.0" height="80.0">
+  <object id="91" name="pine_tree_32_7" type="pine_tree" x="1040.0" y="240.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -980,7 +985,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="91" name="pine_tree_6_40" type="pine_tree" x="208.0" y="1296.0" width="48.0" height="80.0">
+  <object id="92" name="pine_tree_6_40" type="pine_tree" x="208.0" y="1296.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -988,7 +993,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="92" name="oak_tree_10_44" type="oak_tree" x="336.0" y="1424.0" width="48.0" height="64.0">
+  <object id="93" name="oak_tree_10_44" type="oak_tree" x="336.0" y="1424.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -996,7 +1001,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="93" name="pine_tree_14_42" type="pine_tree" x="464.0" y="1360.0" width="48.0" height="80.0">
+  <object id="94" name="pine_tree_14_42" type="pine_tree" x="464.0" y="1360.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1004,7 +1009,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="94" name="oak_tree_20_48" type="oak_tree" x="656.0" y="1552.0" width="48.0" height="64.0">
+  <object id="95" name="oak_tree_20_48" type="oak_tree" x="656.0" y="1552.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1012,7 +1017,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="95" name="pine_tree_24_46" type="pine_tree" x="784.0" y="1488.0" width="48.0" height="80.0">
+  <object id="96" name="pine_tree_24_46" type="pine_tree" x="784.0" y="1488.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1020,7 +1025,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="96" name="oak_tree_28_50" type="oak_tree" x="912.0" y="1616.0" width="48.0" height="64.0">
+  <object id="97" name="oak_tree_28_50" type="oak_tree" x="912.0" y="1616.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1028,7 +1033,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="97" name="pine_tree_48_8" type="pine_tree" x="1552.0" y="272.0" width="48.0" height="80.0">
+  <object id="98" name="pine_tree_48_8" type="pine_tree" x="1552.0" y="272.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1036,7 +1041,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="98" name="oak_tree_52_6" type="oak_tree" x="1680.0" y="208.0" width="48.0" height="64.0">
+  <object id="99" name="oak_tree_52_6" type="oak_tree" x="1680.0" y="208.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1044,7 +1049,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="99" name="oak_tree_68_26" type="oak_tree" x="2192.0" y="848.0" width="48.0" height="64.0">
+  <object id="100" name="oak_tree_68_26" type="oak_tree" x="2192.0" y="848.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1052,7 +1057,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="100" name="pine_tree_72_30" type="pine_tree" x="2320.0" y="976.0" width="48.0" height="80.0">
+  <object id="101" name="pine_tree_72_30" type="pine_tree" x="2320.0" y="976.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1060,7 +1065,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="101" name="oak_tree_69_36" type="oak_tree" x="2224.0" y="1168.0" width="48.0" height="64.0">
+  <object id="102" name="oak_tree_69_36" type="oak_tree" x="2224.0" y="1168.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1068,7 +1073,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="102" name="pine_tree_50_48" type="pine_tree" x="1616.0" y="1552.0" width="48.0" height="80.0">
+  <object id="103" name="pine_tree_50_48" type="pine_tree" x="1616.0" y="1552.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1076,7 +1081,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="103" name="oak_tree_54_46" type="oak_tree" x="1744.0" y="1488.0" width="48.0" height="64.0">
+  <object id="104" name="oak_tree_54_46" type="oak_tree" x="1744.0" y="1488.0" width="48.0" height="64.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1084,7 +1089,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="104" name="pine_tree_58_52" type="pine_tree" x="1872.0" y="1680.0" width="48.0" height="80.0">
+  <object id="105" name="pine_tree_58_52" type="pine_tree" x="1872.0" y="1680.0" width="48.0" height="80.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1092,7 +1097,7 @@
     <property name="collision_height" type="float" value="18.0"/>
    </properties>
   </object>
-  <object id="105" name="Rock_24_18" type="rock_large" x="768.0" y="576.0" width="64.0" height="48.0">
+  <object id="106" name="Rock_24_18" type="rock_large" x="768.0" y="576.0" width="64.0" height="48.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1100,7 +1105,7 @@
     <property name="collision_height" type="float" value="32.0"/>
    </properties>
   </object>
-  <object id="106" name="Rock_8_22" type="rock_large" x="256.0" y="704.0" width="64.0" height="48.0">
+  <object id="107" name="Rock_8_22" type="rock_large" x="256.0" y="704.0" width="64.0" height="48.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1108,7 +1113,7 @@
     <property name="collision_height" type="float" value="32.0"/>
    </properties>
   </object>
-  <object id="107" name="Rock_37_24" type="rock_large" x="1184.0" y="768.0" width="64.0" height="48.0">
+  <object id="108" name="Rock_37_24" type="rock_large" x="1184.0" y="768.0" width="64.0" height="48.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1116,7 +1121,7 @@
     <property name="collision_height" type="float" value="32.0"/>
    </properties>
   </object>
-  <object id="108" name="Rock_48_32" type="rock_large" x="1536.0" y="1024.0" width="64.0" height="48.0">
+  <object id="109" name="Rock_48_32" type="rock_large" x="1536.0" y="1024.0" width="64.0" height="48.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1124,7 +1129,7 @@
     <property name="collision_height" type="float" value="32.0"/>
    </properties>
   </object>
-  <object id="109" name="Rock_39_44" type="rock_large" x="1248.0" y="1408.0" width="64.0" height="48.0">
+  <object id="110" name="Rock_39_44" type="rock_large" x="1248.0" y="1408.0" width="64.0" height="48.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1132,7 +1137,7 @@
     <property name="collision_height" type="float" value="32.0"/>
    </properties>
   </object>
-  <object id="110" name="Rock_52_38" type="rock_large" x="1664.0" y="1216.0" width="64.0" height="48.0">
+  <object id="111" name="Rock_52_38" type="rock_large" x="1664.0" y="1216.0" width="64.0" height="48.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1140,7 +1145,7 @@
     <property name="collision_height" type="float" value="32.0"/>
    </properties>
   </object>
-  <object id="111" name="Bush_18_28" type="bush_large" x="576.0" y="896.0" width="48.0" height="36.0">
+  <object id="112" name="Bush_18_28" type="bush_large" x="576.0" y="896.0" width="48.0" height="36.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1148,7 +1153,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="112" name="Bush_28_28" type="bush_large" x="896.0" y="896.0" width="48.0" height="36.0">
+  <object id="113" name="Bush_28_28" type="bush_large" x="896.0" y="896.0" width="48.0" height="36.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1156,7 +1161,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="113" name="Bush_34_26" type="bush_large" x="1088.0" y="832.0" width="48.0" height="36.0">
+  <object id="114" name="Bush_34_26" type="bush_large" x="1088.0" y="832.0" width="48.0" height="36.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1164,7 +1169,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="114" name="Bush_36_33" type="bush_large" x="1152.0" y="1056.0" width="48.0" height="36.0">
+  <object id="115" name="Bush_36_33" type="bush_large" x="1152.0" y="1056.0" width="48.0" height="36.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1172,7 +1177,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="115" name="Bush_48_22" type="bush_large" x="1536.0" y="704.0" width="48.0" height="36.0">
+  <object id="116" name="Bush_48_22" type="bush_large" x="1536.0" y="704.0" width="48.0" height="36.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1180,7 +1185,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="116" name="Bush_64_22" type="bush_large" x="2048.0" y="704.0" width="48.0" height="36.0">
+  <object id="117" name="Bush_64_22" type="bush_large" x="2048.0" y="704.0" width="48.0" height="36.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1188,7 +1193,7 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="117" name="Bush_58_34" type="bush_large" x="1856.0" y="1088.0" width="48.0" height="36.0">
+  <object id="118" name="Bush_58_34" type="bush_large" x="1856.0" y="1088.0" width="48.0" height="36.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
@@ -1196,37 +1201,37 @@
     <property name="collision_height" type="float" value="20.0"/>
    </properties>
   </object>
-  <object id="118" name="Fence_55_13" type="fence" x="1760.0" y="416.0" width="32.0" height="32.0">
+  <object id="119" name="Fence_55_13" type="fence" x="1760.0" y="416.0" width="32.0" height="32.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
    </properties>
   </object>
-  <object id="119" name="Fence_57_13" type="fence" x="1824.0" y="416.0" width="32.0" height="32.0">
+  <object id="120" name="Fence_57_13" type="fence" x="1824.0" y="416.0" width="32.0" height="32.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
    </properties>
   </object>
-  <object id="120" name="Fence_59_13" type="fence" x="1888.0" y="416.0" width="32.0" height="32.0">
+  <object id="121" name="Fence_59_13" type="fence" x="1888.0" y="416.0" width="32.0" height="32.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
    </properties>
   </object>
-  <object id="121" name="Fence_61_13" type="fence" x="1952.0" y="416.0" width="32.0" height="32.0">
+  <object id="122" name="Fence_61_13" type="fence" x="1952.0" y="416.0" width="32.0" height="32.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
    </properties>
   </object>
-  <object id="122" name="Fence_63_13" type="fence" x="2016.0" y="416.0" width="32.0" height="32.0">
+  <object id="123" name="Fence_63_13" type="fence" x="2016.0" y="416.0" width="32.0" height="32.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>
    </properties>
   </object>
-  <object id="123" name="Fence_65_13" type="fence" x="2080.0" y="416.0" width="32.0" height="32.0">
+  <object id="124" name="Fence_65_13" type="fence" x="2080.0" y="416.0" width="32.0" height="32.0">
    <properties>
     <property name="collision" type="bool" value="true"/>
     <property name="collision_type" type="string" value="solid"/>

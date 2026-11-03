@@ -88,6 +88,16 @@ Vector2 Tilemap::TileToWorld(int col, int row) const {
     };
 }
 
+Vector2 Tilemap::GetSpawnPosition(const std::string& spawnName) const {
+    for (const auto& obj : m_objects) {
+        if (obj.GetName() == spawnName || obj.GetType() == "spawn") {
+            return obj.GetPosition();
+        }
+    }
+    // Default fallback: near center-left pathway
+    return Vector2{ 256.0f, 960.0f };
+}
+
 void Tilemap::SetProperty(const std::string& key, const std::string& value) {
     m_properties[key] = value;
 }

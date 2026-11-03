@@ -35,3 +35,4 @@ Environmental objects placed in object groups (such as `Environmental Objects`) 
 | `collision_type` | `string` | Collision class: `"solid"`, `"water"`, `"impassable"`, `"walkable"`, `"trigger"`. |
 | `collision_width` | `float` | Custom collision box width in pixels. Defaults to object width. |
 | `collision_height`| `float` | Custom collision box height in pixels. Defaults to lower 40-50% of entity height. |
+

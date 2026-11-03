@@ -91,3 +91,4 @@ Top-down perspective requires environmental objects (trees, buildings, bushes, r
 * Entities with smaller `GetZOrder()` (higher up on screen) render first (background).
 * Entities with larger `GetZOrder()` (lower down on screen) render later (foreground).
 * The anchor origin is defined at the entity's feet (bottom-center: `x = width * 0.5f, y = height`), ensuring correct visual overlap when a player or prop walks behind tree canopies or cabin facades.
+

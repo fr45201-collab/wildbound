@@ -7,6 +7,7 @@
 #include "../resources/AssetManager.hpp"
 #include "../world/World.hpp"
 #include "../world/WorldRenderer.hpp"
+#include "../entities/Player.hpp"
 #include <memory>
 
 namespace wildbound::scripting {
@@ -40,6 +41,7 @@ public:
     resources::AssetManager& GetAssetManager() { return *m_assetManager; }
     world::World& GetWorld() { return *m_world; }
     world::WorldRenderer& GetWorldRenderer() { return *m_worldRenderer; }
+    entities::Player& GetPlayer() { return *m_player; }
     scripting::LuaManager& GetScripting() { return *m_luaManager; }
 
 private:
@@ -58,6 +60,7 @@ private:
     std::unique_ptr<resources::AssetManager> m_assetManager;
     std::unique_ptr<world::World> m_world;
     std::unique_ptr<world::WorldRenderer> m_worldRenderer;
+    std::unique_ptr<entities::Player> m_player;
     std::unique_ptr<scripting::LuaManager> m_luaManager;
     std::unique_ptr<ui::DevUI> m_devUI;
 };

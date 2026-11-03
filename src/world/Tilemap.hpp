@@ -47,6 +47,7 @@ public:
 
     Vector2 WorldToTile(Vector2 worldPos) const;
     Vector2 TileToWorld(int col, int row) const;
+    Vector2 GetSpawnPosition(const std::string& spawnName = "player_spawn") const;
 
     void SetProperty(const std::string& key, const std::string& value);
     std::string GetProperty(const std::string& key) const;
