@@ -2,10 +2,13 @@
 #include "../core/Logger.hpp"
 #include "../resources/AssetManager.hpp"
 #include "../resources/AssetValidator.hpp"
+#include "../world/World.hpp"
+#include "../world/WorldRenderer.hpp"
 
 #include <imgui.h>
 #include <rlImGui.h>
 #include <algorithm>
+#include <cmath>
 
 using wildbound::core::Logger;
 
@@ -63,14 +66,16 @@ void DevUI::RenderDebugOverlay(
     Vector2 mouseScreen,
     Vector2 mouseVirtual,
     Vector2 mouseWorld,
-    resources::AssetManager* assetMgr)
+    resources::AssetManager* assetMgr,
+    world::World* world,
+    world::WorldRenderer* worldRenderer)
 {
     if (!m_initialized || !m_visible) {
         return;
     }
 
     ImGui::SetNextWindowPos(ImVec2(16, 16), ImGuiCond_FirstUseEver);
-    ImGui::SetNextWindowSize(ImVec2(480, 520), ImGuiCond_FirstUseEver);
+    ImGui::SetNextWindowSize(ImVec2(520, 560), ImGuiCond_FirstUseEver);
 
     if (ImGui::Begin("Wildbound Developer Suite (F1)", &m_visible)) {
         if (ImGui::BeginTabBar("DevSuiteTabs")) {
@@ -109,13 +114,19 @@ void DevUI::RenderDebugOverlay(
                 ImGui::EndTabItem();
             }
 
-            // Tab 2: Asset Browser
+            // Tab 2: World & Map System (Phase 3)
+            if (ImGui::BeginTabItem("World & Map")) {
+                RenderWorldAndMap(world, worldRenderer, mouseWorld);
+                ImGui::EndTabItem();
+            }
+
+            // Tab 3: Asset Browser
             if (ImGui::BeginTabItem("Asset Browser")) {
                 RenderAssetBrowser(assetMgr);
                 ImGui::EndTabItem();
             }
 
-            // Tab 3: Asset Validation & Licensing
+            // Tab 4: Asset Validation & Licensing
             if (ImGui::BeginTabItem("Asset Validation")) {
                 RenderAssetValidation(assetMgr);
                 ImGui::EndTabItem();
@@ -125,6 +136,125 @@ void DevUI::RenderDebugOverlay(
         }
     }
     ImGui::End();
+}
+
+void DevUI::RenderWorldAndMap(world::World* world, world::WorldRenderer* worldRenderer, Vector2 mouseWorld) {
+    if (!world || !world->IsLoaded()) {
+        ImGui::TextColored(ImVec4(0.9f, 0.4f, 0.4f, 1.0f), "No world map is currently loaded.");
+        return;
+    }
+
+    world::Tilemap* tilemap = world->GetTilemap();
+    if (!tilemap) return;
+
+    // 1. Debug Overlays
+    if (worldRenderer) {
+        if (ImGui::CollapsingHeader("World Visualizers & Overlays", ImGuiTreeNodeFlags_DefaultOpen)) {
+            bool showGrid = worldRenderer->GetShowGrid();
+            if (ImGui::Checkbox("Show Tile Grid (32x32)", &showGrid)) {
+                worldRenderer->SetShowGrid(showGrid);
+            }
+            ImGui::SameLine();
+            bool showCollision = worldRenderer->GetShowCollision();
+            if (ImGui::Checkbox("Show Collision Bounds", &showCollision)) {
+                worldRenderer->SetShowCollision(showCollision);
+            }
+
+            bool showBounds = worldRenderer->GetShowBounds();
+            if (ImGui::Checkbox("Show World Bounds", &showBounds)) {
+                worldRenderer->SetShowBounds(showBounds);
+            }
+            ImGui::SameLine();
+            bool showOrigins = worldRenderer->GetShowOrigins();
+            if (ImGui::Checkbox("Show Object Origins", &showOrigins)) {
+                worldRenderer->SetShowOrigins(showOrigins);
+            }
+        }
+    }
+
+    // 2. Layer Visibility & Opacity
+    if (ImGui::CollapsingHeader("Map Layers & Visibility", ImGuiTreeNodeFlags_DefaultOpen)) {
+        auto& layers = tilemap->GetLayers();
+        for (size_t i = 0; i < layers.size(); ++i) {
+            auto& layer = layers[i];
+            ImGui::PushID(static_cast<int>(i));
+
+            bool visible = layer.IsVisible();
+            if (ImGui::Checkbox(layer.GetName().c_str(), &visible)) {
+                layer.SetVisible(visible);
+            }
+
+            ImGui::SameLine(200);
+            float opacity = layer.GetOpacity();
+            ImGui::SetNextItemWidth(120);
+            if (ImGui::SliderFloat("##Opacity", &opacity, 0.0f, 1.0f, "%.2f")) {
+                layer.SetOpacity(opacity);
+            }
+
+            ImGui::PopID();
+        }
+    }
+
+    // 3. Map Statistics & Performance
+    if (ImGui::CollapsingHeader("Map Statistics & Culling", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Text("Map Name:      %s", tilemap->GetName().c_str());
+        ImGui::Text("Dimensions:    %d x %d tiles (%d x %d px)",
+                    tilemap->GetWidth(), tilemap->GetHeight(),
+                    tilemap->GetWorldWidth(), tilemap->GetWorldHeight());
+        ImGui::Text("Tile Size:     %d x %d px", tilemap->GetTileWidth(), tilemap->GetTileHeight());
+        ImGui::Text("Tilesets:      %zu loaded", tilemap->GetTilesets().size());
+        ImGui::Text("Total Objects: %zu props", tilemap->GetObjects().size());
+
+        if (worldRenderer) {
+            ImGui::Separator();
+            ImGui::TextColored(ImVec4(0.4f, 0.9f, 0.5f, 1.0f), "Camera Culling Performance:");
+            size_t totalTiles = static_cast<size_t>(tilemap->GetWidth() * tilemap->GetHeight() * tilemap->GetLayerCount());
+            size_t culledTiles = worldRenderer->GetRenderedTileCount();
+            ImGui::Text("Rendered Tiles:   %zu / %zu (%.1f%% culled)",
+                        culledTiles, totalTiles,
+                        totalTiles > 0 ? (1.0f - static_cast<float>(culledTiles) / totalTiles) * 100.0f : 0.0f);
+            ImGui::Text("Rendered Objects: %zu / %zu",
+                        worldRenderer->GetRenderedObjectCount(), tilemap->GetObjects().size());
+            Rectangle visArea = worldRenderer->GetVisibleWorldArea();
+            ImGui::Text("Visible Area:     [%.0f, %.0f, %.0f, %.0f]",
+                        visArea.x, visArea.y, visArea.width, visArea.height);
+        }
+    }
+
+    // 4. Cursor Tile Inspector
+    if (ImGui::CollapsingHeader("Cursor Tile Inspector", ImGuiTreeNodeFlags_DefaultOpen)) {
+        int tw = tilemap->GetTileWidth();
+        int th = tilemap->GetTileHeight();
+        int col = static_cast<int>(std::floor(mouseWorld.x / tw));
+        int row = static_cast<int>(std::floor(mouseWorld.y / th));
+
+        ImGui::Text("World Position: (%.1f, %.1f)", mouseWorld.x, mouseWorld.y);
+        ImGui::Text("Tile Cell:      Col %d, Row %d", col, row);
+
+        if (col >= 0 && col < tilemap->GetWidth() && row >= 0 && row < tilemap->GetHeight()) {
+            ImGui::Separator();
+            ImGui::Text("Tile GIDs at Cursor:");
+            for (const auto& layer : tilemap->GetLayers()) {
+                int gid = layer.GetTileGid(col, row);
+                if (gid > 0) {
+                    ImGui::BulletText("%s: GID %d", layer.GetName().c_str(), gid);
+                } else {
+                    ImGui::BulletText("%s: <Empty>", layer.GetName().c_str());
+                }
+            }
+
+            Rectangle mousePointRec{ mouseWorld.x - 1, mouseWorld.y - 1, 2, 2 };
+            bool hasCollision = world->CheckCollision(mousePointRec);
+            ImGui::Separator();
+            if (hasCollision) {
+                ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), "Collision at Cursor: SOLID / BLOCKED");
+            } else {
+                ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "Collision at Cursor: WALKABLE");
+            }
+        } else {
+            ImGui::TextColored(ImVec4(0.7f, 0.7f, 0.7f, 1.0f), "Cursor is outside map bounds.");
+        }
+    }
 }
 
 void DevUI::RenderAssetBrowser(resources::AssetManager* assetMgr) {

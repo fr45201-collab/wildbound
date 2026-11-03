@@ -47,6 +47,81 @@
             "status": "approved"
         },
         {
+            "id": "tex_pine_tree",
+            "file": "environment/trees/pine_tree.png",
+            "type": "texture",
+            "category": "environment/trees",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound Art Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "c3d4e5f607",
+            "width": 48,
+            "height": 80,
+            "status": "approved"
+        },
+        {
+            "id": "tex_cabin",
+            "file": "environment/buildings/cabin.png",
+            "type": "texture",
+            "category": "environment/buildings",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound Art Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "c3d4e5f608",
+            "width": 128,
+            "height": 128,
+            "status": "approved"
+        },
+        {
+            "id": "tex_rock_large",
+            "file": "environment/rocks/rock_large.png",
+            "type": "texture",
+            "category": "environment/rocks",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound Art Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "c3d4e5f609",
+            "width": 64,
+            "height": 48,
+            "status": "approved"
+        },
+        {
+            "id": "tex_bush_large",
+            "file": "environment/bushes/bush_large.png",
+            "type": "texture",
+            "category": "environment/bushes",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound Art Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "c3d4e5f610",
+            "width": 48,
+            "height": 36,
+            "status": "approved"
+        },
+        {
+            "id": "forest_tileset",
+            "file": "tilesets/forest/forest_tileset.png",
+            "type": "texture",
+            "category": "tilesets/forest",
+            "source": "Wildbound Development Studio",
+            "author": "Wildbound Art Team",
+            "license": "CC0 1.0 Universal",
+            "commercial_use": true,
+            "attribution_required": false,
+            "checksum": "c3d4e5f611",
+            "width": 256,
+            "height": 256,
+            "status": "approved"
+        },
+        {
             "id": "tex_item_icons",
             "file": "ui/icons/item_icons.png",
             "type": "texture",
@@ -93,4 +168,3 @@
         }
     ]
 }
-

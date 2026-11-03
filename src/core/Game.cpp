@@ -14,6 +14,8 @@ Game::Game(const EngineConfig& initialConfig)
     , m_camera(std::make_unique<graphics::Camera2DSystem>(m_config.internalWidth, m_config.internalHeight))
     , m_testScene(std::make_unique<graphics::TestScene>())
     , m_assetManager(std::make_unique<resources::AssetManager>())
+    , m_world(std::make_unique<world::World>())
+    , m_worldRenderer(std::make_unique<world::WorldRenderer>())
     , m_luaManager(std::make_unique<scripting::LuaManager>())
     , m_devUI(std::make_unique<ui::DevUI>())
 {
@@ -54,16 +56,28 @@ bool Game::Initialize() {
     m_assetManager->LoadSpriteSheetMetadata("ui/icons/item_icons.json");
     m_assetManager->LoadAnimationMetadata("characters/player/player_walk.json");
 
-    // 5. Configure Camera system
+    // 5. Initialize World and Load Forest_01 Map (Phase 3)
+    if (!m_world->LoadMap("maps/forest/forest_01.json", *m_assetManager)) {
+        Logger::Warn("ENGINE", "Could not load forest_01.json, attempting fallback to TMX format.");
+        m_world->LoadMap("maps/forest/forest_01.tmx", *m_assetManager);
+    }
+
+    // 6. Configure Camera system
     m_camera->SetVirtualDimensions(m_config.internalWidth, m_config.internalHeight);
-    m_camera->SetWorldBounds(m_testScene->GetWorldBounds());
-    m_camera->SetTarget(Vector2{ 800.0f, 600.0f });
+    if (m_world->IsLoaded()) {
+        m_camera->SetWorldBounds(m_world->GetWorldBounds());
+        // Center camera near the forest path fork (col 32, row 30 -> 1024, 960)
+        m_camera->SetTarget(Vector2{ 1024.0f, 960.0f });
+    } else {
+        m_camera->SetWorldBounds(m_testScene->GetWorldBounds());
+        m_camera->SetTarget(Vector2{ 800.0f, 600.0f });
+    }
     m_camera->SetZoomLimits(0.5f, 4.0f);
     m_camera->SetFollowSpeed(4.5f);
     m_camera->SetFollowTarget(m_testScene->GetTargetPosPtr());
     m_camera->SetMode(graphics::CameraMode::Follow);
 
-    // 6. Initialize DevUI (Dear ImGui + rlImGui)
+    // 7. Initialize DevUI (Dear ImGui + rlImGui)
     if (m_config.debugMode) {
         if (!m_devUI->Initialize()) {
             Logger::Warn("ENGINE", "Failed to initialize Developer ImGui overlay.");
@@ -134,9 +148,15 @@ void Game::ProcessInput(float dt) {
     }
 
     if (IsKeyPressed(KEY_R)) {
-        m_camera->SetTarget(Vector2{ 800.0f, 600.0f });
-        m_camera->SetZoom(1.0f);
-        Logger::Info("CAMERA", "Camera reset to center (800, 600) @ 1.0x zoom");
+        if (m_world && m_world->IsLoaded()) {
+            m_camera->SetTarget(Vector2{ 1024.0f, 960.0f });
+            m_camera->SetZoom(1.0f);
+            Logger::Info("CAMERA", "Camera reset to center (1024, 960) @ 1.0x zoom");
+        } else {
+            m_camera->SetTarget(Vector2{ 800.0f, 600.0f });
+            m_camera->SetZoom(1.0f);
+            Logger::Info("CAMERA", "Camera reset to center (800, 600) @ 1.0x zoom");
+        }
     }
 
     if (m_camera->GetMode() == graphics::CameraMode::Free) {
@@ -179,7 +199,22 @@ void Game::Render(float dt) {
 
     // 2. Render World Layer with Camera and AssetManager sprites
     m_renderer->BeginWorld(*m_camera);
-    m_testScene->RenderWorld(*m_renderer, *m_camera, m_renderer->GetDrawContext(), m_assetManager.get());
+    if (m_world && m_world->IsLoaded() && m_worldRenderer) {
+        m_worldRenderer->Render(*m_renderer, *m_world, *m_camera, *m_assetManager);
+
+        // Render player sprite at camera target or animated position
+        Texture2D playerTex = m_assetManager->GetTexture("tex_player");
+        if (playerTex.id != 0) {
+            Rectangle srcRect{ 0.0f, 0.0f, 32.0f, 32.0f };
+            Vector2 targetPos = (m_camera->GetMode() == graphics::CameraMode::Follow)
+                ? *m_testScene->GetTargetPosPtr()
+                : m_camera->GetTarget();
+            Rectangle destRect{ targetPos.x - 16.0f, targetPos.y - 28.0f, 32.0f, 32.0f };
+            m_renderer->DrawSprite(playerTex, srcRect, destRect, Vector2{ 0.0f, 0.0f }, 0.0f, WHITE);
+        }
+    } else {
+        m_testScene->RenderWorld(*m_renderer, *m_camera, m_renderer->GetDrawContext(), m_assetManager.get());
+    }
     m_renderer->EndWorld(*m_camera);
 
     // 3. Render In-Game UI Layer
@@ -193,7 +228,7 @@ void Game::Render(float dt) {
     // 5. Present scaled canvas to window
     m_renderer->Present();
 
-    // 6. Developer overlay (Dear ImGui with Asset Browser & Validation)
+    // 6. Developer overlay (Dear ImGui with Asset Browser, Validation & World Tools)
     if (m_config.debugMode && m_devUI && m_devUI->IsVisible()) {
         Vector2 mouseScreen = GetMousePosition();
         Vector2 mouseVirtual = m_renderer->GetViewport().ScreenToVirtual(mouseScreen);
@@ -209,7 +244,9 @@ void Game::Render(float dt) {
             mouseScreen,
             mouseVirtual,
             mouseWorld,
-            m_assetManager.get()
+            m_assetManager.get(),
+            m_world.get(),
+            m_worldRenderer.get()
         );
         m_devUI->EndFrame();
     }
@@ -220,6 +257,10 @@ void Game::Render(float dt) {
 void Game::Shutdown() {
     if (m_running) {
         m_running = false;
+    }
+
+    if (m_world) {
+        m_world->UnloadMap();
     }
 
     if (m_devUI) {

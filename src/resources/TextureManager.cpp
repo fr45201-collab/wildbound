@@ -43,6 +43,7 @@ void TextureManager::Shutdown() {
 
 void TextureManager::CreateFallbackTexture() {
     if (m_fallbackTexture.id != 0) return;
+    if (!IsWindowReady()) return;
 
     // Generate 16x16 magenta/black missing texture checkerboard
     Image checkImg = GenImageChecked(16, 16, 8, 8, MAGENTA, BLACK);

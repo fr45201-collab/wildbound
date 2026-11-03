@@ -9,6 +9,11 @@ namespace wildbound::resources {
     class AssetManager;
 }
 
+namespace wildbound::world {
+    class World;
+    class WorldRenderer;
+}
+
 namespace wildbound::ui {
 
 class DevUI {
@@ -34,7 +39,9 @@ public:
         Vector2 mouseScreen,
         Vector2 mouseVirtual,
         Vector2 mouseWorld,
-        resources::AssetManager* assetMgr = nullptr
+        resources::AssetManager* assetMgr = nullptr,
+        world::World* world = nullptr,
+        world::WorldRenderer* worldRenderer = nullptr
     );
 
     void ToggleVisible() { m_visible = !m_visible; }
@@ -42,6 +49,7 @@ public:
     void SetVisible(bool visible) { m_visible = visible; }
 
 private:
+    void RenderWorldAndMap(world::World* world, world::WorldRenderer* worldRenderer, Vector2 mouseWorld);
     void RenderAssetBrowser(resources::AssetManager* assetMgr);
     void RenderAssetValidation(resources::AssetManager* assetMgr);
 

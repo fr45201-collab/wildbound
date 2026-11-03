@@ -99,6 +99,12 @@ Texture2D AssetManager::GetTexture(const std::string& assetId) {
 
     // 2. Query registry metadata
     const AssetMetadata* meta = m_registry->GetMetadata(assetId);
+    if (!meta && !assetId.starts_with("tex_")) {
+        meta = m_registry->GetMetadata("tex_" + assetId);
+    }
+    if (!meta && assetId.starts_with("tex_")) {
+        meta = m_registry->GetMetadata(assetId.substr(4));
+    }
     if (meta != nullptr) {
         return m_textureManager->LoadTextureFile(assetId, meta->file);
     }

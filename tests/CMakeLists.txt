@@ -67,6 +67,37 @@ target_link_libraries(test_assets PRIVATE raylib nlohmann_json::nlohmann_json)
 add_test(NAME AssetManagementTest COMMAND test_assets)
 set_tests_properties(AssetManagementTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
-# 5. Executable Launch / Smoke Test (--test-run)
+# 5. World, Tilemap & Environment Test (Phase 3)
+add_executable(test_world
+    world/test_world.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AnimationMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/FontManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
+)
+target_include_directories(test_world PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_features(test_world PRIVATE cxx_std_20)
+target_link_libraries(test_world PRIVATE raylib nlohmann_json::nlohmann_json)
+
+add_test(NAME WorldTilemapTest COMMAND test_world)
+set_tests_properties(WorldTilemapTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 6. Executable Launch / Smoke Test (--test-run)
 add_test(NAME ExecutableSmokeTest COMMAND wildbound --test-run)
 set_tests_properties(ExecutableSmokeTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.20)
 
 # ============================================================================
 # WILDBOUND — 2D Fantasy Survival Adventure Engine
-# Phase 2: Asset Management System & Graphics Pipeline
+# Phase 3: Tilemap System & World Environment Foundation
 # ============================================================================
 
 project(Wildbound
-    VERSION 0.3.0
+    VERSION 0.4.0
     DESCRIPTION "2D top-down fantasy survival adventure game engine"
     LANGUAGES CXX C
 )
@@ -163,6 +163,26 @@ set(WILDBOUND_SOURCES
     src/resources/AssetManager.cpp
     src/resources/AssetManager.hpp
 
+    # World & Tilemap System (Phase 3)
+    src/world/Tileset.cpp
+    src/world/Tileset.hpp
+    src/world/TileLayer.cpp
+    src/world/TileLayer.hpp
+    src/world/CollisionMetadata.cpp
+    src/world/CollisionMetadata.hpp
+    src/world/EnvironmentObject.cpp
+    src/world/EnvironmentObject.hpp
+    src/world/Tilemap.cpp
+    src/world/Tilemap.hpp
+    src/world/MapLoader.cpp
+    src/world/MapLoader.hpp
+    src/world/MapValidator.cpp
+    src/world/MapValidator.hpp
+    src/world/World.cpp
+    src/world/World.hpp
+    src/world/WorldRenderer.cpp
+    src/world/WorldRenderer.hpp
+
     # Scripting & UI
     src/scripting/LuaManager.cpp
     src/scripting/LuaManager.hpp
@@ -203,6 +223,9 @@ add_custom_command(TARGET wildbound POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/config
         $<TARGET_FILE_DIR:wildbound>/config
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/maps
+        $<TARGET_FILE_DIR:wildbound>/maps
     COMMENT "Deploying runtime assets, scripts, and config to target output directory"
 )
 
