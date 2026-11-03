@@ -1,0 +1,42 @@
+# Build artifacts
+build/
+bin/
+out/
+CMakeUserPresets.json
+CMakeCache.txt
+CMakeFiles/
+
+# Visual Studio & MSVC
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.opendb
+*.db
+Debug/
+Release/
+x64/
+*.dir/
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Operating System files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and Crash Dumps
+*.log
+*.dmp
+*.crash
+
+# Temporary files
+*.tmp
+*~
+
