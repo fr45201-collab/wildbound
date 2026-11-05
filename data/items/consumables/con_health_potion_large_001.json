@@ -1,0 +1,17 @@
+{
+  "id": "con_health_potion_large_001",
+  "display_name": "Large Health Potion",
+  "category": "consumable",
+  "subcategory": "potion",
+  "description": "A heavy faceted glass decanter reinforced with silver filigree bands, filled with dense, glowing healing tonic.",
+  "icon_file": "items/icons/con_health_potion_large_001_icon.png",
+  "world_file": "items/world/con_health_potion_large_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "snow",
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "rare"
+}

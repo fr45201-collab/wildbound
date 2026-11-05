@@ -1,0 +1,46 @@
+{
+  "id": "creature_goblin_001",
+  "name": "Forest Goblin",
+  "category": "hostile_creature",
+  "biome": [
+    "forest"
+  ],
+  "sprite": "characters/enemies/goblin/goblin_spritesheet.png",
+  "spritesheet": "goblin_spritesheet",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 48,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32
+  },
+  "directions": [
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": "goblin_idle_down",
+    "walk": "goblin_walk_down",
+    "run": "goblin_run_down",
+    "attack": "goblin_attack_down",
+    "hurt": "goblin_hurt_down",
+    "death": "goblin_death_down"
+  },
+  "anchors": {
+    "ground": [
+      16,
+      48
+    ]
+  },
+  "collision": {
+    "width": 16.0,
+    "height": 12.0
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Original asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

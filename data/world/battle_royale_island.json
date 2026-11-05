@@ -1,0 +1,36 @@
+{
+  "world_id": "battle_royale_island",
+  "name": "Isle of Wildbound",
+  "description": "The primary Battle Royale island of Wildbound featuring 5 diverse biomes, 5 settlements, ancient ruins, and hazardous waterways.",
+  "map_path": "maps/world/battle_royale_island.json",
+  "dimensions_tiles": {
+    "width": 320,
+    "height": 320
+  },
+  "dimensions_world": {
+    "width": 10240,
+    "height": 10240
+  },
+  "tile_size": 32,
+  "playable_bounds": {
+    "x": 960.0,
+    "y": 960.0,
+    "width": 8320.0,
+    "height": 8320.0
+  },
+  "default_spawn": {
+    "x": 4160.0,
+    "y": 5920.0
+  },
+  "biomes": [
+    "forest",
+    "desert",
+    "snow",
+    "swamp",
+    "mountain"
+  ],
+  "settlements_count": 5,
+  "poi_count": 14,
+  "spawn_regions_count": 12,
+  "loot_markers_count": 45
+}

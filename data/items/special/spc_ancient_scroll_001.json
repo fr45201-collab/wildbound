@@ -1,0 +1,15 @@
+{
+  "id": "spc_ancient_scroll_001",
+  "display_name": "Ancient Scroll",
+  "category": "special",
+  "subcategory": "document",
+  "description": "A rolled parchment of weathered vellum tied with a crimson ribbon and stamped with a wax seal.",
+  "icon_file": "items/icons/spc_ancient_scroll_001_icon.png",
+  "world_file": "items/world/spc_ancient_scroll_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "mountain"
+  ],
+  "rarity_tier": "rare"
+}

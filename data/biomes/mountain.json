@@ -1,0 +1,84 @@
+{
+  "id": "mountain",
+  "display_name": "Iron Crag Highlands",
+  "description": "Steep stepped granite terraces, windswept alpine heather ridges, roaring waterfalls, chasm paths, and dark cave entrances.",
+  "tileset": "mountain_tileset",
+  "tileset_image": "tilesets/mountain/mountain_tileset.png",
+  "terrain": [
+    {
+      "name": "Solid Granite Terrace",
+      "gid": 1,
+      "walkable": true
+    },
+    {
+      "name": "Heather Alpine Turf",
+      "gid": 9,
+      "walkable": true
+    },
+    {
+      "name": "Scree Trail",
+      "gid": 17,
+      "walkable": true
+    },
+    {
+      "name": "Basalt Cliff Face",
+      "gid": 25,
+      "walkable": false
+    },
+    {
+      "name": "Iron Ore Vein",
+      "gid": 33,
+      "walkable": true
+    },
+    {
+      "name": "Waterfall Cascade",
+      "gid": 41,
+      "walkable": false
+    },
+    {
+      "name": "Cave Archway Portal",
+      "gid": 49,
+      "walkable": true
+    }
+  ],
+  "vegetation": [
+    "tree_pine_002",
+    "tree_pine_003",
+    "bush_flowering_001",
+    "rock_boulder_001"
+  ],
+  "environment_objects": [
+    "watchtower_stone_001",
+    "ruin_tower_small_001",
+    "bridge_wood_large_001",
+    "sign_warning_001",
+    "crate_reinforced_001"
+  ],
+  "animations": [
+    "waterfall_large_anim",
+    "waterfall_medium_anim",
+    "tree_pine_breeze_anim"
+  ],
+  "atmosphere": {
+    "weather": "highland_winds",
+    "fog_density": 0.3,
+    "cloud_speed": 35.0,
+    "cloud_layer_enabled": true,
+    "ambient_tint": {
+      "r": 240,
+      "g": 245,
+      "b": 255,
+      "a": 255
+    }
+  },
+  "ambient_entities": [
+    "ambient_bird"
+  ],
+  "maps": [
+    "maps/mountain/mountain_01.json"
+  ],
+  "default_spawn": {
+    "x": 320.0,
+    "y": 720.0
+  }
+}

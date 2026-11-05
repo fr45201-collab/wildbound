@@ -1,0 +1,55 @@
+{
+  "id": "goblin",
+  "name": "Forest Goblin",
+  "type": "humanoid",
+  "faction": "monsters",
+  "spritesheet": "goblin_spritesheet",
+  "stats": {
+    "walk_speed": 65.0,
+    "run_speed": 110.0,
+    "normalize_diagonal": true
+  },
+  "health": {
+    "max_health": 50.0,
+    "initial_health": 50.0,
+    "regeneration_enabled": false,
+    "regeneration_rate": 0.0
+  },
+  "collision": {
+    "enabled": true,
+    "width": 16.0,
+    "height": 12.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "combat": {
+    "default_attack": "goblin_club",
+    "attack_cooldown": 1.0,
+    "attack_range": 28.0
+  },
+  "ai": {
+    "behavior_script": "scripts/gameplay/ai/enemy_base.lua",
+    "detection_radius": 140.0,
+    "attack_radius": 32.0,
+    "retreat_health_percent": 0.2,
+    "decision_interval": 0.2,
+    "patrol_radius": 80.0
+  },
+  "animations": {
+    "idle_down": "goblin_idle_down",
+    "idle_up": "goblin_idle_up",
+    "idle_left": "goblin_idle_left",
+    "idle_right": "goblin_idle_right",
+    "walk_down": "goblin_walk_down",
+    "walk_up": "goblin_walk_up",
+    "walk_left": "goblin_walk_left",
+    "walk_right": "goblin_walk_right",
+    "attack_down": "goblin_attack_down",
+    "attack_up": "goblin_attack_up",
+    "attack_left": "goblin_attack_left",
+    "attack_right": "goblin_attack_right",
+    "hurt_down": "goblin_hurt_down",
+    "death_down": "goblin_death_down"
+  }
+}
+

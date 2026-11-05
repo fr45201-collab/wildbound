@@ -1,0 +1,21 @@
+{
+  "archetype": "wild_boar",
+  "detection_radius": 130.0,
+  "field_of_view": 110.0,
+  "attack_radius": 34.0,
+  "preferred_distance": 30.0,
+  "retreat_health_percent": 0.1,
+  "decision_interval": 0.2,
+  "pathfinding_interval": 0.35,
+  "pursuit_duration": 4.0,
+  "investigate_duration": 2.5,
+  "aggression_level": 0.9,
+  "can_retreat": true,
+  "omnidirectional_when_alert": true,
+  "patrol": {
+    "id": "boar_territory",
+    "is_loop": true,
+    "points": []
+  }
+}
+

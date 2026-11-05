@@ -1,0 +1,14 @@
+{
+  "id": "col_emerald_001",
+  "display_name": "Emerald",
+  "category": "collectible",
+  "subcategory": "gemstone",
+  "description": "A flawless step-cut emerald of lush forest-green hue. Coveted across the civilized lands.",
+  "icon_file": "items/icons/col_emerald_001_icon.png",
+  "world_file": "items/world/col_emerald_001_world.png",
+  "biome_tags": [
+    "forest",
+    "swamp"
+  ],
+  "rarity_tier": "rare"
+}

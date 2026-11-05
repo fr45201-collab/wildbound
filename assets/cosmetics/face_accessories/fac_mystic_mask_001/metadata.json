@@ -1,0 +1,37 @@
+{
+    "id": "fac_mystic_mask_001",
+    "display_name": "Mystic Mask",
+    "category": "face_accessories",
+    "slot": "mask",
+    "description": "Ornate porcelain mask painted with arcane sigils.",
+    "sprite": "cosmetics/face_accessories/fac_mystic_mask_001/sprite.png",
+    "spritesheet": "sheet_fac_mystic_mask_001",
+    "texture": "tex_fac_mystic_mask_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [
+        "mask_hide_goggles"
+    ],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "mask",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

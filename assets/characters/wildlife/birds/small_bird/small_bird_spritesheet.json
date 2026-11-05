@@ -1,0 +1,12 @@
+{
+  "id": "small_bird_spritesheet",
+  "texture": "characters/wildlife/birds/small_bird/small_bird_spritesheet.png",
+  "frame_width": 24,
+  "frame_height": 24,
+  "columns": 4,
+  "rows": 4,
+  "frame_count": 16,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "bottom_center"
+}

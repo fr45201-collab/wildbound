@@ -1,0 +1,15 @@
+{
+  "id": "con_cooked_meat_001",
+  "display_name": "Cooked Meat",
+  "category": "consumable",
+  "subcategory": "food",
+  "description": "A savory fire-roasted shank of game meat cooked over open hardwood coals, seasoned with wild herbs.",
+  "icon_file": "items/icons/con_cooked_meat_001_icon.png",
+  "world_file": "items/world/con_cooked_meat_001_world.png",
+  "biome_tags": [
+    "forest",
+    "snow",
+    "mountain"
+  ],
+  "rarity_tier": "common"
+}

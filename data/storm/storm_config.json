@@ -1,0 +1,79 @@
+{
+  "name": "Wildbound Battle Royale Standard Storm",
+  "version": "1.0.0",
+  "initialRadius": 4000.0,
+  "initialCenter": {
+    "x": 5120.0,
+    "y": 5120.0
+  },
+  "centerDriftMaxRatio": 0.40,
+  "phases": [
+    {
+      "phaseIndex": 1,
+      "name": "Phase 1 - Gathering Storm",
+      "warningDuration": 60.0,
+      "shrinkDuration": 90.0,
+      "targetRadiusRatio": 0.75,
+      "damagePerSecond": 1.0,
+      "warningMessage": "CORRUPTION STORM APPROACHING",
+      "visualIntensity": 0.40,
+      "audioEvent": "sfx_storm_warning"
+    },
+    {
+      "phaseIndex": 2,
+      "name": "Phase 2 - Violet Encroachment",
+      "warningDuration": 45.0,
+      "shrinkDuration": 75.0,
+      "targetRadiusRatio": 0.55,
+      "damagePerSecond": 2.0,
+      "warningMessage": "SAFE ZONE IS SHRINKING",
+      "visualIntensity": 0.55,
+      "audioEvent": "sfx_storm_warning"
+    },
+    {
+      "phaseIndex": 3,
+      "name": "Phase 3 - Miasma Surge",
+      "warningDuration": 40.0,
+      "shrinkDuration": 65.0,
+      "targetRadiusRatio": 0.35,
+      "damagePerSecond": 4.0,
+      "warningMessage": "SAFE ZONE IS SHRINKING",
+      "visualIntensity": 0.70,
+      "audioEvent": "sfx_storm_warning"
+    },
+    {
+      "phaseIndex": 4,
+      "name": "Phase 4 - Deep Corruption",
+      "warningDuration": 35.0,
+      "shrinkDuration": 55.0,
+      "targetRadiusRatio": 0.20,
+      "damagePerSecond": 6.0,
+      "warningMessage": "SAFE ZONE IS SHRINKING",
+      "visualIntensity": 0.85,
+      "audioEvent": "sfx_storm_warning"
+    },
+    {
+      "phaseIndex": 5,
+      "name": "Phase 5 - Cataclysmic Collapse",
+      "warningDuration": 30.0,
+      "shrinkDuration": 45.0,
+      "targetRadiusRatio": 0.10,
+      "damagePerSecond": 8.0,
+      "warningMessage": "SAFE ZONE IS SHRINKING",
+      "visualIntensity": 0.95,
+      "audioEvent": "sfx_storm_warning"
+    },
+    {
+      "phaseIndex": 6,
+      "name": "Final Phase - The Eye of Corruption",
+      "warningDuration": 20.0,
+      "shrinkDuration": 30.0,
+      "targetRadiusRatio": 0.03,
+      "damagePerSecond": 12.0,
+      "warningMessage": "FINAL SAFE ZONE COLLAPSING",
+      "visualIntensity": 1.0,
+      "audioEvent": "sfx_storm_warning"
+    }
+  ]
+}
+

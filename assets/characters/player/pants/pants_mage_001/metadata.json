@@ -1,0 +1,34 @@
+{
+    "id": "pants_mage_001",
+    "name": "Mystic Trousers",
+    "category": "pants",
+    "layer": "lower_body",
+    "description": "Flowing arcane violet trousers with gold stitch.",
+    "sprite": "characters/player/pants/pants_mage_001/sprite.png",
+    "spritesheet": "sheet_pants_mage_001",
+    "texture": "tex_pants_mage_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

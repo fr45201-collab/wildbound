@@ -1,0 +1,63 @@
+{
+  "id": "shop_market_001",
+  "name": "Market Shop Stall",
+  "category": "building",
+  "subcategory": "shops",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/shops/shop_market_001.png",
+  "dimensions": {
+    "width": 88,
+    "height": 80
+  },
+  "anchors": {
+    "ground": [
+      44,
+      76
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      9,
+      36
+    ],
+    "size": [
+      70,
+      40
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    32,
+    76
+  ],
+  "door": [
+    32,
+    74
+  ],
+  "windows": [
+    [
+      60,
+      60
+    ]
+  ],
+  "roof": {
+    "width": 82,
+    "height": 34
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_shop_market_001"
+  }
+}

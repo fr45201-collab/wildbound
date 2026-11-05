@@ -1,0 +1,35 @@
+{
+    "id": "clo_p_snow_trousers_001",
+    "display_name": "Snow Trousers",
+    "category": "pants",
+    "slot": "pants",
+    "description": "Quilted winter trousers stuffed with down insulation.",
+    "sprite": "cosmetics/pants/clo_p_snow_trousers_001/sprite.png",
+    "spritesheet": "sheet_clo_p_snow_trousers_001",
+    "texture": "tex_clo_p_snow_trousers_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "pants",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

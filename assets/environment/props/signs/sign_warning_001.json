@@ -1,0 +1,41 @@
+{
+  "id": "sign_warning_001",
+  "name": "Warning Signpost",
+  "category": "prop",
+  "subcategory": "signs",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/signs/sign_warning_001.png",
+  "dimensions": {
+    "width": 20,
+    "height": 32
+  },
+  "anchors": {
+    "ground": [
+      10,
+      30
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      6,
+      22
+    ],
+    "size": [
+      8,
+      8
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

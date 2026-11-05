@@ -1,0 +1,47 @@
+{
+  "id": "creature_bat_001",
+  "name": "Dusk Bat",
+  "category": "hostile_creature",
+  "biome": [
+    "forest",
+    "caves"
+  ],
+  "sprite": "characters/enemies/bat/bat_spritesheet.png",
+  "spritesheet": "bat_spritesheet",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32
+  },
+  "directions": [
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": "bat_fly_down",
+    "fly": "bat_fly_down",
+    "move": "bat_move_down",
+    "attack": "bat_attack_down",
+    "hurt": "bat_hurt_down",
+    "death": "bat_death_down"
+  },
+  "anchors": {
+    "ground": [
+      16,
+      28
+    ]
+  },
+  "collision": {
+    "width": 14.0,
+    "height": 14.0
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 9 Production Creature",
+    "license": "CC0 1.0 Universal"
+  }
+}

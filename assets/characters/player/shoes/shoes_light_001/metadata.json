@@ -1,0 +1,34 @@
+{
+    "id": "shoes_light_001",
+    "name": "Light Shoes",
+    "category": "shoes",
+    "layer": "footwear",
+    "description": "Soft lightweight leather moccasin travel shoes.",
+    "sprite": "characters/player/shoes/shoes_light_001/sprite.png",
+    "spritesheet": "sheet_shoes_light_001",
+    "texture": "tex_shoes_light_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

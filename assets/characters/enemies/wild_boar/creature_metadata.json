@@ -1,0 +1,46 @@
+{
+  "id": "creature_boar_001",
+  "name": "Wild Boar",
+  "category": "hostile_creature",
+  "biome": [
+    "forest"
+  ],
+  "sprite": "characters/enemies/wild_boar/wild_boar_spritesheet.png",
+  "spritesheet": "wild_boar_spritesheet",
+  "dimensions": {
+    "frame_width": 48,
+    "frame_height": 40,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32
+  },
+  "directions": [
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": "boar_idle_down",
+    "walk": "boar_walk_down",
+    "run": "boar_run_down",
+    "attack": "boar_attack_down",
+    "hurt": "boar_hurt_down",
+    "death": "boar_death_down"
+  },
+  "anchors": {
+    "ground": [
+      24,
+      40
+    ]
+  },
+  "collision": {
+    "width": 26.0,
+    "height": 16.0
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 9 Production Creature",
+    "license": "CC0 1.0 Universal"
+  }
+}

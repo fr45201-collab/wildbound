@@ -1,4 +1,5 @@
 #include "CharacterController.hpp"
+#include "../input/InputManager.hpp"
 #include <cmath>
 
 namespace wildbound::entities {
@@ -22,11 +23,25 @@ void CharacterController::SetManualInput(Vector2 direction, bool isRunning) {
     }
 }
 
-void CharacterController::Update() {
+void CharacterController::Update(const input::InputManager* inputMgr) {
     if (m_manualOverride) {
         return;
     }
 
+    const input::InputManager* mgr = inputMgr ? inputMgr : m_inputManager;
+
+    if (mgr) {
+        // Query logical actions from InputManager
+        m_movementDirection = mgr->GetMovementVector(m_normalizeDiagonal);
+        m_isMoving = (m_movementDirection.x != 0.0f || m_movementDirection.y != 0.0f);
+        m_isRunning = mgr->IsActionHeld(input::InputAction::Sprint);
+        m_attackRequested = mgr->WasActionPressed(input::InputAction::PrimaryAttack) ||
+                            mgr->HasBufferedAction(input::InputAction::PrimaryAttack);
+        m_pauseRequested = mgr->WasActionPressed(input::InputAction::Pause);
+        return;
+    }
+
+    // Direct hardware fallback when no InputManager is assigned
     Vector2 dir{ 0.0f, 0.0f };
 
     // 4-Directional Input: WASD and Arrow Keys
@@ -37,6 +52,9 @@ void CharacterController::Update() {
 
     // Running modifier: Left Shift or Right Shift
     m_isRunning = (IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT));
+
+    // Attack action: Space or Left Mouse Button
+    m_attackRequested = (IsKeyPressed(KEY_SPACE) || IsMouseButtonPressed(MOUSE_BUTTON_LEFT));
 
     // Pause request: ESC
     m_pauseRequested = IsKeyPressed(KEY_ESCAPE);

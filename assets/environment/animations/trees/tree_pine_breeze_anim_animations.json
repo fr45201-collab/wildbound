@@ -1,0 +1,16 @@
+{
+  "animations": [
+    {
+      "animation": "tree_pine_breeze_anim_loop",
+      "spritesheet": "sheet_tree_pine_breeze_anim",
+      "frame_duration": 0.24,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

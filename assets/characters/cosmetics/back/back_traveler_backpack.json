@@ -1,0 +1,19 @@
+{
+    "id": "back_traveler_backpack",
+    "name": "Traveler Backpack",
+    "category": "back",
+    "spritesheet": "sheet_back_traveler_backpack",
+    "texture": "tex_back_traveler_backpack",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

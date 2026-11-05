@@ -1,0 +1,12 @@
+{
+  "id": "sheet_smoke_chimney_anim",
+  "texture": "environment/atmosphere/smoke/smoke_chimney_anim.png",
+  "frame_width": 16,
+  "frame_height": 32,
+  "columns": 6,
+  "rows": 1,
+  "frame_count": 6,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "fog_light_layer",
+  "name": "Light Forest Fog Overlay",
+  "category": "atmosphere",
+  "subcategory": "fog",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/atmosphere/fog/fog_light_layer.png",
+  "dimensions": {
+    "width": 128,
+    "height": 128
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Atmospheric Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

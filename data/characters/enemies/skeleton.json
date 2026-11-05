@@ -1,0 +1,55 @@
+{
+  "id": "skeleton",
+  "name": "Crypt Skeleton",
+  "type": "undead",
+  "faction": "monsters",
+  "spritesheet": "skeleton_spritesheet",
+  "stats": {
+    "walk_speed": 55.0,
+    "run_speed": 95.0,
+    "normalize_diagonal": true
+  },
+  "health": {
+    "max_health": 65.0,
+    "initial_health": 65.0,
+    "regeneration_enabled": false,
+    "regeneration_rate": 0.0
+  },
+  "collision": {
+    "enabled": true,
+    "width": 16.0,
+    "height": 12.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "combat": {
+    "default_attack": "skeleton_blade",
+    "attack_cooldown": 1.2,
+    "attack_range": 34.0
+  },
+  "ai": {
+    "behavior_script": "scripts/gameplay/ai/enemy_base.lua",
+    "detection_radius": 160.0,
+    "attack_radius": 36.0,
+    "retreat_health_percent": 0.0,
+    "decision_interval": 0.25,
+    "patrol_radius": 100.0
+  },
+  "animations": {
+    "idle_down": "skeleton_idle_down",
+    "idle_up": "skeleton_idle_up",
+    "idle_left": "skeleton_idle_left",
+    "idle_right": "skeleton_idle_right",
+    "walk_down": "skeleton_walk_down",
+    "walk_up": "skeleton_walk_up",
+    "walk_left": "skeleton_walk_left",
+    "walk_right": "skeleton_walk_right",
+    "attack_down": "skeleton_attack_down",
+    "attack_up": "skeleton_attack_up",
+    "attack_left": "skeleton_attack_left",
+    "attack_right": "skeleton_attack_right",
+    "hurt_down": "skeleton_hurt_down",
+    "death_down": "skeleton_death_down"
+  }
+}
+

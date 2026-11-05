@@ -1,0 +1,14 @@
+{
+  "id": "res_red_mushroom_001",
+  "display_name": "Red Mushroom",
+  "category": "resource",
+  "subcategory": "fungus",
+  "description": "A wild forest toadstool with a vibrant crimson cap speckled with white spores.",
+  "icon_file": "items/icons/res_red_mushroom_001_icon.png",
+  "world_file": "items/world/res_red_mushroom_001_world.png",
+  "biome_tags": [
+    "forest",
+    "swamp"
+  ],
+  "rarity_tier": "common"
+}

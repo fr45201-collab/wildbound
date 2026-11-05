@@ -1,0 +1,14 @@
+{
+  "id": "spc_rusty_key_001",
+  "display_name": "Rusty Key",
+  "category": "special",
+  "subcategory": "key",
+  "description": "A corroded iron skeleton key that feels brittle to the touch. May still turn in an old padlock.",
+  "icon_file": "items/icons/spc_rusty_key_001_icon.png",
+  "world_file": "items/world/spc_rusty_key_001_world.png",
+  "biome_tags": [
+    "forest",
+    "swamp"
+  ],
+  "rarity_tier": "common"
+}

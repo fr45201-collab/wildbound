@@ -1,0 +1,14 @@
+{
+  "id": "res_blue_mushroom_001",
+  "display_name": "Blue Mushroom",
+  "category": "resource",
+  "subcategory": "fungus",
+  "description": "A bioluminescent cavern fungus radiating a cool azure glow from its lower gills.",
+  "icon_file": "items/icons/res_blue_mushroom_001_icon.png",
+  "world_file": "items/world/res_blue_mushroom_001_world.png",
+  "biome_tags": [
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "uncommon"
+}

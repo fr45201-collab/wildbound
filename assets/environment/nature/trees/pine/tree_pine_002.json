@@ -1,0 +1,41 @@
+{
+  "id": "tree_pine_002",
+  "name": "Medium Pine Tree",
+  "category": "nature",
+  "subcategory": "trees/pine",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/trees/pine/tree_pine_002.png",
+  "dimensions": {
+    "width": 48,
+    "height": 80
+  },
+  "anchors": {
+    "ground": [
+      24,
+      76
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      16,
+      66
+    ],
+    "size": [
+      16,
+      12
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

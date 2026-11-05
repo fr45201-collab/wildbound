@@ -1,0 +1,14 @@
+{
+  "id": "mat_iron_ingot_001",
+  "display_name": "Iron Ingot",
+  "category": "material",
+  "subcategory": "processed_material",
+  "description": "A refined, smelted bar of forged iron with beveled edges, ready for the blacksmith's anvil.",
+  "icon_file": "items/icons/mat_iron_ingot_001_icon.png",
+  "world_file": "items/world/mat_iron_ingot_001_world.png",
+  "biome_tags": [
+    "forest",
+    "mountain"
+  ],
+  "rarity_tier": "common"
+}

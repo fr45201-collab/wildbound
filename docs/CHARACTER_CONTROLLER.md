@@ -47,3 +47,4 @@ $$|\vec{v}| = \sqrt{0.7071^2 + 0.7071^2} \times \text{speed} = 1.0 \times \text{
 To facilitate deterministic automated unit tests without hardware window focus, `CharacterController` provides:
 * `SetManualInput(Vector2 dir, bool runRequest)`: Bypasses raylib `IsKeyDown` checks and directly injects input vectors and sprint requests.
 * `ClearManualInput()`: Reverts controller back to hardware polling.
+

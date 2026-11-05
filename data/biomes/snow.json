@@ -1,0 +1,91 @@
+{
+  "id": "snow",
+  "display_name": "Frostfall Taiga",
+  "description": "A sub-zero northern wilderness of deep powder drifts, frozen glacial lakes, snow-laden spruce, and warm hearth cabins.",
+  "tileset": "snow_tileset",
+  "tileset_image": "tilesets/snow/snow_tileset.png",
+  "terrain": [
+    {
+      "name": "Fresh Powder Snow",
+      "gid": 1,
+      "walkable": true
+    },
+    {
+      "name": "Packed Snow Path",
+      "gid": 9,
+      "walkable": true
+    },
+    {
+      "name": "Glacial Ice Sheet",
+      "gid": 17,
+      "walkable": true
+    },
+    {
+      "name": "Freezing Deep Water",
+      "gid": 25,
+      "walkable": false
+    },
+    {
+      "name": "Frozen Granite Cliff",
+      "gid": 33,
+      "walkable": false
+    },
+    {
+      "name": "Snowy Timber Wall",
+      "gid": 41,
+      "walkable": false
+    },
+    {
+      "name": "Snowy Spruce",
+      "gid": 49,
+      "walkable": false
+    },
+    {
+      "name": "Frozen Icicle Ledge",
+      "gid": 57,
+      "walkable": false
+    }
+  ],
+  "vegetation": [
+    "tree_pine_001",
+    "tree_pine_002",
+    "tree_pine_003",
+    "bush_dense_001"
+  ],
+  "environment_objects": [
+    "cabin_woodland_001",
+    "storage_shed_001",
+    "barrel_banded_001",
+    "crate_large_001",
+    "fire_medium_anim",
+    "smoke_chimney_anim"
+  ],
+  "animations": [
+    "waterfall_small_anim",
+    "tree_pine_breeze_anim",
+    "smoke_chimney_anim",
+    "fire_medium_anim"
+  ],
+  "atmosphere": {
+    "weather": "blizzard_chill",
+    "fog_density": 0.4,
+    "cloud_speed": 28.0,
+    "cloud_layer_enabled": true,
+    "ambient_tint": {
+      "r": 230,
+      "g": 240,
+      "b": 255,
+      "a": 255
+    }
+  },
+  "ambient_entities": [
+    "ambient_bird"
+  ],
+  "maps": [
+    "maps/snow/snow_01.json"
+  ],
+  "default_spawn": {
+    "x": 320.0,
+    "y": 720.0
+  }
+}

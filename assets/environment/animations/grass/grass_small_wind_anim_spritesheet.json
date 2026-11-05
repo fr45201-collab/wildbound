@@ -1,0 +1,12 @@
+{
+  "id": "sheet_grass_small_wind_anim",
+  "texture": "environment/animations/grass/grass_small_wind_anim.png",
+  "frame_width": 16,
+  "frame_height": 16,
+  "columns": 4,
+  "rows": 1,
+  "frame_count": 4,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

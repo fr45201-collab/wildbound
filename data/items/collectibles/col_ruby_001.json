@@ -1,0 +1,14 @@
+{
+  "id": "col_ruby_001",
+  "display_name": "Ruby",
+  "category": "collectible",
+  "subcategory": "gemstone",
+  "description": "A brilliant-cut scarlet gemstone of exceptional clarity. Radiates warmth and intense fiery glints.",
+  "icon_file": "items/icons/col_ruby_001_icon.png",
+  "world_file": "items/world/col_ruby_001_world.png",
+  "biome_tags": [
+    "mountain",
+    "desert"
+  ],
+  "rarity_tier": "rare"
+}

@@ -1,0 +1,21 @@
+{
+  "archetype": "bat",
+  "detection_radius": 160.0,
+  "field_of_view": 220.0,
+  "attack_radius": 28.0,
+  "preferred_distance": 36.0,
+  "retreat_health_percent": 0.3,
+  "decision_interval": 0.15,
+  "pathfinding_interval": 0.3,
+  "pursuit_duration": 4.0,
+  "investigate_duration": 2.0,
+  "aggression_level": 0.8,
+  "can_retreat": true,
+  "omnidirectional_when_alert": true,
+  "patrol": {
+    "id": "bat_cave_flutter",
+    "is_loop": true,
+    "points": []
+  }
+}
+

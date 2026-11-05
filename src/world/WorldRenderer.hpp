@@ -24,7 +24,13 @@ public:
     WorldRenderer();
 
     void Render(graphics::Renderer& renderer, const World& world, const graphics::Camera2DSystem& camera,
+                resources::AssetManager& assetMgr, const std::vector<entities::Entity*>& entities);
+
+    void Render(graphics::Renderer& renderer, const World& world, const graphics::Camera2DSystem& camera,
                 resources::AssetManager& assetMgr, entities::Entity* playerEntity = nullptr);
+
+    void RenderDebug(const World& world, const graphics::Camera2DSystem& camera,
+                     const std::vector<entities::Entity*>& entities);
 
     void RenderDebug(const World& world, const graphics::Camera2DSystem& camera,
                      const entities::Entity* playerEntity = nullptr);

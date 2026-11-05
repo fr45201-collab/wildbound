@@ -1,0 +1,35 @@
+{
+    "id": "arm_frost_armor_001",
+    "display_name": "Frost Armor",
+    "category": "armor",
+    "slot": "armor",
+    "description": "Glacial steel cuirass radiating a crisp frost aura with fur rim.",
+    "sprite": "cosmetics/armor/arm_frost_armor_001/sprite.png",
+    "spritesheet": "sheet_arm_frost_armor_001",
+    "texture": "tex_arm_frost_armor_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "armor",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

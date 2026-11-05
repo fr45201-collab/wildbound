@@ -1,0 +1,84 @@
+{
+  "id": "desert",
+  "display_name": "Sunscorched Wastes",
+  "description": "An arid expanse of shifting dunes, cracked clay arroyos, sandstone ruins, and vital freshwater oases.",
+  "tileset": "desert_tileset",
+  "tileset_image": "tilesets/desert/desert_tileset.png",
+  "terrain": [
+    {
+      "name": "Sand Dune",
+      "gid": 1,
+      "walkable": true
+    },
+    {
+      "name": "Cracked Clay",
+      "gid": 9,
+      "walkable": true
+    },
+    {
+      "name": "Caravan Trail",
+      "gid": 17,
+      "walkable": true
+    },
+    {
+      "name": "Oasis Deep Water",
+      "gid": 25,
+      "walkable": false
+    },
+    {
+      "name": "Sandstone Masonry",
+      "gid": 33,
+      "walkable": false
+    },
+    {
+      "name": "Pillar Shaft",
+      "gid": 41,
+      "walkable": false
+    },
+    {
+      "name": "Thorny Scrub",
+      "gid": 49,
+      "walkable": true
+    }
+  ],
+  "vegetation": [
+    "bush_small_001",
+    "rock_boulder_001",
+    "rock_flat_001"
+  ],
+  "environment_objects": [
+    "ruin_pillar_stone_001",
+    "ruin_arch_stone_001",
+    "ruin_tower_small_001",
+    "crate_reinforced_001",
+    "barrel_banded_001",
+    "fire_small_anim"
+  ],
+  "animations": [
+    "water_ripple_anim",
+    "smoke_plume_anim",
+    "fire_small_anim"
+  ],
+  "atmosphere": {
+    "weather": "arid_heat",
+    "fog_density": 0.05,
+    "cloud_speed": 12.0,
+    "cloud_layer_enabled": true,
+    "ambient_tint": {
+      "r": 255,
+      "g": 245,
+      "b": 220,
+      "a": 255
+    }
+  },
+  "ambient_entities": [
+    "ambient_bird"
+  ],
+  "maps": [
+    "maps/desert/desert_01.json"
+  ],
+  "default_spawn": {
+    "x": 320.0,
+    "y": 720.0
+  }
+}

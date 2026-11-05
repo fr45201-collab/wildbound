@@ -1,0 +1,12 @@
+{
+  "id": "sheet_tree_oak_breeze_anim",
+  "texture": "environment/animations/trees/tree_oak_breeze_anim.png",
+  "frame_width": 48,
+  "frame_height": 48,
+  "columns": 4,
+  "rows": 1,
+  "frame_count": 4,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

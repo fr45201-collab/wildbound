@@ -1,0 +1,28 @@
+{
+  "id": "tree_pine_breeze_anim",
+  "name": "Pine Branch Breeze Sway",
+  "category": "animated_environment",
+  "subcategory": "trees",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/trees/tree_pine_breeze_anim.png",
+  "spritesheet": "sheet_tree_pine_breeze_anim",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 48,
+    "columns": 4,
+    "rows": 1,
+    "frame_count": 4
+  },
+  "animation": {
+    "name": "tree_pine_breeze_anim_loop",
+    "frame_duration": 0.24,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "cabin_forest_001",
+  "name": "Forest Cabin",
+  "category": "building",
+  "subcategory": "cabins",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/cabins/cabin_forest_001.png",
+  "dimensions": {
+    "width": 72,
+    "height": 72
+  },
+  "anchors": {
+    "ground": [
+      36,
+      68
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      8,
+      32
+    ],
+    "size": [
+      56,
+      36
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    28,
+    68
+  ],
+  "door": [
+    28,
+    66
+  ],
+  "windows": [
+    [
+      48,
+      54
+    ]
+  ],
+  "roof": {
+    "width": 66,
+    "height": 28
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_cabin_forest_001"
+  }
+}

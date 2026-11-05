@@ -1,0 +1,11 @@
+{
+  "ai_enabled": true,
+  "debug_visualization": false,
+  "show_nav_grid": false,
+  "show_paths": true,
+  "show_fov": true,
+  "show_avoidance": false,
+  "max_perception_range": 350.0,
+  "global_decision_interval": 0.2
+}
+

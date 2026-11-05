@@ -1,0 +1,32 @@
+{
+  "id": "mushroom_brown_001",
+  "name": "Brown Mushroom",
+  "category": "nature",
+  "subcategory": "mushrooms",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/mushrooms/mushroom_brown_001.png",
+  "dimensions": {
+    "width": 20,
+    "height": 20
+  },
+  "anchors": {
+    "ground": [
+      10,
+      18
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "ground_decor",
+    "y_sort": false
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

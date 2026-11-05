@@ -1,0 +1,19 @@
+{
+  "id": "cloud_cluster",
+  "name": "Cloud Cluster Formation",
+  "category": "atmosphere",
+  "subcategory": "clouds",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/atmosphere/clouds/cloud_cluster.png",
+  "dimensions": {
+    "width": 112,
+    "height": 56
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Atmospheric Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

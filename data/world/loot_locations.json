@@ -1,0 +1,409 @@
+{
+  "loot_locations": [
+    {
+      "id": "loot_greenwood_hall",
+      "position": [
+        4160.0,
+        5950.0
+      ],
+      "container_type": "chest_rare",
+      "parent_poi": "greenwood"
+    },
+    {
+      "id": "loot_greenwood_store_1",
+      "position": [
+        4000.0,
+        5960.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "greenwood"
+    },
+    {
+      "id": "loot_greenwood_store_2",
+      "position": [
+        4010.0,
+        5980.0
+      ],
+      "container_type": "barrel_ammo",
+      "parent_poi": "greenwood"
+    },
+    {
+      "id": "loot_greenwood_smith_1",
+      "position": [
+        3980.0,
+        6080.0
+      ],
+      "container_type": "chest_weapons",
+      "parent_poi": "greenwood"
+    },
+    {
+      "id": "loot_greenwood_smith_2",
+      "position": [
+        3990.0,
+        6100.0
+      ],
+      "container_type": "crate_armor",
+      "parent_poi": "greenwood"
+    },
+    {
+      "id": "loot_greenwood_warehouse",
+      "position": [
+        4320.0,
+        5960.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "greenwood"
+    },
+    {
+      "id": "loot_greenwood_tower",
+      "position": [
+        3900.0,
+        5880.0
+      ],
+      "container_type": "chest_weapons",
+      "parent_poi": "greenwood"
+    },
+    {
+      "id": "loot_greenwood_cottage",
+      "position": [
+        4340.0,
+        6080.0
+      ],
+      "container_type": "crate_consumables",
+      "parent_poi": "greenwood"
+    },
+    {
+      "id": "loot_sunfall_tower",
+      "position": [
+        7680.0,
+        7550.0
+      ],
+      "container_type": "chest_weapons",
+      "parent_poi": "sunfall"
+    },
+    {
+      "id": "loot_sunfall_bazaar_1",
+      "position": [
+        7780.0,
+        7560.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "sunfall"
+    },
+    {
+      "id": "loot_sunfall_bazaar_2",
+      "position": [
+        7790.0,
+        7580.0
+      ],
+      "container_type": "barrel_ammo",
+      "parent_poi": "sunfall"
+    },
+    {
+      "id": "loot_sunfall_residence",
+      "position": [
+        7560.0,
+        7580.0
+      ],
+      "container_type": "crate_consumables",
+      "parent_poi": "sunfall"
+    },
+    {
+      "id": "loot_sunfall_shed",
+      "position": [
+        7540.0,
+        7480.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "sunfall"
+    },
+    {
+      "id": "loot_sunfall_oasis_1",
+      "position": [
+        7680.0,
+        6720.0
+      ],
+      "container_type": "chest_rare",
+      "parent_poi": "oasis"
+    },
+    {
+      "id": "loot_sunfall_oasis_2",
+      "position": [
+        7700.0,
+        6740.0
+      ],
+      "container_type": "barrel_ammo",
+      "parent_poi": "oasis"
+    },
+    {
+      "id": "loot_sunfall_temple",
+      "position": [
+        7200.0,
+        6420.0
+      ],
+      "container_type": "chest_ancient",
+      "parent_poi": "temple"
+    },
+    {
+      "id": "loot_frostpeak_hall",
+      "position": [
+        7840.0,
+        2590.0
+      ],
+      "container_type": "chest_rare",
+      "parent_poi": "frostpeak"
+    },
+    {
+      "id": "loot_frostpeak_lodge_1",
+      "position": [
+        7720.0,
+        2610.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "frostpeak"
+    },
+    {
+      "id": "loot_frostpeak_lodge_2",
+      "position": [
+        7960.0,
+        2610.0
+      ],
+      "container_type": "crate_armor",
+      "parent_poi": "frostpeak"
+    },
+    {
+      "id": "loot_frostpeak_tower",
+      "position": [
+        8040.0,
+        2510.0
+      ],
+      "container_type": "chest_weapons",
+      "parent_poi": "frostpeak"
+    },
+    {
+      "id": "loot_frostpeak_shed",
+      "position": [
+        7720.0,
+        2500.0
+      ],
+      "container_type": "barrel_ammo",
+      "parent_poi": "frostpeak"
+    },
+    {
+      "id": "loot_frostfall_camp_1",
+      "position": [
+        6800.0,
+        3420.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "frostfall_camp"
+    },
+    {
+      "id": "loot_frostfall_camp_2",
+      "position": [
+        6820.0,
+        3440.0
+      ],
+      "container_type": "crate_consumables",
+      "parent_poi": "frostfall_camp"
+    },
+    {
+      "id": "loot_frostpeak_glacier",
+      "position": [
+        7200.0,
+        2220.0
+      ],
+      "container_type": "chest_ancient",
+      "parent_poi": "glacier"
+    },
+    {
+      "id": "loot_mirewood_elder",
+      "position": [
+        2400.0,
+        2750.0
+      ],
+      "container_type": "chest_rare",
+      "parent_poi": "mirewood"
+    },
+    {
+      "id": "loot_mirewood_hut_1",
+      "position": [
+        2290.0,
+        2780.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "mirewood"
+    },
+    {
+      "id": "loot_mirewood_hut_2",
+      "position": [
+        2510.0,
+        2780.0
+      ],
+      "container_type": "crate_consumables",
+      "parent_poi": "mirewood"
+    },
+    {
+      "id": "loot_mirewood_shed",
+      "position": [
+        2280.0,
+        2660.0
+      ],
+      "container_type": "barrel_ammo",
+      "parent_poi": "mirewood"
+    },
+    {
+      "id": "loot_mirewood_watchpost",
+      "position": [
+        2560.0,
+        2680.0
+      ],
+      "container_type": "chest_weapons",
+      "parent_poi": "mirewood"
+    },
+    {
+      "id": "loot_drowned_ruin_1",
+      "position": [
+        3000.0,
+        3820.0
+      ],
+      "container_type": "chest_ancient",
+      "parent_poi": "drowned_ruins"
+    },
+    {
+      "id": "loot_drowned_ruin_2",
+      "position": [
+        3020.0,
+        3840.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "drowned_ruins"
+    },
+    {
+      "id": "loot_swamp_crossing",
+      "position": [
+        2400.0,
+        3620.0
+      ],
+      "container_type": "barrel_ammo",
+      "parent_poi": "swamp_crossing"
+    },
+    {
+      "id": "loot_highstone_keep",
+      "position": [
+        5120.0,
+        2110.0
+      ],
+      "container_type": "chest_rare",
+      "parent_poi": "highstone"
+    },
+    {
+      "id": "loot_highstone_cottage",
+      "position": [
+        4980.0,
+        2120.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "highstone"
+    },
+    {
+      "id": "loot_highstone_tower",
+      "position": [
+        5340.0,
+        2020.0
+      ],
+      "container_type": "chest_weapons",
+      "parent_poi": "highstone"
+    },
+    {
+      "id": "loot_highstone_warehouse",
+      "position": [
+        4960.0,
+        2220.0
+      ],
+      "container_type": "crate_armor",
+      "parent_poi": "highstone"
+    },
+    {
+      "id": "loot_highstone_cave",
+      "position": [
+        4400.0,
+        2100.0
+      ],
+      "container_type": "chest_ancient",
+      "parent_poi": "highstone_cave"
+    },
+    {
+      "id": "loot_mountain_pass",
+      "position": [
+        5120.0,
+        3220.0
+      ],
+      "container_type": "crate_consumables",
+      "parent_poi": "mountain_pass"
+    },
+    {
+      "id": "loot_ancient_fortress_1",
+      "position": [
+        5120.0,
+        4840.0
+      ],
+      "container_type": "chest_ancient",
+      "parent_poi": "ancient_fortress"
+    },
+    {
+      "id": "loot_ancient_fortress_2",
+      "position": [
+        5040.0,
+        4760.0
+      ],
+      "container_type": "chest_weapons",
+      "parent_poi": "ancient_fortress"
+    },
+    {
+      "id": "loot_forest_shrine",
+      "position": [
+        3200.0,
+        6820.0
+      ],
+      "container_type": "chest_ancient",
+      "parent_poi": "forest_shrine"
+    },
+    {
+      "id": "loot_hunter_camp_1",
+      "position": [
+        4160.0,
+        6820.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "hunter_camp"
+    },
+    {
+      "id": "loot_hunter_camp_2",
+      "position": [
+        4180.0,
+        6840.0
+      ],
+      "container_type": "barrel_ammo",
+      "parent_poi": "hunter_camp"
+    },
+    {
+      "id": "loot_river_crossing",
+      "position": [
+        5500.0,
+        5300.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "river_crossing"
+    },
+    {
+      "id": "loot_south_cove",
+      "position": [
+        5120.0,
+        8400.0
+      ],
+      "container_type": "crate_supplies",
+      "parent_poi": "south_cove"
+    }
+  ]
+}

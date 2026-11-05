@@ -1,0 +1,14 @@
+{
+  "id": "res_wild_berries_001",
+  "display_name": "Wild Berries",
+  "category": "resource",
+  "subcategory": "flora_berry",
+  "description": "A cluster of sweet, juicy dark purple berries gathered from bramble thickets along forest trails.",
+  "icon_file": "items/icons/res_wild_berries_001_icon.png",
+  "world_file": "items/world/res_wild_berries_001_world.png",
+  "biome_tags": [
+    "forest",
+    "mountain"
+  ],
+  "rarity_tier": "common"
+}

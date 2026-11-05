@@ -1,0 +1,12 @@
+{
+  "id": "wild_boar_spritesheet",
+  "texture": "characters/enemies/wild_boar/wild_boar_spritesheet.png",
+  "frame_width": 48,
+  "frame_height": 40,
+  "columns": 4,
+  "rows": 8,
+  "frame_count": 32,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "bottom_center"
+}

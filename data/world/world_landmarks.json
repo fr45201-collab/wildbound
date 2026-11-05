@@ -1,0 +1,54 @@
+{
+  "landmarks": [
+    {
+      "id": "lm_ancient_fortress",
+      "name": "The Citadel of Old Wildbound",
+      "type": "monument",
+      "biome": "forest",
+      "position": [
+        5120.0,
+        4800.0
+      ]
+    },
+    {
+      "id": "lm_desert_temple",
+      "name": "Buried Temple of the Sun God",
+      "type": "ruins",
+      "biome": "desert",
+      "position": [
+        7200.0,
+        6400.0
+      ]
+    },
+    {
+      "id": "lm_frostpeak_glacier",
+      "name": "Frostpeak Glacial Rift",
+      "type": "natural",
+      "biome": "snow",
+      "position": [
+        7200.0,
+        2200.0
+      ]
+    },
+    {
+      "id": "lm_highstone_crag",
+      "name": "Iron Crag Waterfall Falls",
+      "type": "natural",
+      "biome": "mountain",
+      "position": [
+        5120.0,
+        1600.0
+      ]
+    },
+    {
+      "id": "lm_mire_drowned",
+      "name": "The Sunken Reliquary",
+      "type": "ruins",
+      "biome": "swamp",
+      "position": [
+        3000.0,
+        3800.0
+      ]
+    }
+  ]
+}

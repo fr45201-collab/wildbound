@@ -1,0 +1,14 @@
+{
+  "id": "mat_iron_ore_001",
+  "display_name": "Iron Ore",
+  "category": "material",
+  "subcategory": "raw_material",
+  "description": "Dense, heavy rocky ore studded with visible metallic veins of smeltable raw iron.",
+  "icon_file": "items/icons/mat_iron_ore_001_icon.png",
+  "world_file": "items/world/mat_iron_ore_001_world.png",
+  "biome_tags": [
+    "mountain",
+    "snow"
+  ],
+  "rarity_tier": "common"
+}

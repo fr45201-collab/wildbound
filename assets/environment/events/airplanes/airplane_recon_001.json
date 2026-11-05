@@ -1,0 +1,28 @@
+{
+  "id": "airplane_recon_001",
+  "name": "Reconnaissance Biplane Flyover",
+  "category": "event",
+  "subcategory": "airplanes",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/events/airplanes/airplane_recon_001.png",
+  "spritesheet": "sheet_airplane_recon_001",
+  "dimensions": {
+    "frame_width": 48,
+    "frame_height": 48,
+    "columns": 4,
+    "rows": 1,
+    "frame_count": 4
+  },
+  "animation": {
+    "name": "airplane_recon_001_loop",
+    "frame_duration": 0.06,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

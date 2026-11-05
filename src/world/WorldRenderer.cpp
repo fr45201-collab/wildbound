@@ -10,7 +10,7 @@ namespace wildbound::world {
 WorldRenderer::WorldRenderer() = default;
 
 void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, const graphics::Camera2DSystem& camera,
-                           resources::AssetManager& assetMgr, entities::Entity* playerEntity)
+                           resources::AssetManager& assetMgr, const std::vector<entities::Entity*>& entities)
 {
     const Tilemap* tilemap = world.GetTilemap();
     if (!tilemap) return;
@@ -82,44 +82,62 @@ void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, con
         }
     }
 
-    // 3. Render Environmental Objects with Depth Y-Sorting and Entity Interleaving
+    // 3. Render Environmental Objects and Entities with Combined Depth Y-Sorting
     std::vector<const EnvironmentObject*> visibleObjs = world.GetVisibleObjects(m_lastVisibleArea);
 
-    std::sort(visibleObjs.begin(), visibleObjs.end(), [](const EnvironmentObject* a, const EnvironmentObject* b) {
-        return a->GetZOrder() < b->GetZOrder();
-    });
+    struct RenderItem {
+        float zOrder = 0.0f;
+        const EnvironmentObject* envObj = nullptr;
+        entities::Entity* entity = nullptr;
+    };
 
-    bool playerRendered = (playerEntity == nullptr);
-    float playerY = playerEntity ? playerEntity->GetPosition().y : 0.0f;
+    std::vector<RenderItem> items;
+    items.reserve(visibleObjs.size() + entities.size());
 
     for (const auto* obj : visibleObjs) {
-        // If player is behind this object (lower Y world coordinate), render player first
-        if (!playerRendered && playerY <= obj->GetZOrder()) {
-            playerEntity->Render(renderer, assetMgr);
-            playerRendered = true;
+        items.push_back({ obj->GetZOrder(), obj, nullptr });
+    }
+    for (auto* ent : entities) {
+        if (ent && ent->IsActive()) {
+            items.push_back({ ent->GetPosition().y, nullptr, ent });
         }
-
-        Texture2D tex = assetMgr.GetTexture(obj->GetTextureId());
-        if (tex.id != 0) {
-            Rectangle srcRect = obj->GetSourceRect();
-            Rectangle destRect = obj->GetWorldRenderBounds();
-            renderer.DrawSprite(tex, srcRect, destRect, Vector2{ 0.0f, 0.0f }, obj->GetRotation(), WHITE);
-        }
-        m_renderedObjectCount++;
     }
 
-    // If player is in front of all visible objects (lowest on screen)
-    if (!playerRendered) {
-        playerEntity->Render(renderer, assetMgr);
-        playerRendered = true;
+    std::sort(items.begin(), items.end(), [](const RenderItem& a, const RenderItem& b) {
+        return a.zOrder < b.zOrder;
+    });
+
+    for (const auto& item : items) {
+        if (item.entity) {
+            item.entity->Render(renderer, assetMgr);
+        } else if (item.envObj) {
+            if (item.envObj->GetType() == "spawn" || item.envObj->GetTextureId().empty()) {
+                continue;
+            }
+            Texture2D tex = assetMgr.GetTexture(item.envObj->GetTextureId());
+            if (tex.id != 0) {
+                Rectangle srcRect = item.envObj->GetSourceRect();
+                Rectangle destRect = item.envObj->GetWorldRenderBounds();
+                renderer.DrawSprite(tex, srcRect, destRect, Vector2{ 0.0f, 0.0f }, item.envObj->GetRotation(), WHITE);
+            }
+            m_renderedObjectCount++;
+        }
     }
 
     // 4. Debug Visualization Passes
-    RenderDebug(world, camera, playerEntity);
+    RenderDebug(world, camera, entities);
+}
+
+void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, const graphics::Camera2DSystem& camera,
+                           resources::AssetManager& assetMgr, entities::Entity* playerEntity)
+{
+    std::vector<entities::Entity*> list;
+    if (playerEntity) list.push_back(playerEntity);
+    Render(renderer, world, camera, assetMgr, list);
 }
 
 void WorldRenderer::RenderDebug(const World& world, const graphics::Camera2DSystem& /*camera*/,
-                                const entities::Entity* playerEntity)
+                                const std::vector<entities::Entity*>& entities)
 {
     const Tilemap* tilemap = world.GetTilemap();
     if (!tilemap) return;
@@ -157,10 +175,14 @@ void WorldRenderer::RenderDebug(const World& world, const graphics::Camera2DSyst
             DrawRectangleLinesEx(box.bounds, 1.0f, outline);
         }
 
-        if (playerEntity) {
-            Rectangle pCol = playerEntity->GetCollisionBounds();
-            DrawRectangleRec(pCol, Color{ 50, 220, 100, 110 });
-            DrawRectangleLinesEx(pCol, 1.0f, Color{ 80, 255, 120, 240 });
+        for (const auto* ent : entities) {
+            if (ent && ent->IsActive()) {
+                Rectangle col = ent->GetCollisionBounds();
+                Color cFill = (ent->GetTag() == "player") ? Color{ 50, 220, 100, 110 } : Color{ 240, 120, 40, 110 };
+                Color cOutline = (ent->GetTag() == "player") ? Color{ 80, 255, 120, 240 } : Color{ 255, 160, 60, 240 };
+                DrawRectangleRec(col, cFill);
+                DrawRectangleLinesEx(col, 1.0f, cOutline);
+            }
         }
     }
 
@@ -178,12 +200,23 @@ void WorldRenderer::RenderDebug(const World& world, const graphics::Camera2DSyst
             DrawCircleLines(static_cast<int>(p.x), static_cast<int>(p.y), 6.0f, ORANGE);
         }
 
-        if (playerEntity) {
-            Vector2 pPos = playerEntity->GetPosition();
-            DrawCircle(static_cast<int>(pPos.x), static_cast<int>(pPos.y), 3.0f, GREEN);
-            DrawCircleLines(static_cast<int>(pPos.x), static_cast<int>(pPos.y), 7.0f, LIME);
+        for (const auto* ent : entities) {
+            if (ent && ent->IsActive()) {
+                Vector2 pPos = ent->GetPosition();
+                Color oColor = (ent->GetTag() == "player") ? GREEN : RED;
+                DrawCircle(static_cast<int>(pPos.x), static_cast<int>(pPos.y), 3.0f, oColor);
+                DrawCircleLines(static_cast<int>(pPos.x), static_cast<int>(pPos.y), 7.0f, oColor);
+            }
         }
     }
+}
+
+void WorldRenderer::RenderDebug(const World& world, const graphics::Camera2DSystem& camera,
+                                const entities::Entity* playerEntity)
+{
+    std::vector<entities::Entity*> list;
+    if (playerEntity) list.push_back(const_cast<entities::Entity*>(playerEntity));
+    RenderDebug(world, camera, list);
 }
 
 } // namespace wildbound::world

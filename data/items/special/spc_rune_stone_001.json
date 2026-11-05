@@ -1,0 +1,15 @@
+{
+  "id": "spc_rune_stone_001",
+  "display_name": "Rune Stone",
+  "category": "special",
+  "subcategory": "arcane_stone",
+  "description": "A smooth dark river stone carved with an arcane sigil that hums and pulses with cyan elemental energy.",
+  "icon_file": "items/icons/spc_rune_stone_001_icon.png",
+  "world_file": "items/world/spc_rune_stone_001_world.png",
+  "biome_tags": [
+    "forest",
+    "snow",
+    "mountain"
+  ],
+  "rarity_tier": "epic"
+}

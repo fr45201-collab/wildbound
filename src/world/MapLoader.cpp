@@ -143,13 +143,14 @@ std::unique_ptr<Tilemap> MapLoader::LoadFromJson(const std::string& jsonFilePath
                             Vector2 size{ w, h };
                             Vector2 origin{ w * 0.5f, h }; // Standard entity anchor at bottom-center
 
-                            std::string textureId = "tex_" + objType;
+                            std::string textureId = (objType == "spawn" || objType == "trigger" || objType == "waypoint") ? "" : ("tex_" + objType);
                             Rectangle srcRect{ 0.0f, 0.0f, w, h };
 
                             EnvironmentObject envObj(objId, objName, objType, pos, size, textureId, srcRect, origin, 1.0f, rot);
 
                             // Parse custom properties (collision)
-                            if (objItem.contains("properties") && objItem["properties"].is_array()) {
+                            if (objType != "spawn" && objItem.contains("properties") && objItem["properties"].is_array()) {
+                                bool hasCollisionProp = false;
                                 CollisionBox cbox;
                                 cbox.bounds = Rectangle{ x - origin.x, y - origin.y, w, h };
                                 for (const auto& prop : objItem["properties"]) {
@@ -157,9 +158,11 @@ std::unique_ptr<Tilemap> MapLoader::LoadFromJson(const std::string& jsonFilePath
                                     if (pName == "collision") {
                                         bool isSolid = prop.value("value", true);
                                         cbox.type = isSolid ? CollisionType::Solid : CollisionType::None;
+                                        hasCollisionProp = true;
                                     } else if (pName == "collision_type") {
                                         std::string typeStr = prop.value("value", "solid");
                                         cbox.type = CollisionBox::StringToType(typeStr);
+                                        hasCollisionProp = true;
                                     } else if (pName == "collision_width") {
                                         float cw = prop.value("value", w);
                                         cbox.bounds.width = cw;
@@ -168,7 +171,9 @@ std::unique_ptr<Tilemap> MapLoader::LoadFromJson(const std::string& jsonFilePath
                                         cbox.bounds.height = ch;
                                     }
                                 }
-                                envObj.SetCollision(cbox);
+                                if (hasCollisionProp && cbox.IsSolid()) {
+                                    envObj.SetCollision(cbox);
+                                }
                             }
                             tilemap->AddObject(std::move(envObj));
                         }
@@ -314,18 +319,20 @@ std::unique_ptr<Tilemap> MapLoader::LoadFromTmx(const std::string& tmxFilePath, 
                 Vector2 size{ w, h };
                 Vector2 origin{ w * 0.5f, h };
 
-                std::string texKey = "tex_" + objType;
+                std::string texKey = (objType == "spawn" || objType == "trigger" || objType == "waypoint") ? "" : ("tex_" + objType);
                 Rectangle srcRect{ 0.0f, 0.0f, w, h };
                 EnvironmentObject envObj(objId, objName, objType, pos, size, texKey, srcRect, origin);
 
                 // Check collision properties in object body
-                size_t objClose = content.find("</object>", objPos);
-                if (objClose != std::string::npos && objClose < objGroupEnd) {
-                    std::string objBody = content.substr(objPos, objClose - objPos + 9);
-                    CollisionBox cbox;
-                    cbox.bounds = Rectangle{ x - origin.x, y - origin.y + h * 0.5f, w, h * 0.5f };
-                    cbox.type = CollisionType::Solid;
-                    envObj.SetCollision(cbox);
+                if (objType != "spawn") {
+                    size_t objClose = content.find("</object>", objPos);
+                    if (objClose != std::string::npos && objClose < objGroupEnd) {
+                        std::string objBody = content.substr(objPos, objClose - objPos + 9);
+                        CollisionBox cbox;
+                        cbox.bounds = Rectangle{ x - origin.x, y - origin.y + h * 0.5f, w, h * 0.5f };
+                        cbox.type = CollisionType::Solid;
+                        envObj.SetCollision(cbox);
+                    }
                 }
 
                 tilemap->AddObject(std::move(envObj));

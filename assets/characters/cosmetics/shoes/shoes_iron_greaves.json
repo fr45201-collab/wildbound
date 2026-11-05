@@ -1,0 +1,19 @@
+{
+    "id": "shoes_iron_greaves",
+    "name": "Iron Greaves",
+    "category": "shoes",
+    "spritesheet": "sheet_shoes_iron_greaves",
+    "texture": "tex_shoes_iron_greaves",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

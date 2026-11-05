@@ -1,0 +1,58 @@
+{
+  "id": "storage_shed_001",
+  "name": "Wooden Storage Shed",
+  "category": "building",
+  "subcategory": "storage",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/storage/storage_shed_001.png",
+  "dimensions": {
+    "width": 64,
+    "height": 64
+  },
+  "anchors": {
+    "ground": [
+      32,
+      60
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      7,
+      28
+    ],
+    "size": [
+      50,
+      32
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    32,
+    60
+  ],
+  "door": [
+    32,
+    58
+  ],
+  "windows": [],
+  "roof": {
+    "width": 58,
+    "height": 28
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_storage_shed_001"
+  }
+}

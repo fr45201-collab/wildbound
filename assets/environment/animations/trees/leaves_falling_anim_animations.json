@@ -1,0 +1,18 @@
+{
+  "animations": [
+    {
+      "animation": "leaves_falling_anim_loop",
+      "spritesheet": "sheet_leaves_falling_anim",
+      "frame_duration": 0.14,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}

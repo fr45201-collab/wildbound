@@ -1,0 +1,32 @@
+{
+  "id": "sign_shop_001",
+  "name": "Hanging Shop Signboard",
+  "category": "prop",
+  "subcategory": "signs",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/signs/sign_shop_001.png",
+  "dimensions": {
+    "width": 24,
+    "height": 28
+  },
+  "anchors": {
+    "ground": [
+      12,
+      26
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "rock_flat_001",
+  "name": "Flat Stepping Stone",
+  "category": "nature",
+  "subcategory": "rocks",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/rocks/rock_flat_001.png",
+  "dimensions": {
+    "width": 32,
+    "height": 20
+  },
+  "anchors": {
+    "ground": [
+      16,
+      18
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

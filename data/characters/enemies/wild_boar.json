@@ -1,0 +1,54 @@
+{
+  "id": "wild_boar",
+  "name": "Wild Boar",
+  "type": "beast",
+  "faction": "monsters",
+  "spritesheet": "wild_boar_spritesheet",
+  "stats": {
+    "walk_speed": 55.0,
+    "run_speed": 125.0,
+    "normalize_diagonal": true
+  },
+  "health": {
+    "max_health": 70.0,
+    "initial_health": 70.0,
+    "regeneration_enabled": false,
+    "regeneration_rate": 0.0
+  },
+  "collision": {
+    "enabled": true,
+    "width": 26.0,
+    "height": 16.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "combat": {
+    "default_attack": "boar_tusk_charge",
+    "attack_cooldown": 1.2,
+    "attack_range": 32.0
+  },
+  "ai": {
+    "behavior_script": "scripts/gameplay/ai/enemy_base.lua",
+    "detection_radius": 130.0,
+    "attack_radius": 36.0,
+    "retreat_health_percent": 0.1,
+    "decision_interval": 0.2,
+    "patrol_radius": 70.0
+  },
+  "animations": {
+    "idle_down": "boar_idle_down",
+    "idle_up": "boar_idle_up",
+    "idle_left": "boar_idle_left",
+    "idle_right": "boar_idle_right",
+    "walk_down": "boar_walk_down",
+    "walk_up": "boar_walk_up",
+    "walk_left": "boar_walk_left",
+    "walk_right": "boar_walk_right",
+    "attack_down": "boar_attack_down",
+    "attack_up": "boar_attack_up",
+    "attack_left": "boar_attack_left",
+    "attack_right": "boar_attack_right",
+    "hurt_down": "boar_hurt_down",
+    "death_down": "boar_death_down"
+  }
+}

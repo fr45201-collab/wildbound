@@ -1,0 +1,18 @@
+{
+  "animations": [
+    {
+      "animation": "smoke_campfire_anim_loop",
+      "spritesheet": "sheet_smoke_campfire_anim",
+      "frame_duration": 0.14,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}

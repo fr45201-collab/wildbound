@@ -1,0 +1,41 @@
+{
+  "id": "tree_pine_003",
+  "name": "Large Pine Tree",
+  "category": "nature",
+  "subcategory": "trees/pine",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/trees/pine/tree_pine_003.png",
+  "dimensions": {
+    "width": 64,
+    "height": 96
+  },
+  "anchors": {
+    "ground": [
+      32,
+      90
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      22,
+      78
+    ],
+    "size": [
+      20,
+      14
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

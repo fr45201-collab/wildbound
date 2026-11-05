@@ -1,0 +1,19 @@
+{
+    "id": "hat_ranger_hood",
+    "name": "Ranger Hood",
+    "category": "headwear",
+    "spritesheet": "sheet_hat_ranger_hood",
+    "texture": "tex_hat_ranger_hood",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

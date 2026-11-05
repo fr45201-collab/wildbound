@@ -1,0 +1,34 @@
+{
+  "id": "bow_longbow_001",
+  "display_name": "Longbow",
+  "category": "bow",
+  "subcategory": "longbow",
+  "description": "A tall, high-draw-weight yew longbow equipped with reinforced horn nocks and fine braided linen string.",
+  "icon_file": "weapons/icons/bow_longbow_001_icon.png",
+  "ground_file": "weapons/ground/bow_longbow_001_ground.png",
+  "held_file": "weapons/held/bow_longbow_001_held.png",
+  "anim_file": "weapons/animations/bow_longbow_001_anim.png",
+  "grip_anchor": {
+    "x": 16.0,
+    "y": 16.0
+  },
+  "render_order": {
+    "down": 85,
+    "up": 18,
+    "left": 85,
+    "right": 85
+  },
+  "hand": "both_hands",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "animation_frames": [
+    "idle",
+    "draw",
+    "hold",
+    "release"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "id": "bat",
+  "name": "Dusk Bat",
+  "type": "flying_beast",
+  "faction": "monsters",
+  "spritesheet": "bat_spritesheet",
+  "stats": {
+    "walk_speed": 60.0,
+    "run_speed": 115.0,
+    "normalize_diagonal": true
+  },
+  "health": {
+    "max_health": 30.0,
+    "initial_health": 30.0,
+    "regeneration_enabled": false,
+    "regeneration_rate": 0.0
+  },
+  "collision": {
+    "enabled": true,
+    "width": 14.0,
+    "height": 14.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "combat": {
+    "default_attack": "bat_bite",
+    "attack_cooldown": 0.75,
+    "attack_range": 24.0
+  },
+  "ai": {
+    "behavior_script": "scripts/gameplay/ai/enemy_base.lua",
+    "detection_radius": 150.0,
+    "attack_radius": 28.0,
+    "retreat_health_percent": 0.2,
+    "decision_interval": 0.15,
+    "patrol_radius": 90.0
+  },
+  "animations": {
+    "idle_down": "bat_fly_down",
+    "idle_up": "bat_fly_up",
+    "idle_left": "bat_fly_left",
+    "idle_right": "bat_fly_right",
+    "walk_down": "bat_move_down",
+    "walk_up": "bat_move_up",
+    "walk_left": "bat_move_left",
+    "walk_right": "bat_move_right",
+    "attack_down": "bat_attack_down",
+    "attack_up": "bat_attack_up",
+    "attack_left": "bat_attack_left",
+    "attack_right": "bat_attack_right",
+    "hurt_down": "bat_hurt_down",
+    "death_down": "bat_death_down"
+  }
+}

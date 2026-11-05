@@ -1,0 +1,41 @@
+{
+  "id": "tree_oak_003",
+  "name": "Large Oak Tree",
+  "category": "nature",
+  "subcategory": "trees/oak",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/trees/oak/tree_oak_003.png",
+  "dimensions": {
+    "width": 80,
+    "height": 96
+  },
+  "anchors": {
+    "ground": [
+      40,
+      90
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      28,
+      78
+    ],
+    "size": [
+      24,
+      14
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

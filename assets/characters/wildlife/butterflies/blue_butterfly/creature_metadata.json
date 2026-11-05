@@ -1,0 +1,37 @@
+{
+  "id": "creature_blue_butterfly",
+  "name": "Blue Butterfly",
+  "category": "ambient_wildlife",
+  "biome": [
+    "forest",
+    "meadow",
+    "river"
+  ],
+  "sprite": "characters/wildlife/butterflies/blue_butterfly/blue_butterfly_spritesheet.png",
+  "spritesheet": "blue_butterfly_spritesheet",
+  "dimensions": {
+    "frame_width": 16,
+    "frame_height": 16,
+    "columns": 4,
+    "rows": 2,
+    "frame_count": 8
+  },
+  "directions": [
+    "omni"
+  ],
+  "animations": {
+    "resting": "blue_butterfly_resting",
+    "fly": "blue_butterfly_fly"
+  },
+  "anchors": {
+    "ground": [
+      8,
+      8
+    ]
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 9 Production Wildlife",
+    "license": "CC0 1.0 Universal"
+  }
+}

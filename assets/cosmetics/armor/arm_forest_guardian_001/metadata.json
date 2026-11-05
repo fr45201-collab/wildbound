@@ -1,0 +1,35 @@
+{
+    "id": "arm_forest_guardian_001",
+    "display_name": "Forest Guardian Armor",
+    "category": "armor",
+    "slot": "armor",
+    "description": "Living heartwood scale armor enchanted by ancient forest spirits.",
+    "sprite": "cosmetics/armor/arm_forest_guardian_001/sprite.png",
+    "spritesheet": "sheet_arm_forest_guardian_001",
+    "texture": "tex_arm_forest_guardian_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "armor",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

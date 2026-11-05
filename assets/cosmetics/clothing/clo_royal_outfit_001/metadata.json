@@ -1,0 +1,35 @@
+{
+    "id": "clo_royal_outfit_001",
+    "display_name": "Royal Outfit",
+    "category": "clothing",
+    "slot": "shirt",
+    "description": "Velvet imperial tunic trimmed with ermine and gold thread.",
+    "sprite": "cosmetics/clothing/clo_royal_outfit_001/sprite.png",
+    "spritesheet": "sheet_clo_royal_outfit_001",
+    "texture": "tex_clo_royal_outfit_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "shirt",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

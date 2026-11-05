@@ -1,0 +1,16 @@
+{
+  "animations": [
+    {
+      "animation": "airplane_recon_001_loop",
+      "spritesheet": "sheet_airplane_recon_001",
+      "frame_duration": 0.06,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

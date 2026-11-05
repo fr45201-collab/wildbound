@@ -1,0 +1,28 @@
+{
+  "id": "waterfall_small_anim",
+  "name": "Small Waterfall Animation",
+  "category": "animated_environment",
+  "subcategory": "waterfalls",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/waterfalls/waterfall_small_anim.png",
+  "spritesheet": "sheet_waterfall_small_anim",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 48,
+    "columns": 6,
+    "rows": 1,
+    "frame_count": 6
+  },
+  "animation": {
+    "name": "waterfall_small_anim_loop",
+    "frame_duration": 0.11,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

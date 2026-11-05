@@ -1,0 +1,41 @@
+{
+  "id": "crate_small_001",
+  "name": "Small Wooden Crate",
+  "category": "prop",
+  "subcategory": "crates",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/crates/crate_small_001.png",
+  "dimensions": {
+    "width": 20,
+    "height": 20
+  },
+  "anchors": {
+    "ground": [
+      10,
+      18
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      2,
+      4
+    ],
+    "size": [
+      16,
+      14
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

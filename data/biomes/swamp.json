@@ -1,0 +1,86 @@
+{
+  "id": "swamp",
+  "display_name": "Murkwood Mire",
+  "description": "A dark, decaying marshland filled with stagnant bogs, algae slicks, rickety duckboard walkways, and glowing fungi.",
+  "tileset": "swamp_tileset",
+  "tileset_image": "tilesets/swamp/swamp_tileset.png",
+  "terrain": [
+    {
+      "name": "Mud Peat Bank",
+      "gid": 1,
+      "walkable": true
+    },
+    {
+      "name": "Shallow Algae Water",
+      "gid": 9,
+      "walkable": true
+    },
+    {
+      "name": "Deep Bog Void",
+      "gid": 17,
+      "walkable": false
+    },
+    {
+      "name": "Wooden Duckboard Walkway",
+      "gid": 25,
+      "walkable": true
+    },
+    {
+      "name": "Hollow Rotten Stump",
+      "gid": 33,
+      "walkable": false
+    },
+    {
+      "name": "Luminescent Mushroom",
+      "gid": 41,
+      "walkable": true
+    },
+    {
+      "name": "Cattail Reeds",
+      "gid": 49,
+      "walkable": true
+    }
+  ],
+  "vegetation": [
+    "tree_oak_001",
+    "bush_dense_001",
+    "mushroom_cluster_001",
+    "mushroom_brown_001"
+  ],
+  "environment_objects": [
+    "cabin_overgrown_001",
+    "storage_shed_001",
+    "log_fallen_mossy_001",
+    "barrel_standard_001",
+    "crate_small_001"
+  ],
+  "animations": [
+    "water_pond_anim",
+    "water_ripple_anim",
+    "leaves_falling_anim",
+    "smoke_campfire_anim"
+  ],
+  "atmosphere": {
+    "weather": "fetid_mist",
+    "fog_density": 0.65,
+    "cloud_speed": 8.0,
+    "cloud_layer_enabled": true,
+    "ambient_tint": {
+      "r": 220,
+      "g": 240,
+      "b": 215,
+      "a": 255
+    }
+  },
+  "ambient_entities": [
+    "forest_butterfly",
+    "blue_butterfly"
+  ],
+  "maps": [
+    "maps/swamp/swamp_01.json"
+  ],
+  "default_spawn": {
+    "x": 320.0,
+    "y": 720.0
+  }
+}

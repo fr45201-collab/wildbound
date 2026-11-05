@@ -1,0 +1,13 @@
+{
+  "id": "res_healing_flower_001",
+  "display_name": "Healing Flower",
+  "category": "resource",
+  "subcategory": "flora",
+  "description": "A delicate wild meadow blossom with pure white petals and a golden pollen core.",
+  "icon_file": "items/icons/res_healing_flower_001_icon.png",
+  "world_file": "items/world/res_healing_flower_001_world.png",
+  "biome_tags": [
+    "forest"
+  ],
+  "rarity_tier": "common"
+}

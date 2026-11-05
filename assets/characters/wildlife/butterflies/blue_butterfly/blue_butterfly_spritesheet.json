@@ -1,0 +1,12 @@
+{
+  "id": "blue_butterfly_spritesheet",
+  "texture": "characters/wildlife/butterflies/blue_butterfly/blue_butterfly_spritesheet.png",
+  "frame_width": 16,
+  "frame_height": 16,
+  "columns": 4,
+  "rows": 2,
+  "frame_count": 8,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

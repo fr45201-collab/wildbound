@@ -1,0 +1,217 @@
+{
+  "animations": [
+    {
+      "animation": "boar_idle_down",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.22,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "animation": "boar_idle_up",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.22,
+      "loop": true,
+      "frames": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "animation": "boar_idle_left",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.22,
+      "loop": true,
+      "frames": [
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "animation": "boar_idle_right",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.22,
+      "loop": true,
+      "frames": [
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "animation": "boar_walk_down",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.16,
+      "loop": true,
+      "frames": [
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "animation": "boar_walk_up",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.16,
+      "loop": true,
+      "frames": [
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "animation": "boar_walk_left",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.16,
+      "loop": true,
+      "frames": [
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "animation": "boar_walk_right",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.16,
+      "loop": true,
+      "frames": [
+        28,
+        29,
+        30,
+        31
+      ]
+    },
+    {
+      "animation": "boar_run_down",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "animation": "boar_run_up",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "animation": "boar_run_left",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "animation": "boar_run_right",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        28,
+        29,
+        30,
+        31
+      ]
+    },
+    {
+      "animation": "boar_attack_down",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.12,
+      "loop": false,
+      "frames": [
+        0,
+        17,
+        18,
+        0
+      ]
+    },
+    {
+      "animation": "boar_attack_up",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.12,
+      "loop": false,
+      "frames": [
+        4,
+        21,
+        22,
+        4
+      ]
+    },
+    {
+      "animation": "boar_attack_left",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.12,
+      "loop": false,
+      "frames": [
+        8,
+        25,
+        26,
+        8
+      ]
+    },
+    {
+      "animation": "boar_attack_right",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.12,
+      "loop": false,
+      "frames": [
+        12,
+        29,
+        30,
+        12
+      ]
+    },
+    {
+      "animation": "boar_hurt_down",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.15,
+      "loop": false,
+      "frames": [
+        2,
+        0
+      ]
+    },
+    {
+      "animation": "boar_death_down",
+      "spritesheet": "wild_boar_spritesheet",
+      "frame_duration": 0.25,
+      "loop": false,
+      "frames": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

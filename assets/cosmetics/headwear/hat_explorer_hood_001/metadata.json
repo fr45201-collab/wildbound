@@ -1,0 +1,35 @@
+{
+    "id": "hat_explorer_hood_001",
+    "display_name": "Explorer Hood",
+    "category": "headwear",
+    "slot": "headwear",
+    "description": "Woodland cowl hood draping smoothly over the shoulders.",
+    "sprite": "cosmetics/headwear/hat_explorer_hood_001/sprite.png",
+    "spritesheet": "sheet_hat_explorer_hood_001",
+    "texture": "tex_hat_explorer_hood_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "headwear",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

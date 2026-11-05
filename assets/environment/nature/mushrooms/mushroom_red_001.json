@@ -1,0 +1,32 @@
+{
+  "id": "mushroom_red_001",
+  "name": "Red Toadstool",
+  "category": "nature",
+  "subcategory": "mushrooms",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/mushrooms/mushroom_red_001.png",
+  "dimensions": {
+    "width": 16,
+    "height": 20
+  },
+  "anchors": {
+    "ground": [
+      8,
+      18
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "ground_decor",
+    "y_sort": false
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

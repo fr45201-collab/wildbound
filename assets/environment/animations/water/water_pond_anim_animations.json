@@ -1,0 +1,16 @@
+{
+  "animations": [
+    {
+      "animation": "water_pond_anim_loop",
+      "spritesheet": "sheet_water_pond_anim",
+      "frame_duration": 0.18,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

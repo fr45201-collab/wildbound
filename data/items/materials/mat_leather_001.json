@@ -1,0 +1,15 @@
+{
+  "id": "mat_leather_001",
+  "display_name": "Leather",
+  "category": "material",
+  "subcategory": "processed_material",
+  "description": "A rolled and tied pelt of tanned beast hide treated with tanning oils for armor and grip bindings.",
+  "icon_file": "items/icons/mat_leather_001_icon.png",
+  "world_file": "items/world/mat_leather_001_world.png",
+  "biome_tags": [
+    "forest",
+    "mountain",
+    "snow"
+  ],
+  "rarity_tier": "common"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "well_wooden_001",
+  "name": "Wooden Roofed Well",
+  "category": "prop",
+  "subcategory": "wells",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/wells/well_wooden_001.png",
+  "dimensions": {
+    "width": 36,
+    "height": 44
+  },
+  "anchors": {
+    "ground": [
+      18,
+      40
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      5,
+      18
+    ],
+    "size": [
+      26,
+      22
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

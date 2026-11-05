@@ -1,0 +1,41 @@
+{
+  "id": "rock_boulder_001",
+  "name": "Large Boulder",
+  "category": "nature",
+  "subcategory": "rocks",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/rocks/rock_boulder_001.png",
+  "dimensions": {
+    "width": 48,
+    "height": 40
+  },
+  "anchors": {
+    "ground": [
+      24,
+      36
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      6,
+      18
+    ],
+    "size": [
+      36,
+      18
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

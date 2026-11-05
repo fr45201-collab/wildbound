@@ -1,0 +1,16 @@
+{
+  "animations": [
+    {
+      "animation": "water_lake_anim_loop",
+      "spritesheet": "sheet_water_lake_anim",
+      "frame_duration": 0.2,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+    "id": "arm_reinforced_leather_001",
+    "display_name": "Reinforced Leather Armor",
+    "category": "armor",
+    "slot": "armor",
+    "description": "Studded leather breastplate reinforced with forged steel plates.",
+    "sprite": "cosmetics/armor/arm_reinforced_leather_001/sprite.png",
+    "spritesheet": "sheet_arm_reinforced_leather_001",
+    "texture": "tex_arm_reinforced_leather_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "armor",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "spc_mysterious_artifact_001",
+  "display_name": "Mysterious Artifact",
+  "category": "special",
+  "subcategory": "artifact",
+  "description": "A bizarre geometric dodecahedron of dark obsidian metal, its interlocking plates glowing with violet cosmic luminescence.",
+  "icon_file": "items/icons/spc_mysterious_artifact_001_icon.png",
+  "world_file": "items/world/spc_mysterious_artifact_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "snow",
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "legendary"
+}

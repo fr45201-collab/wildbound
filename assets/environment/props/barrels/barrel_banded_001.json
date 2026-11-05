@@ -1,0 +1,41 @@
+{
+  "id": "barrel_banded_001",
+  "name": "Metal-Banded Barrel",
+  "category": "prop",
+  "subcategory": "barrels",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/barrels/barrel_banded_001.png",
+  "dimensions": {
+    "width": 22,
+    "height": 26
+  },
+  "anchors": {
+    "ground": [
+      11,
+      24
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      3,
+      12
+    ],
+    "size": [
+      16,
+      12
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "sheet_smoke_campfire_anim",
+  "texture": "environment/atmosphere/smoke/smoke_campfire_anim.png",
+  "frame_width": 24,
+  "frame_height": 40,
+  "columns": 6,
+  "rows": 1,
+  "frame_count": 6,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "bow_wooden_hunting_001",
+  "display_name": "Wooden Hunting Bow",
+  "category": "bow",
+  "subcategory": "hunting_bow",
+  "description": "A supple self-bow crafted from seasoned ash wood with waxed hemp bowstring, favored by woodsmen.",
+  "icon_file": "weapons/icons/bow_wooden_hunting_001_icon.png",
+  "ground_file": "weapons/ground/bow_wooden_hunting_001_ground.png",
+  "held_file": "weapons/held/bow_wooden_hunting_001_held.png",
+  "anim_file": "weapons/animations/bow_wooden_hunting_001_anim.png",
+  "grip_anchor": {
+    "x": 16.0,
+    "y": 16.0
+  },
+  "render_order": {
+    "down": 85,
+    "up": 18,
+    "left": 85,
+    "right": 85
+  },
+  "hand": "both_hands",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "animation_frames": [
+    "idle",
+    "draw",
+    "hold",
+    "release"
+  ]
+}

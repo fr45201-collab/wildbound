@@ -1,0 +1,35 @@
+{
+    "id": "clo_basic_traveler_001",
+    "display_name": "Basic Traveler Shirt",
+    "category": "clothing",
+    "slot": "shirt",
+    "description": "Linen traveler shirt with laced neck and rolled brown cuffs.",
+    "sprite": "cosmetics/clothing/clo_basic_traveler_001/sprite.png",
+    "spritesheet": "sheet_clo_basic_traveler_001",
+    "texture": "tex_clo_basic_traveler_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "shirt",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

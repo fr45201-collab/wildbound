@@ -1,0 +1,35 @@
+{
+    "id": "sho_leather_boots_001",
+    "display_name": "Leather Boots",
+    "category": "footwear",
+    "slot": "shoes",
+    "description": "Mid-calf brown leather explorer boots with folded cuffs.",
+    "sprite": "cosmetics/footwear/sho_leather_boots_001/sprite.png",
+    "spritesheet": "sheet_sho_leather_boots_001",
+    "texture": "tex_sho_leather_boots_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "shoes",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

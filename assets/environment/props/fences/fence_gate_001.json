@@ -1,0 +1,41 @@
+{
+  "id": "fence_gate_001",
+  "name": "Wooden Fence Gate",
+  "category": "prop",
+  "subcategory": "fences",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/fences/fence_gate_001.png",
+  "dimensions": {
+    "width": 32,
+    "height": 24
+  },
+  "anchors": {
+    "ground": [
+      16,
+      22
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      1,
+      14
+    ],
+    "size": [
+      30,
+      8
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

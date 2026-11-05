@@ -1,0 +1,35 @@
+{
+    "id": "sho_iron_boots_001",
+    "display_name": "Iron Boots",
+    "category": "footwear",
+    "slot": "shoes",
+    "description": "Heavy forged iron sabatons offering substantial foot protection.",
+    "sprite": "cosmetics/footwear/sho_iron_boots_001/sprite.png",
+    "spritesheet": "sheet_sho_iron_boots_001",
+    "texture": "tex_sho_iron_boots_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "shoes",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

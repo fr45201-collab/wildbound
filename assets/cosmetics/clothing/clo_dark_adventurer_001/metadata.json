@@ -1,0 +1,35 @@
+{
+    "id": "clo_dark_adventurer_001",
+    "display_name": "Dark Adventurer Outfit",
+    "category": "clothing",
+    "slot": "shirt",
+    "description": "Muted stealth adventurer tunic designed for night scouting.",
+    "sprite": "cosmetics/clothing/clo_dark_adventurer_001/sprite.png",
+    "spritesheet": "sheet_clo_dark_adventurer_001",
+    "texture": "tex_clo_dark_adventurer_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "shirt",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

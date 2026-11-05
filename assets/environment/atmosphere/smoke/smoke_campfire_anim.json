@@ -1,0 +1,28 @@
+{
+  "id": "smoke_campfire_anim",
+  "name": "Campfire Thermal Smoke",
+  "category": "atmosphere",
+  "subcategory": "smoke",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/atmosphere/smoke/smoke_campfire_anim.png",
+  "spritesheet": "sheet_smoke_campfire_anim",
+  "dimensions": {
+    "frame_width": 24,
+    "frame_height": 40,
+    "columns": 6,
+    "rows": 1,
+    "frame_count": 6
+  },
+  "animation": {
+    "name": "smoke_campfire_anim_loop",
+    "frame_duration": 0.14,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

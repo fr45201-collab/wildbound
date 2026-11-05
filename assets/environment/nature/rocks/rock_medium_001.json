@@ -1,0 +1,41 @@
+{
+  "id": "rock_medium_001",
+  "name": "Medium Rock",
+  "category": "nature",
+  "subcategory": "rocks",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/rocks/rock_medium_001.png",
+  "dimensions": {
+    "width": 24,
+    "height": 20
+  },
+  "anchors": {
+    "ground": [
+      12,
+      18
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      4,
+      10
+    ],
+    "size": [
+      16,
+      9
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

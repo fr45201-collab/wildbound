@@ -1,0 +1,51 @@
+{
+    "biomes": {
+        "forest": {
+            "music": "mus_forest",
+            "ambient_layers": [
+                "amb_forest_wind",
+                "amb_forest_birds",
+                "amb_forest_river"
+            ],
+            "default_volume": 0.7
+        },
+        "desert": {
+            "music": "mus_desert",
+            "ambient_layers": [
+                "amb_desert_wind"
+            ],
+            "default_volume": 0.75
+        },
+        "snow": {
+            "music": "mus_snow",
+            "ambient_layers": [
+                "amb_snow_blizzard"
+            ],
+            "default_volume": 0.7
+        },
+        "swamp": {
+            "music": "mus_swamp",
+            "ambient_layers": [
+                "amb_swamp_insects"
+            ],
+            "default_volume": 0.75
+        },
+        "mountain": {
+            "music": "mus_mountain",
+            "ambient_layers": [
+                "amb_mountain_wind",
+                "amb_waterfall_heavy"
+            ],
+            "default_volume": 0.75
+        },
+        "village": {
+            "music": "mus_village",
+            "ambient_layers": [
+                "amb_village_market",
+                "amb_village_blacksmith",
+                "amb_indoor_fireplace"
+            ],
+            "default_volume": 0.7
+        }
+    }
+}

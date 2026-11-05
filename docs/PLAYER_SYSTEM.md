@@ -85,3 +85,4 @@ In top-down 2D rendering, visual sprites and collision footprints must share a c
 * **Sprite Alignment**: The 32×48 sprite texture has its origin at `(16, 48)`. Dest rect is calculated as `(pos.x - 16, pos.y - 48, 32, 48)`.
 * **Collision Alignment**: The 16×12 collision box is centered horizontally at `pos.x` and extends upwards by 12 pixels (`pos.y - 12` to `pos.y`).
 * **Depth Interleaving**: The Y-sorting pass in `WorldRenderer` uses `m_position.y` as the entity's baseline Z-order, ensuring that the player's head and torso naturally overlap behind environmental obstacles (trees, rocks, walls) while the feet remain blocked in front.
+

@@ -1,0 +1,28 @@
+{
+  "id": "fire_small_anim",
+  "name": "Small Torch Fire Animation",
+  "category": "animated_environment",
+  "subcategory": "fire",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/fire/fire_small_anim.png",
+  "spritesheet": "sheet_fire_small_anim",
+  "dimensions": {
+    "frame_width": 16,
+    "frame_height": 24,
+    "columns": 6,
+    "rows": 1,
+    "frame_count": 6
+  },
+  "animation": {
+    "name": "fire_small_anim_loop",
+    "frame_duration": 0.1,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

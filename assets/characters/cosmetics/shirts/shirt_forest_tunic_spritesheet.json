@@ -1,0 +1,12 @@
+{
+    "id": "sheet_shirt_forest_tunic",
+    "texture": "characters/cosmetics/shirts/shirt_forest_tunic_spritesheet.png",
+    "frame_width": 32,
+    "frame_height": 48,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32,
+    "spacing": 0,
+    "margin": 0,
+    "origin": "bottom_center"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "bow_reinforced_001",
+  "display_name": "Reinforced Bow",
+  "category": "bow",
+  "subcategory": "composite_bow",
+  "description": "A heavy laminated composite bow reinforced with tempered iron bands and water-treated leather.",
+  "icon_file": "weapons/icons/bow_reinforced_001_icon.png",
+  "ground_file": "weapons/ground/bow_reinforced_001_ground.png",
+  "held_file": "weapons/held/bow_reinforced_001_held.png",
+  "anim_file": "weapons/animations/bow_reinforced_001_anim.png",
+  "grip_anchor": {
+    "x": 16.0,
+    "y": 16.0
+  },
+  "render_order": {
+    "down": 85,
+    "up": 18,
+    "left": 85,
+    "right": 85
+  },
+  "hand": "both_hands",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "animation_frames": [
+    "idle",
+    "draw",
+    "hold",
+    "release"
+  ]
+}

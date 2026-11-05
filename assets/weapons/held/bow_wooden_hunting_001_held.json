@@ -1,0 +1,12 @@
+{
+  "id": "sheet_bow_wooden_hunting_001_held",
+  "texture": "weapons/held/bow_wooden_hunting_001_held.png",
+  "frame_width": 32,
+  "frame_height": 32,
+  "columns": 4,
+  "rows": 1,
+  "frame_count": 4,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

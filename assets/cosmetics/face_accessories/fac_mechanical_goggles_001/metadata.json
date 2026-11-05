@@ -1,0 +1,35 @@
+{
+    "id": "fac_mechanical_goggles_001",
+    "display_name": "Mechanical Goggles",
+    "category": "face_accessories",
+    "slot": "goggles",
+    "description": "Complex steampunk multi-lens goggles with optical gears.",
+    "sprite": "cosmetics/face_accessories/fac_mechanical_goggles_001/sprite.png",
+    "spritesheet": "sheet_fac_mechanical_goggles_001",
+    "texture": "tex_fac_mechanical_goggles_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "goggles",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

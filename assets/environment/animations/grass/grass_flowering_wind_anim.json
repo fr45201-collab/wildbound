@@ -1,0 +1,28 @@
+{
+  "id": "grass_flowering_wind_anim",
+  "name": "Flowering Grass Wind Sway",
+  "category": "animated_environment",
+  "subcategory": "grass",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/grass/grass_flowering_wind_anim.png",
+  "spritesheet": "sheet_grass_flowering_wind_anim",
+  "dimensions": {
+    "frame_width": 24,
+    "frame_height": 24,
+    "columns": 4,
+    "rows": 1,
+    "frame_count": 4
+  },
+  "animation": {
+    "name": "grass_flowering_wind_anim_loop",
+    "frame_duration": 0.2,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

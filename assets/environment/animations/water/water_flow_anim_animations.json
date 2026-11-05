@@ -1,0 +1,16 @@
+{
+  "animations": [
+    {
+      "animation": "water_flow_anim_loop",
+      "spritesheet": "sheet_water_flow_anim",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

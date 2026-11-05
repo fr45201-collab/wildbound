@@ -90,6 +90,7 @@ Texture2D TextureManager::LoadTextureFile(const std::string& id, const std::stri
     std::string resolvedPath = ResolvePath(relativePath);
     if (!fs::exists(resolvedPath)) {
         Logger::Error("TEXTURE_MGR", "Texture file not found for asset '" + id + "': " + resolvedPath);
+        m_textures[id] = m_fallbackTexture;
         return m_fallbackTexture;
     }
 

@@ -1,0 +1,54 @@
+{
+  "id": "wolf",
+  "name": "Forest Wolf",
+  "type": "beast",
+  "faction": "monsters",
+  "spritesheet": "wolf_spritesheet",
+  "stats": {
+    "walk_speed": 75.0,
+    "run_speed": 135.0,
+    "normalize_diagonal": true
+  },
+  "health": {
+    "max_health": 45.0,
+    "initial_health": 45.0,
+    "regeneration_enabled": false,
+    "regeneration_rate": 0.0
+  },
+  "collision": {
+    "enabled": true,
+    "width": 22.0,
+    "height": 14.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "combat": {
+    "default_attack": "wolf_bite",
+    "attack_cooldown": 0.85,
+    "attack_range": 30.0
+  },
+  "ai": {
+    "behavior_script": "scripts/gameplay/ai/enemy_base.lua",
+    "detection_radius": 160.0,
+    "attack_radius": 34.0,
+    "retreat_health_percent": 0.15,
+    "decision_interval": 0.15,
+    "patrol_radius": 100.0
+  },
+  "animations": {
+    "idle_down": "wolf_idle_down",
+    "idle_up": "wolf_idle_up",
+    "idle_left": "wolf_idle_left",
+    "idle_right": "wolf_idle_right",
+    "walk_down": "wolf_walk_down",
+    "walk_up": "wolf_walk_up",
+    "walk_left": "wolf_walk_left",
+    "walk_right": "wolf_walk_right",
+    "attack_down": "wolf_attack_down",
+    "attack_up": "wolf_attack_up",
+    "attack_left": "wolf_attack_left",
+    "attack_right": "wolf_attack_right",
+    "hurt_down": "wolf_hurt_down",
+    "death_down": "wolf_death_down"
+  }
+}

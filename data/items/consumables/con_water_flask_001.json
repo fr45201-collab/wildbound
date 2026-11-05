@@ -1,0 +1,17 @@
+{
+  "id": "con_water_flask_001",
+  "display_name": "Water Flask",
+  "category": "consumable",
+  "subcategory": "drink",
+  "description": "A curved leather and brass canteen filled with cold, refreshing glacial spring water.",
+  "icon_file": "items/icons/con_water_flask_001_icon.png",
+  "world_file": "items/world/con_water_flask_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "snow",
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "common"
+}

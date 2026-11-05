@@ -1,0 +1,36 @@
+{
+    "id": "mask_mystic_001",
+    "name": "Mystic Mask",
+    "category": "mask",
+    "layer": "face_mask",
+    "description": "Ornate porcelain arcane mask (full face coverage).",
+    "sprite": "characters/player/masks/mask_mystic_001/sprite.png",
+    "spritesheet": "sheet_mask_mystic_001",
+    "texture": "tex_mask_mystic_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [
+        "mask_hide_goggles"
+    ],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

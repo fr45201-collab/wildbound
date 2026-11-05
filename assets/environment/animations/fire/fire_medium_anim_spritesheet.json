@@ -1,0 +1,12 @@
+{
+  "id": "sheet_fire_medium_anim",
+  "texture": "environment/animations/fire/fire_medium_anim.png",
+  "frame_width": 24,
+  "frame_height": 32,
+  "columns": 6,
+  "rows": 1,
+  "frame_count": 6,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

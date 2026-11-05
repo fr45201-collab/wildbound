@@ -1,0 +1,17 @@
+{
+  "id": "spc_ancient_key_001",
+  "display_name": "Ancient Key",
+  "category": "special",
+  "subcategory": "key",
+  "description": "A heavy golden key with an intricate labyrinthine bit, crafted to unlock forgotten sanctum gates.",
+  "icon_file": "items/icons/spc_ancient_key_001_icon.png",
+  "world_file": "items/world/spc_ancient_key_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "snow",
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "epic"
+}

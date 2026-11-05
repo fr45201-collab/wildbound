@@ -1,0 +1,35 @@
+{
+    "id": "hat_forest_ranger_hood_001",
+    "display_name": "Forest Ranger Hood",
+    "category": "headwear",
+    "slot": "headwear",
+    "description": "Hunter's green hood fitted with a golden oak-leaf clasp.",
+    "sprite": "cosmetics/headwear/hat_forest_ranger_hood_001/sprite.png",
+    "spritesheet": "sheet_hat_forest_ranger_hood_001",
+    "texture": "tex_hat_forest_ranger_hood_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "headwear",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

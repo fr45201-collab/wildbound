@@ -1,0 +1,32 @@
+{
+  "id": "grass_forest_001",
+  "name": "Lush Forest Grass",
+  "category": "nature",
+  "subcategory": "grass",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/grass/grass_forest_001.png",
+  "dimensions": {
+    "width": 32,
+    "height": 24
+  },
+  "anchors": {
+    "ground": [
+      16,
+      22
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "ground_decor",
+    "y_sort": false
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

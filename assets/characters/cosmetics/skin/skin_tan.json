@@ -1,0 +1,19 @@
+{
+    "id": "skin_tan",
+    "name": "Sun-Kissed Tan Skin",
+    "category": "skin",
+    "spritesheet": "sheet_skin_tan",
+    "texture": "tex_skin_tan",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

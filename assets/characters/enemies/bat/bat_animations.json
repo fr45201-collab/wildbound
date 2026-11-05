@@ -1,0 +1,169 @@
+{
+  "animations": [
+    {
+      "animation": "bat_fly_down",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "animation": "bat_fly_up",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "animation": "bat_fly_left",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "animation": "bat_fly_right",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "animation": "bat_move_down",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "animation": "bat_move_up",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "animation": "bat_move_left",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "animation": "bat_move_right",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        28,
+        29,
+        30,
+        31
+      ]
+    },
+    {
+      "animation": "bat_attack_down",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.08,
+      "loop": false,
+      "frames": [
+        0,
+        17,
+        18,
+        0
+      ]
+    },
+    {
+      "animation": "bat_attack_up",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.08,
+      "loop": false,
+      "frames": [
+        4,
+        21,
+        22,
+        4
+      ]
+    },
+    {
+      "animation": "bat_attack_left",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.08,
+      "loop": false,
+      "frames": [
+        8,
+        25,
+        26,
+        8
+      ]
+    },
+    {
+      "animation": "bat_attack_right",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.08,
+      "loop": false,
+      "frames": [
+        12,
+        29,
+        30,
+        12
+      ]
+    },
+    {
+      "animation": "bat_hurt_down",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.15,
+      "loop": false,
+      "frames": [
+        2,
+        0
+      ]
+    },
+    {
+      "animation": "bat_death_down",
+      "spritesheet": "bat_spritesheet",
+      "frame_duration": 0.25,
+      "loop": false,
+      "frames": [
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

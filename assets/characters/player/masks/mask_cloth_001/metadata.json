@@ -1,0 +1,34 @@
+{
+    "id": "mask_cloth_001",
+    "name": "Cloth Mask",
+    "category": "mask",
+    "layer": "face_mask",
+    "description": "Simple dark cloth scout face covering.",
+    "sprite": "characters/player/masks/mask_cloth_001/sprite.png",
+    "spritesheet": "sheet_mask_cloth_001",
+    "texture": "tex_mask_cloth_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

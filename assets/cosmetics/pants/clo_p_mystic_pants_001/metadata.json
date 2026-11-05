@@ -1,0 +1,35 @@
+{
+    "id": "clo_p_mystic_pants_001",
+    "display_name": "Mystic Pants",
+    "category": "pants",
+    "slot": "pants",
+    "description": "Midnight violet scholar's breeches hemmed with gold silk.",
+    "sprite": "cosmetics/pants/clo_p_mystic_pants_001/sprite.png",
+    "spritesheet": "sheet_clo_p_mystic_pants_001",
+    "texture": "tex_clo_p_mystic_pants_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "pants",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

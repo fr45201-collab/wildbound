@@ -1,0 +1,69 @@
+{
+  "regions": [
+    {
+      "biome_id": "forest",
+      "name": "Verdant Forest",
+      "bounds": {
+        "x": 1920.0,
+        "y": 3840.0,
+        "width": 4480.0,
+        "height": 4480.0
+      },
+      "tileset": "forest_tileset",
+      "audio_profile": "amb_forest_day",
+      "settlement_id": "greenwood_village"
+    },
+    {
+      "biome_id": "desert",
+      "name": "Sunscorched Wastes",
+      "bounds": {
+        "x": 5440.0,
+        "y": 4960.0,
+        "width": 3840.0,
+        "height": 3840.0
+      },
+      "tileset": "desert_tileset",
+      "audio_profile": "amb_desert_wind",
+      "settlement_id": "sunfall_outpost"
+    },
+    {
+      "biome_id": "snow",
+      "name": "Frostfall Taiga",
+      "bounds": {
+        "x": 6400.0,
+        "y": 800.0,
+        "width": 3200.0,
+        "height": 3840.0
+      },
+      "tileset": "snow_tileset",
+      "audio_profile": "amb_snow_blizzard",
+      "settlement_id": "frostpeak_village"
+    },
+    {
+      "biome_id": "swamp",
+      "name": "Murkwood Mire",
+      "bounds": {
+        "x": 960.0,
+        "y": 1120.0,
+        "width": 3040.0,
+        "height": 3360.0
+      },
+      "tileset": "swamp_tileset",
+      "audio_profile": "amb_swamp_murk",
+      "settlement_id": "mirewood_settlement"
+    },
+    {
+      "biome_id": "mountain",
+      "name": "Iron Crag Highlands",
+      "bounds": {
+        "x": 3520.0,
+        "y": 800.0,
+        "width": 3200.0,
+        "height": 3040.0
+      },
+      "tileset": "mountain_tileset",
+      "audio_profile": "amb_mountain_peaks",
+      "settlement_id": "highstone_village"
+    }
+  ]
+}

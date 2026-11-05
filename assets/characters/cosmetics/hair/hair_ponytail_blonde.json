@@ -1,0 +1,19 @@
+{
+    "id": "hair_ponytail_blonde",
+    "name": "Blonde Ponytail",
+    "category": "hair",
+    "spritesheet": "sheet_hair_ponytail_blonde",
+    "texture": "tex_hair_ponytail_blonde",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

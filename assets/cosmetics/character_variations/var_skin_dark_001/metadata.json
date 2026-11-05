@@ -1,0 +1,35 @@
+{
+    "id": "var_skin_dark_001",
+    "display_name": "Umber Skin Appearance",
+    "category": "character_variations",
+    "slot": "skin",
+    "description": "Deep umber rich skin tone option for player customization.",
+    "sprite": "cosmetics/character_variations/var_skin_dark_001/sprite.png",
+    "spritesheet": "sheet_var_skin_dark_001",
+    "texture": "tex_var_skin_dark_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "skin",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

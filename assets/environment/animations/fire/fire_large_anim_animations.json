@@ -1,0 +1,18 @@
+{
+  "animations": [
+    {
+      "animation": "fire_large_anim_loop",
+      "spritesheet": "sheet_fire_large_anim",
+      "frame_duration": 0.08,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ]
+    }
+  ]
+}

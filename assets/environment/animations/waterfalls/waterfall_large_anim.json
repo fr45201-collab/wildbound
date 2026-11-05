@@ -1,0 +1,28 @@
+{
+  "id": "waterfall_large_anim",
+  "name": "Large Waterfall Animation",
+  "category": "animated_environment",
+  "subcategory": "waterfalls",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/waterfalls/waterfall_large_anim.png",
+  "spritesheet": "sheet_waterfall_large_anim",
+  "dimensions": {
+    "frame_width": 64,
+    "frame_height": 80,
+    "columns": 6,
+    "rows": 1,
+    "frame_count": 6
+  },
+  "animation": {
+    "name": "waterfall_large_anim_loop",
+    "frame_duration": 0.09,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

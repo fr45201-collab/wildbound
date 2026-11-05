@@ -1,0 +1,14 @@
+{
+  "id": "con_apple_001",
+  "display_name": "Apple",
+  "category": "consumable",
+  "subcategory": "food",
+  "description": "A sweet, crisp red orchard apple with a fresh stem and leaf, picked from highland orchards.",
+  "icon_file": "items/icons/con_apple_001_icon.png",
+  "world_file": "items/world/con_apple_001_world.png",
+  "biome_tags": [
+    "forest",
+    "mountain"
+  ],
+  "rarity_tier": "common"
+}

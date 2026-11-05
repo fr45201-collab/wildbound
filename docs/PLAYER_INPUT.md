@@ -23,3 +23,4 @@
 | `F4` | Debug Overlay | Entity Origin Marker | Toggles crosshair at the player's ground anchor point |
 | `F5` | Debug Overlay | Animation HUD | Displays live movement state, current clip, frame index, and facing |
 | `R` | Gameplay / Debug | Reset to Spawn | Instantly teleports player to map's `player_spawn` marker |
+

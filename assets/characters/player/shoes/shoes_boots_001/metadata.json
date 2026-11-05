@@ -1,0 +1,34 @@
+{
+    "id": "shoes_boots_001",
+    "name": "Leather Boots",
+    "category": "shoes",
+    "layer": "footwear",
+    "description": "Standard sturdy adventurer leather boots.",
+    "sprite": "characters/player/shoes/shoes_boots_001/sprite.png",
+    "spritesheet": "sheet_shoes_boots_001",
+    "texture": "tex_shoes_boots_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

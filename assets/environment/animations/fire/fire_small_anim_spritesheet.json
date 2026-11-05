@@ -1,0 +1,12 @@
+{
+  "id": "sheet_fire_small_anim",
+  "texture": "environment/animations/fire/fire_small_anim.png",
+  "frame_width": 16,
+  "frame_height": 24,
+  "columns": 6,
+  "rows": 1,
+  "frame_count": 6,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "bow_recurve_001",
+  "display_name": "Recurve Bow",
+  "category": "bow",
+  "subcategory": "recurve_bow",
+  "description": "An agile equestrian recurve bow featuring backward-curving horn tips for compact power and fast draw cycles.",
+  "icon_file": "weapons/icons/bow_recurve_001_icon.png",
+  "ground_file": "weapons/ground/bow_recurve_001_ground.png",
+  "held_file": "weapons/held/bow_recurve_001_held.png",
+  "anim_file": "weapons/animations/bow_recurve_001_anim.png",
+  "grip_anchor": {
+    "x": 16.0,
+    "y": 16.0
+  },
+  "render_order": {
+    "down": 85,
+    "up": 18,
+    "left": 85,
+    "right": 85
+  },
+  "hand": "both_hands",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "animation_frames": [
+    "idle",
+    "draw",
+    "hold",
+    "release"
+  ]
+}

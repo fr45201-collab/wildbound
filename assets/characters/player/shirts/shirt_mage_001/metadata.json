@@ -1,0 +1,34 @@
+{
+    "id": "shirt_mage_001",
+    "name": "Mystic Robe",
+    "category": "shirt",
+    "layer": "upper_body",
+    "description": "Arcane fantasy robe with gold runic trim.",
+    "sprite": "characters/player/shirts/shirt_mage_001/sprite.png",
+    "spritesheet": "sheet_shirt_mage_001",
+    "texture": "tex_shirt_mage_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

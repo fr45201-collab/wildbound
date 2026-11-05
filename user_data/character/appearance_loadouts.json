@@ -1,0 +1,16 @@
+{
+    "active_appearance": {
+        "base_body": "sheet_skin_default",
+        "slots": {
+            "Back": "back_traveler_backpack",
+            "Chest": "shirt_leather_001",
+            "Feet": "shoes_leather_boots",
+            "Hair": "hair_short_brown",
+            "Headwear": "hat_adventurer_001",
+            "Legs": "pants_traveler_trousers",
+            "Skin": "skin_default"
+        }
+    },
+    "loadouts": [],
+    "schema_version": 1
+}

@@ -1,0 +1,13 @@
+{
+  "id": "mat_cloth_001",
+  "display_name": "Cloth",
+  "category": "material",
+  "subcategory": "processed_material",
+  "description": "A tightly woven bolt of bleached flax linen cloth used for tailored clothing, sails, and bandages.",
+  "icon_file": "items/icons/mat_cloth_001_icon.png",
+  "world_file": "items/world/mat_cloth_001_world.png",
+  "biome_tags": [
+    "forest"
+  ],
+  "rarity_tier": "common"
+}

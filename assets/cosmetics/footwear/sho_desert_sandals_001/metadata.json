@@ -1,0 +1,35 @@
+{
+    "id": "sho_desert_sandals_001",
+    "display_name": "Desert Sandals",
+    "category": "footwear",
+    "slot": "shoes",
+    "description": "Sturdy leather desert sandals with cross-straps and toe loops.",
+    "sprite": "cosmetics/footwear/sho_desert_sandals_001/sprite.png",
+    "spritesheet": "sheet_sho_desert_sandals_001",
+    "texture": "tex_sho_desert_sandals_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "shoes",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

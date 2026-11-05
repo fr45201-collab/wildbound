@@ -1,0 +1,17 @@
+{
+  "id": "col_gold_coin_001",
+  "display_name": "Gold Coin",
+  "category": "collectible",
+  "subcategory": "currency",
+  "description": "A minted royal gold coin stamped with an imperial dragon emblem. The standard currency of the realm.",
+  "icon_file": "items/icons/col_gold_coin_001_icon.png",
+  "world_file": "items/world/col_gold_coin_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "snow",
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "uncommon"
+}

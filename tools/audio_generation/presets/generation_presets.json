@@ -1,0 +1,14 @@
+{
+    "sample_rate": 44100,
+    "format": "PCM_16",
+    "categories": {
+        "footsteps": { "duration": 0.13, "bus": "sfx", "channels": 1 },
+        "weapons": { "duration": 0.25, "bus": "sfx", "channels": 1 },
+        "combat": { "duration": 0.30, "bus": "combat", "channels": 1 },
+        "creatures": { "duration": 0.35, "bus": "creatures", "channels": 1 },
+        "ui": { "duration": 0.12, "bus": "ui", "channels": 1 },
+        "ambience": { "duration": 8.0, "bus": "environment", "channels": 2, "looping": true },
+        "music": { "duration": 10.0, "bus": "music", "channels": 2, "looping": true }
+    }
+}
+

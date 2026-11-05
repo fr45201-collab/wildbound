@@ -1,0 +1,67 @@
+{
+  "id": "house_stone_small_001",
+  "name": "Small Stone House",
+  "category": "building",
+  "subcategory": "houses",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/houses/house_stone_small_001.png",
+  "dimensions": {
+    "width": 80,
+    "height": 80
+  },
+  "anchors": {
+    "ground": [
+      40,
+      76
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      8,
+      36
+    ],
+    "size": [
+      64,
+      40
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    40,
+    76
+  ],
+  "door": [
+    40,
+    74
+  ],
+  "windows": [
+    [
+      24,
+      60
+    ],
+    [
+      56,
+      60
+    ]
+  ],
+  "roof": {
+    "width": 76,
+    "height": 34
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_house_stone_small_001"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "id": "tree_oak_001",
+  "name": "Small Oak Tree",
+  "category": "nature",
+  "subcategory": "trees/oak",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/trees/oak/tree_oak_001.png",
+  "dimensions": {
+    "width": 48,
+    "height": 64
+  },
+  "anchors": {
+    "ground": [
+      24,
+      60
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      16,
+      52
+    ],
+    "size": [
+      16,
+      10
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

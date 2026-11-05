@@ -1,0 +1,14 @@
+{
+  "id": "mat_gold_ore_001",
+  "display_name": "Gold Ore",
+  "category": "material",
+  "subcategory": "raw_material",
+  "description": "A glittering rock chunk interveined with veins and specks of raw yellow gold.",
+  "icon_file": "items/icons/mat_gold_ore_001_icon.png",
+  "world_file": "items/world/mat_gold_ore_001_world.png",
+  "biome_tags": [
+    "mountain",
+    "desert"
+  ],
+  "rarity_tier": "uncommon"
+}

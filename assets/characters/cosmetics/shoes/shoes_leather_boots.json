@@ -1,0 +1,19 @@
+{
+    "id": "shoes_leather_boots",
+    "name": "Leather Boots",
+    "category": "shoes",
+    "spritesheet": "sheet_shoes_leather_boots",
+    "texture": "tex_shoes_leather_boots",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

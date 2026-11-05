@@ -1,0 +1,36 @@
+{
+    "id": "hat_helmet_001",
+    "name": "Iron Helmet",
+    "category": "hat",
+    "layer": "headwear",
+    "description": "Medieval steel helmet with visor slit.",
+    "sprite": "characters/player/hats/hat_helmet_001/sprite.png",
+    "spritesheet": "sheet_hat_helmet_001",
+    "texture": "tex_hat_helmet_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [
+        "hair_hide_all"
+    ],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

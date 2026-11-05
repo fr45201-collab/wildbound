@@ -1,0 +1,41 @@
+{
+  "id": "sign_direction_001",
+  "name": "Village Direction Signpost",
+  "category": "prop",
+  "subcategory": "signs",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/signs/sign_direction_001.png",
+  "dimensions": {
+    "width": 24,
+    "height": 36
+  },
+  "anchors": {
+    "ground": [
+      12,
+      34
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      8,
+      26
+    ],
+    "size": [
+      8,
+      8
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "blacksmith_forge_001",
+  "name": "Village Blacksmith Forge",
+  "category": "building",
+  "subcategory": "blacksmith",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/blacksmith/blacksmith_forge_001.png",
+  "dimensions": {
+    "width": 112,
+    "height": 96
+  },
+  "anchors": {
+    "ground": [
+      56,
+      92
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      11,
+      44
+    ],
+    "size": [
+      90,
+      48
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    66,
+    92
+  ],
+  "door": [
+    66,
+    90
+  ],
+  "windows": [
+    [
+      84,
+      76
+    ]
+  ],
+  "roof": {
+    "width": 102,
+    "height": 36
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_blacksmith_forge_001"
+  }
+}

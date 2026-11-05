@@ -1,0 +1,67 @@
+{
+  "id": "watchtower_wood_001",
+  "name": "Wooden Watchtower",
+  "category": "building",
+  "subcategory": "watchtowers",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/watchtowers/watchtower_wood_001.png",
+  "dimensions": {
+    "width": 64,
+    "height": 112
+  },
+  "anchors": {
+    "ground": [
+      32,
+      108
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      12,
+      72
+    ],
+    "size": [
+      40,
+      36
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    32,
+    108
+  ],
+  "door": [
+    32,
+    106
+  ],
+  "windows": [
+    [
+      25,
+      28
+    ],
+    [
+      39,
+      28
+    ]
+  ],
+  "roof": {
+    "width": 48,
+    "height": 20
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_watchtower_wood_001"
+  }
+}

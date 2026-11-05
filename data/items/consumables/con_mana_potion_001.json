@@ -1,0 +1,15 @@
+{
+  "id": "con_mana_potion_001",
+  "display_name": "Mana Potion",
+  "category": "consumable",
+  "subcategory": "potion",
+  "description": "A slender alchemical phial glowing with luminous cobalt fluid that recharges mystical reserves.",
+  "icon_file": "items/icons/con_mana_potion_001_icon.png",
+  "world_file": "items/world/con_mana_potion_001_world.png",
+  "biome_tags": [
+    "forest",
+    "snow",
+    "mountain"
+  ],
+  "rarity_tier": "uncommon"
+}

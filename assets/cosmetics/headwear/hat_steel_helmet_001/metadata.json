@@ -1,0 +1,37 @@
+{
+    "id": "hat_steel_helmet_001",
+    "display_name": "Steel Helmet",
+    "category": "headwear",
+    "slot": "headwear",
+    "description": "Full-face polished knight's bascinet with eye slits.",
+    "sprite": "cosmetics/headwear/hat_steel_helmet_001/sprite.png",
+    "spritesheet": "sheet_hat_steel_helmet_001",
+    "texture": "tex_hat_steel_helmet_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [
+        "hair_hide_all"
+    ],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "headwear",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

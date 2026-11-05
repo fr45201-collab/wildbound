@@ -1,0 +1,28 @@
+{
+  "id": "water_river_anim",
+  "name": "Flowing River Water Animation",
+  "category": "animated_environment",
+  "subcategory": "water",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/water/water_river_anim.png",
+  "spritesheet": "sheet_water_river_anim",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "columns": 4,
+    "rows": 1,
+    "frame_count": 4
+  },
+  "animation": {
+    "name": "water_river_anim_loop",
+    "frame_duration": 0.14,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

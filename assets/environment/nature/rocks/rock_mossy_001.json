@@ -1,0 +1,41 @@
+{
+  "id": "rock_mossy_001",
+  "name": "Mossy Rock",
+  "category": "nature",
+  "subcategory": "rocks",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/rocks/rock_mossy_001.png",
+  "dimensions": {
+    "width": 32,
+    "height": 28
+  },
+  "anchors": {
+    "ground": [
+      16,
+      26
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      5,
+      14
+    ],
+    "size": [
+      22,
+      12
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

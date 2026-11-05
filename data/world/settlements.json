@@ -1,0 +1,54 @@
+{
+  "settlements": [
+    {
+      "id": "greenwood_village",
+      "name": "Greenwood Village",
+      "biome": "forest",
+      "center": [
+        4160.0,
+        5920.0
+      ],
+      "radius": 450.0
+    },
+    {
+      "id": "sunfall_outpost",
+      "name": "Sunfall Outpost",
+      "biome": "desert",
+      "center": [
+        7680.0,
+        7520.0
+      ],
+      "radius": 400.0
+    },
+    {
+      "id": "frostpeak_village",
+      "name": "Frostpeak Village",
+      "biome": "snow",
+      "center": [
+        7840.0,
+        2560.0
+      ],
+      "radius": 400.0
+    },
+    {
+      "id": "mirewood_settlement",
+      "name": "Mirewood Settlement",
+      "biome": "swamp",
+      "center": [
+        2400.0,
+        2720.0
+      ],
+      "radius": 380.0
+    },
+    {
+      "id": "highstone_village",
+      "name": "Highstone Village",
+      "biome": "mountain",
+      "center": [
+        5120.0,
+        2080.0
+      ],
+      "radius": 420.0
+    }
+  ]
+}

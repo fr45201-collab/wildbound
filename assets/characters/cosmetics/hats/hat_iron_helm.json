@@ -1,0 +1,21 @@
+{
+    "id": "hat_iron_helm",
+    "name": "Iron Helmet",
+    "category": "headwear",
+    "spritesheet": "sheet_hat_iron_helm",
+    "texture": "tex_hat_iron_helm",
+    "occlusion_flags": [
+        "hair_hide_all"
+    ],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

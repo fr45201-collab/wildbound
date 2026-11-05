@@ -1,0 +1,34 @@
+{
+  "id": "arrow_iron_001",
+  "display_name": "Iron Broadhead Arrow",
+  "category": "ammunition",
+  "subcategory": "arrow",
+  "description": "Standard ash-shafted hunting arrow tipped with a forged steel broadhead and trimmed goose feather fletchings.",
+  "icon_file": "weapons/icons/arrow_iron_001_icon.png",
+  "ground_file": "weapons/ground/arrow_iron_001_ground.png",
+  "held_file": "weapons/held/arrow_iron_001_held.png",
+  "anim_file": "weapons/animations/arrow_iron_001_anim.png",
+  "grip_anchor": {
+    "x": 16.0,
+    "y": 16.0
+  },
+  "render_order": {
+    "down": 86,
+    "up": 17,
+    "left": 86,
+    "right": 86
+  },
+  "hand": "right_hand",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "animation_frames": [
+    "flight_1",
+    "flight_2",
+    "flight_3",
+    "impact"
+  ]
+}

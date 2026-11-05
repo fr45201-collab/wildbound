@@ -1,0 +1,79 @@
+{
+  "id": "house_twostory_001",
+  "name": "Two-Story Medieval House",
+  "category": "building",
+  "subcategory": "houses",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/houses/house_twostory_001.png",
+  "dimensions": {
+    "width": 120,
+    "height": 112
+  },
+  "anchors": {
+    "ground": [
+      60,
+      108
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      12,
+      54
+    ],
+    "size": [
+      96,
+      54
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    50,
+    108
+  ],
+  "door": [
+    50,
+    106
+  ],
+  "windows": [
+    [
+      30,
+      88
+    ],
+    [
+      78,
+      88
+    ],
+    [
+      96,
+      88
+    ],
+    [
+      40,
+      64
+    ],
+    [
+      80,
+      64
+    ]
+  ],
+  "roof": {
+    "width": 110,
+    "height": 42
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_house_twostory_001"
+  }
+}

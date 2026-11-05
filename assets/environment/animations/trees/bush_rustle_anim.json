@@ -1,0 +1,28 @@
+{
+  "id": "bush_rustle_anim",
+  "name": "Bush Wind Rustle Animation",
+  "category": "animated_environment",
+  "subcategory": "trees",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/trees/bush_rustle_anim.png",
+  "spritesheet": "sheet_bush_rustle_anim",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "columns": 4,
+    "rows": 1,
+    "frame_count": 4
+  },
+  "animation": {
+    "name": "bush_rustle_anim_loop",
+    "frame_duration": 0.18,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

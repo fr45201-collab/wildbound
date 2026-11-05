@@ -1,0 +1,16 @@
+{
+  "id": "spc_treasure_map_001",
+  "display_name": "Treasure Map",
+  "category": "special",
+  "subcategory": "document",
+  "description": "A tattered nautical map showing terrain contours, a compass rose, and a faded red X marking hidden cache coordinates.",
+  "icon_file": "items/icons/spc_treasure_map_001_icon.png",
+  "world_file": "items/world/spc_treasure_map_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "rare"
+}

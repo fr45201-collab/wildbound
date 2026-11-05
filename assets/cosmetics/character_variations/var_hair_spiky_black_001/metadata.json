@@ -1,0 +1,35 @@
+{
+    "id": "var_hair_spiky_black_001",
+    "display_name": "Spiky Obsidian Hair",
+    "category": "character_variations",
+    "slot": "hair",
+    "description": "Dynamic stylized spiky adventurer haircut in deep obsidian.",
+    "sprite": "cosmetics/character_variations/var_hair_spiky_black_001/sprite.png",
+    "spritesheet": "sheet_var_hair_spiky_black_001",
+    "texture": "tex_var_hair_spiky_black_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "hair",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "flower_blue_001",
+  "name": "Bluebells",
+  "category": "nature",
+  "subcategory": "flowers",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/flowers/flower_blue_001.png",
+  "dimensions": {
+    "width": 16,
+    "height": 16
+  },
+  "anchors": {
+    "ground": [
+      8,
+      14
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "ground_decor",
+    "y_sort": false
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

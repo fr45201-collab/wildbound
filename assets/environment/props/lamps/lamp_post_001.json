@@ -1,0 +1,41 @@
+{
+  "id": "lamp_post_001",
+  "name": "Wooden Post Street Lamp",
+  "category": "prop",
+  "subcategory": "lamps",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/lamps/lamp_post_001.png",
+  "dimensions": {
+    "width": 20,
+    "height": 48
+  },
+  "anchors": {
+    "ground": [
+      10,
+      46
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      5,
+      36
+    ],
+    "size": [
+      10,
+      10
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

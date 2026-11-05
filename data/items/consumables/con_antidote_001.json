@@ -1,0 +1,14 @@
+{
+  "id": "con_antidote_001",
+  "display_name": "Antidote",
+  "category": "consumable",
+  "subcategory": "potion",
+  "description": "A square apothecary vial of teal herbal tincture capable of neutralizing toxins and swamp venoms.",
+  "icon_file": "items/icons/con_antidote_001_icon.png",
+  "world_file": "items/world/con_antidote_001_world.png",
+  "biome_tags": [
+    "swamp",
+    "forest"
+  ],
+  "rarity_tier": "uncommon"
+}

@@ -1,0 +1,19 @@
+{
+    "id": "pants_traveler_trousers",
+    "name": "Traveler Trousers",
+    "category": "pants",
+    "spritesheet": "sheet_pants_traveler_trousers",
+    "texture": "tex_pants_traveler_trousers",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

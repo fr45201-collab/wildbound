@@ -1,0 +1,41 @@
+{
+  "id": "sign_noticeboard_001",
+  "name": "Wooden Notice Board",
+  "category": "prop",
+  "subcategory": "signs",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/signs/sign_noticeboard_001.png",
+  "dimensions": {
+    "width": 36,
+    "height": 36
+  },
+  "anchors": {
+    "ground": [
+      18,
+      34
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      4,
+      24
+    ],
+    "size": [
+      28,
+      10
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

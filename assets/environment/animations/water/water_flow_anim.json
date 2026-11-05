@@ -1,0 +1,28 @@
+{
+  "id": "water_flow_anim",
+  "name": "Rapid Water Current Animation",
+  "category": "animated_environment",
+  "subcategory": "water",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/water/water_flow_anim.png",
+  "spritesheet": "sheet_water_flow_anim",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "columns": 4,
+    "rows": 1,
+    "frame_count": 4
+  },
+  "animation": {
+    "name": "water_flow_anim_loop",
+    "frame_duration": 0.12,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

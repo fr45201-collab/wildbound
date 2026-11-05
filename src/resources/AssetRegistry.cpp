@@ -65,7 +65,8 @@ void AssetRegistry::Clear() {
 
 bool AssetRegistry::HasAsset(const std::string& id) const {
     std::lock_guard<std::mutex> lock(m_mutex);
-    return m_assets.find(id) != m_assets.end();
+    if (m_assets.find(id) != m_assets.end()) return true;
+    return m_fileToIdMap.find(id) != m_fileToIdMap.end();
 }
 
 const AssetMetadata* AssetRegistry::GetMetadata(const std::string& id) const {
@@ -73,6 +74,13 @@ const AssetMetadata* AssetRegistry::GetMetadata(const std::string& id) const {
     auto it = m_assets.find(id);
     if (it != m_assets.end()) {
         return &it->second;
+    }
+    auto fileIt = m_fileToIdMap.find(id);
+    if (fileIt != m_fileToIdMap.end()) {
+        auto it2 = m_assets.find(fileIt->second);
+        if (it2 != m_assets.end()) {
+            return &it2->second;
+        }
     }
     return nullptr;
 }

@@ -1,0 +1,21 @@
+{
+  "archetype": "goblin",
+  "detection_radius": 140.0,
+  "field_of_view": 120.0,
+  "attack_radius": 32.0,
+  "preferred_distance": 26.0,
+  "retreat_health_percent": 0.2,
+  "decision_interval": 0.2,
+  "pathfinding_interval": 0.35,
+  "pursuit_duration": 5.0,
+  "investigate_duration": 3.0,
+  "aggression_level": 1.0,
+  "can_retreat": true,
+  "omnidirectional_when_alert": true,
+  "patrol": {
+    "id": "goblin_roam",
+    "is_loop": true,
+    "points": []
+  }
+}
+

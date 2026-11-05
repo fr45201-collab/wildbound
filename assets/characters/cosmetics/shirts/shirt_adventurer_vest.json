@@ -1,0 +1,19 @@
+{
+    "id": "shirt_adventurer_vest",
+    "name": "Adventurer Vest",
+    "category": "shirt",
+    "spritesheet": "sheet_shirt_adventurer_vest",
+    "texture": "tex_shirt_adventurer_vest",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

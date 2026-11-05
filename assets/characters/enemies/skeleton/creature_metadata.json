@@ -1,0 +1,48 @@
+{
+  "id": "creature_skeleton_001",
+  "name": "Undead Skeleton",
+  "category": "hostile_creature",
+  "biome": [
+    "forest",
+    "ruins",
+    "dungeon"
+  ],
+  "sprite": "characters/enemies/skeleton/skeleton_spritesheet.png",
+  "spritesheet": "skeleton_spritesheet",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 48,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32
+  },
+  "directions": [
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": "skeleton_idle_down",
+    "walk": "skeleton_walk_down",
+    "run": "skeleton_run_down",
+    "attack": "skeleton_attack_down",
+    "hurt": "skeleton_hurt_down",
+    "death": "skeleton_death_down"
+  },
+  "anchors": {
+    "ground": [
+      16,
+      48
+    ]
+  },
+  "collision": {
+    "width": 16.0,
+    "height": 12.0
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Original asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

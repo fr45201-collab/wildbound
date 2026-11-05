@@ -1,0 +1,19 @@
+{
+  "rules": {
+    "friendly_fire": false,
+    "allow_pve": true,
+    "allow_pvp": false,
+    "factions": {
+      "players": {
+        "hostile_to": ["monsters"]
+      },
+      "monsters": {
+        "hostile_to": ["players"]
+      },
+      "neutral": {
+        "hostile_to": []
+      }
+    }
+  }
+}
+

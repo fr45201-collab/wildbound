@@ -1,0 +1,19 @@
+{
+    "id": "hair_short_brown",
+    "name": "Short Brown Hair",
+    "category": "hair",
+    "spritesheet": "sheet_hair_short_brown",
+    "texture": "tex_hair_short_brown",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

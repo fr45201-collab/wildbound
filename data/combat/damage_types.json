@@ -1,0 +1,20 @@
+{
+  "damage_types": [
+    {
+      "id": "physical",
+      "name": "Physical Damage",
+      "description": "Standard kinetic damage dealt by blades, blunt weapons, and physical impacts."
+    },
+    {
+      "id": "magical",
+      "name": "Magical Damage",
+      "description": "Elemental and arcane energy bypassing physical armor."
+    },
+    {
+      "id": "environmental",
+      "name": "Environmental Damage",
+      "description": "Hazardous environmental effects such as spikes, drowning, or burning."
+    }
+  ]
+}
+

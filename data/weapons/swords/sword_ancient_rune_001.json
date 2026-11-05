@@ -1,0 +1,34 @@
+{
+  "id": "sword_ancient_rune_001",
+  "display_name": "Ancient Rune Sword",
+  "category": "sword",
+  "subcategory": "relic",
+  "description": "A mythic relic sword forged of dark star-metal, etched with celestial runes that pulse with cyan arcane energy.",
+  "icon_file": "weapons/icons/sword_ancient_rune_001_icon.png",
+  "ground_file": "weapons/ground/sword_ancient_rune_001_ground.png",
+  "held_file": "weapons/held/sword_ancient_rune_001_held.png",
+  "anim_file": "weapons/animations/sword_ancient_rune_001_anim.png",
+  "grip_anchor": {
+    "x": 12.0,
+    "y": 18.0
+  },
+  "render_order": {
+    "down": 85,
+    "up": 18,
+    "left": 85,
+    "right": 85
+  },
+  "hand": "right_hand",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "animation_frames": [
+    "idle",
+    "prep",
+    "swing",
+    "recovery"
+  ]
+}

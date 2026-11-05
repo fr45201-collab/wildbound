@@ -1,0 +1,28 @@
+{
+  "id": "smoke_chimney_anim",
+  "name": "Wispy Chimney Smoke",
+  "category": "atmosphere",
+  "subcategory": "smoke",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/atmosphere/smoke/smoke_chimney_anim.png",
+  "spritesheet": "sheet_smoke_chimney_anim",
+  "dimensions": {
+    "frame_width": 16,
+    "frame_height": 32,
+    "columns": 6,
+    "rows": 1,
+    "frame_count": 6
+  },
+  "animation": {
+    "name": "smoke_chimney_anim_loop",
+    "frame_duration": 0.15,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

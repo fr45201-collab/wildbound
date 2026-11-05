@@ -1,0 +1,41 @@
+{
+  "id": "tree_pine_001",
+  "name": "Small Pine Tree",
+  "category": "nature",
+  "subcategory": "trees/pine",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/trees/pine/tree_pine_001.png",
+  "dimensions": {
+    "width": 32,
+    "height": 64
+  },
+  "anchors": {
+    "ground": [
+      16,
+      60
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      10,
+      52
+    ],
+    "size": [
+      12,
+      10
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

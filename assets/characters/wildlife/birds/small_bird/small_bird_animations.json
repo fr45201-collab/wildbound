@@ -1,0 +1,52 @@
+{
+  "animations": [
+    {
+      "animation": "bird_idle",
+      "spritesheet": "small_bird_spritesheet",
+      "frame_duration": 0.25,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "animation": "bird_fly",
+      "spritesheet": "small_bird_spritesheet",
+      "frame_duration": 0.1,
+      "loop": true,
+      "frames": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "animation": "bird_takeoff",
+      "spritesheet": "small_bird_spritesheet",
+      "frame_duration": 0.12,
+      "loop": false,
+      "frames": [
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "animation": "bird_landing",
+      "spritesheet": "small_bird_spritesheet",
+      "frame_duration": 0.12,
+      "loop": false,
+      "frames": [
+        12,
+        13,
+        14,
+        15
+      ]
+    }
+  ]
+}

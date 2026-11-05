@@ -1,0 +1,34 @@
+{
+    "id": "hat_wizard_001",
+    "name": "Mystic Hat",
+    "category": "hat",
+    "layer": "headwear",
+    "description": "Pointed arcane wizard hat with gold brooch.",
+    "sprite": "characters/player/hats/hat_wizard_001/sprite.png",
+    "spritesheet": "sheet_hat_wizard_001",
+    "texture": "tex_hat_wizard_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

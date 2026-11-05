@@ -1,0 +1,19 @@
+{
+    "id": "face_explorer_goggles",
+    "name": "Explorer Goggles",
+    "category": "face",
+    "spritesheet": "sheet_face_explorer_goggles",
+    "texture": "tex_face_explorer_goggles",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

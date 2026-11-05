@@ -1,0 +1,41 @@
+{
+  "id": "tree_oak_004",
+  "name": "Ancient Oak Tree",
+  "category": "nature",
+  "subcategory": "trees/oak",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/trees/oak/tree_oak_004.png",
+  "dimensions": {
+    "width": 112,
+    "height": 128
+  },
+  "anchors": {
+    "ground": [
+      56,
+      120
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      38,
+      104
+    ],
+    "size": [
+      36,
+      18
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

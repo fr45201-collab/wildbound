@@ -214,8 +214,8 @@ int main() {
         auto map = MapLoader::LoadFromJson("maps/forest/forest_01.json", assetMgr);
         TEST_ASSERT(map != nullptr, "MapLoader failed to load forest_01.json");
         TEST_ASSERT(map->GetName() == "forest_01", "Map name should be 'forest_01'");
-        TEST_ASSERT(map->GetWidth() == 80, "Map width should be 80");
-        TEST_ASSERT(map->GetHeight() == 60, "Map height should be 60");
+        TEST_ASSERT(map->GetWidth() == 160, "Map width should be 160");
+        TEST_ASSERT(map->GetHeight() == 120, "Map height should be 120");
         TEST_ASSERT(map->GetTileWidth() == 32, "Tile width should be 32");
         TEST_ASSERT(map->GetTileHeight() == 32, "Tile height should be 32");
         TEST_ASSERT(map->GetLayerCount() >= 5, "Map should have at least 5 layers");
@@ -240,7 +240,7 @@ int main() {
         std::cout << "[TEST] 8. Map loading from Tiled TMX XML (forest_01.tmx)..." << std::endl;
         auto map = MapLoader::LoadFromTmx("maps/forest/forest_01.tmx", assetMgr);
         TEST_ASSERT(map != nullptr, "MapLoader failed to parse forest_01.tmx");
-        TEST_ASSERT(map->GetWidth() == 80 && map->GetHeight() == 60, "TMX map dimensions should be 80x60");
+        TEST_ASSERT(map->GetWidth() == 160 && map->GetHeight() == 120, "TMX map dimensions should be 160x120");
         TEST_ASSERT(map->GetTileWidth() == 32 && map->GetTileHeight() == 32, "TMX tile size should be 32x32");
         TEST_ASSERT(map->GetLayerCount() >= 4, "TMX should have parsed tile layers");
         TEST_ASSERT(map->GetObjects().size() > 50, "TMX should have parsed environmental objects");
@@ -266,7 +266,7 @@ int main() {
         TEST_ASSERT(!visibleObjs.empty(), "Should find visible objects in cabin courtyard area");
 
         // Query empty/remote area off-map
-        Rectangle offMapArea{ 5000.0f, 5000.0f, 100.0f, 100.0f };
+        Rectangle offMapArea{ 10000.0f, 10000.0f, 100.0f, 100.0f };
         auto emptyCol = world.GetCollisionBoxes(offMapArea);
         TEST_ASSERT(emptyCol.empty(), "Off-map query should return empty collision list");
 

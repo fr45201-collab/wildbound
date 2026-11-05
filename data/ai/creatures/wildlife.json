@@ -1,0 +1,21 @@
+{
+  "archetype": "small_bird",
+  "detection_radius": 60.0,
+  "field_of_view": 360.0,
+  "attack_radius": 0.0,
+  "preferred_distance": 60.0,
+  "retreat_health_percent": 1.0,
+  "decision_interval": 0.3,
+  "pathfinding_interval": 0.5,
+  "pursuit_duration": 0.0,
+  "investigate_duration": 0.0,
+  "aggression_level": 0.0,
+  "can_retreat": true,
+  "omnidirectional_when_alert": true,
+  "patrol": {
+    "id": "wildlife_roam",
+    "is_loop": true,
+    "points": []
+  }
+}
+

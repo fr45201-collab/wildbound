@@ -1,0 +1,32 @@
+{
+  "id": "grass_dense_001",
+  "name": "Dense Grass Patch",
+  "category": "nature",
+  "subcategory": "grass",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/grass/grass_dense_001.png",
+  "dimensions": {
+    "width": 24,
+    "height": 20
+  },
+  "anchors": {
+    "ground": [
+      12,
+      18
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "ground_decor",
+    "y_sort": false
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

@@ -1,0 +1,19 @@
+{
+    "id": "shirt_forest_tunic",
+    "name": "Forest Tunic",
+    "category": "shirt",
+    "spritesheet": "sheet_shirt_forest_tunic",
+    "texture": "tex_shirt_forest_tunic",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

@@ -1,0 +1,67 @@
+{
+  "id": "watchtower_stone_001",
+  "name": "Stone Watchtower",
+  "category": "building",
+  "subcategory": "watchtowers",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/watchtowers/watchtower_stone_001.png",
+  "dimensions": {
+    "width": 64,
+    "height": 120
+  },
+  "anchors": {
+    "ground": [
+      32,
+      116
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      10,
+      76
+    ],
+    "size": [
+      44,
+      40
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    32,
+    116
+  ],
+  "door": [
+    32,
+    114
+  ],
+  "windows": [
+    [
+      25,
+      36
+    ],
+    [
+      39,
+      36
+    ]
+  ],
+  "roof": {
+    "width": 48,
+    "height": 20
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_watchtower_stone_001"
+  }
+}

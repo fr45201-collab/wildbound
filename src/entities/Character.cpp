@@ -42,7 +42,16 @@ void Character::Update(float /*dt*/) {
 void Character::Render(graphics::Renderer& renderer, resources::AssetManager& assetMgr) {
     if (!m_active) return;
 
-    Texture2D tex = assetMgr.GetTexture(m_spritesheetId);
+    Texture2D tex = { 0 };
+    const auto* sheet = assetMgr.GetSpriteSheet(m_spritesheetId);
+    if (sheet) {
+        tex = assetMgr.GetTexture(sheet->GetTextureId());
+        if (tex.id == 0) {
+            tex = assetMgr.GetTexture(m_spritesheetId);
+        }
+    } else {
+        tex = assetMgr.GetTexture(m_spritesheetId);
+    }
     if (tex.id == 0) return;
 
     Rectangle srcRect = m_animController.GetCurrentFrameRect(assetMgr);

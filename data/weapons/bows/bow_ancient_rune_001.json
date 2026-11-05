@@ -1,0 +1,34 @@
+{
+  "id": "bow_ancient_rune_001",
+  "display_name": "Ancient Rune Bow",
+  "category": "bow",
+  "subcategory": "runic_bow",
+  "description": "An elven relic bow shaped from ancient ironwood, pulsating with verdant living runes and an ethereal energy string.",
+  "icon_file": "weapons/icons/bow_ancient_rune_001_icon.png",
+  "ground_file": "weapons/ground/bow_ancient_rune_001_ground.png",
+  "held_file": "weapons/held/bow_ancient_rune_001_held.png",
+  "anim_file": "weapons/animations/bow_ancient_rune_001_anim.png",
+  "grip_anchor": {
+    "x": 16.0,
+    "y": 16.0
+  },
+  "render_order": {
+    "down": 85,
+    "up": 18,
+    "left": 85,
+    "right": 85
+  },
+  "hand": "both_hands",
+  "directions": [
+    "down",
+    "up",
+    "left",
+    "right"
+  ],
+  "animation_frames": [
+    "idle",
+    "draw",
+    "hold",
+    "release"
+  ]
+}

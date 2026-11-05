@@ -1,0 +1,19 @@
+{
+  "id": "fog_ground_drift",
+  "name": "Ground Mist Drift",
+  "category": "atmosphere",
+  "subcategory": "fog",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/atmosphere/fog/fog_ground_drift.png",
+  "dimensions": {
+    "width": 128,
+    "height": 64
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Atmospheric Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

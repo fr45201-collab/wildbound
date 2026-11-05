@@ -1,0 +1,12 @@
+{
+  "cell_size": 16.0,
+  "movement_mode": "eight_directional",
+  "prevent_corner_cutting": true,
+  "enable_smoothing": true,
+  "max_search_iterations": 4000,
+  "diagonal_cost": 1.41421356,
+  "orthogonal_cost": 1.0,
+  "waypoint_arrival_radius": 14.0,
+  "goal_arrival_radius": 24.0
+}
+

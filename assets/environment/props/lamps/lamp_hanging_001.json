@@ -1,0 +1,32 @@
+{
+  "id": "lamp_hanging_001",
+  "name": "Hanging Chain Lantern",
+  "category": "prop",
+  "subcategory": "lamps",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/lamps/lamp_hanging_001.png",
+  "dimensions": {
+    "width": 16,
+    "height": 32
+  },
+  "anchors": {
+    "ground": [
+      8,
+      30
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

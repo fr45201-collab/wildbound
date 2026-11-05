@@ -1,0 +1,35 @@
+{
+    "id": "hat_adventurer_hat_001",
+    "display_name": "Adventurer Hat",
+    "category": "headwear",
+    "slot": "headwear",
+    "description": "Wide-brimmed felt hat with a dark band and traveling feather.",
+    "sprite": "cosmetics/headwear/hat_adventurer_hat_001/sprite.png",
+    "spritesheet": "sheet_hat_adventurer_hat_001",
+    "texture": "tex_hat_adventurer_hat_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "headwear",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

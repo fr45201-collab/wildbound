@@ -1,0 +1,14 @@
+{
+  "id": "mat_wood_001",
+  "display_name": "Wood",
+  "category": "material",
+  "subcategory": "raw_material",
+  "description": "A neatly stacked bundle of rough-hewn oak timber logs suitable for construction and carpentry.",
+  "icon_file": "items/icons/mat_wood_001_icon.png",
+  "world_file": "items/world/mat_wood_001_world.png",
+  "biome_tags": [
+    "forest",
+    "swamp"
+  ],
+  "rarity_tier": "common"
+}

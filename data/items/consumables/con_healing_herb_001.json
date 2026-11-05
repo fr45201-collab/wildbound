@@ -1,0 +1,14 @@
+{
+  "id": "con_healing_herb_001",
+  "display_name": "Healing Herb",
+  "category": "consumable",
+  "subcategory": "herb",
+  "description": "A bundle of fragrant silverleaf sprigs tied with natural hemp cord, known for its soothing poultice properties.",
+  "icon_file": "items/icons/con_healing_herb_001_icon.png",
+  "world_file": "items/world/con_healing_herb_001_world.png",
+  "biome_tags": [
+    "forest",
+    "swamp"
+  ],
+  "rarity_tier": "common"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "bench_wooden_001",
+  "name": "Village Wooden Bench",
+  "category": "prop",
+  "subcategory": "benches",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/benches/bench_wooden_001.png",
+  "dimensions": {
+    "width": 32,
+    "height": 20
+  },
+  "anchors": {
+    "ground": [
+      16,
+      18
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      3,
+      8
+    ],
+    "size": [
+      26,
+      10
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

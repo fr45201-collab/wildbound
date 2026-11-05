@@ -1,0 +1,21 @@
+{
+  "archetype": "skeleton",
+  "detection_radius": 150.0,
+  "field_of_view": 140.0,
+  "attack_radius": 34.0,
+  "preferred_distance": 28.0,
+  "retreat_health_percent": 0.0,
+  "decision_interval": 0.2,
+  "pathfinding_interval": 0.4,
+  "pursuit_duration": 8.0,
+  "investigate_duration": 4.0,
+  "aggression_level": 1.2,
+  "can_retreat": false,
+  "omnidirectional_when_alert": true,
+  "patrol": {
+    "id": "skeleton_guard",
+    "is_loop": true,
+    "points": []
+  }
+}
+

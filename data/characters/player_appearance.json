@@ -1,0 +1,73 @@
+{
+    "base_body": "sheet_skin_default",
+    "render_shadow": true,
+    "equipment": {
+        "skin": {
+            "id": "skin_default",
+            "name": "Default Skin",
+            "category": "skin",
+            "spritesheet": "sheet_skin_default",
+            "texture": "tex_skin_default",
+            "occlusion_flags": [],
+            "tint": [255, 255, 255, 255],
+            "anchor_offset": [0.0, 0.0],
+            "visible": true
+        },
+        "hair": {
+            "id": "hair_short_brown",
+            "name": "Short Brown Hair",
+            "category": "hair",
+            "spritesheet": "sheet_hair_short_brown",
+            "texture": "tex_hair_short_brown",
+            "occlusion_flags": [],
+            "tint": [255, 255, 255, 255],
+            "anchor_offset": [0.0, 0.0],
+            "visible": true
+        },
+        "shirt": {
+            "id": "shirt_forest_tunic",
+            "name": "Forest Tunic",
+            "category": "shirt",
+            "spritesheet": "sheet_shirt_forest_tunic",
+            "texture": "tex_shirt_forest_tunic",
+            "occlusion_flags": [],
+            "tint": [255, 255, 255, 255],
+            "anchor_offset": [0.0, 0.0],
+            "visible": true
+        },
+        "pants": {
+            "id": "pants_traveler_trousers",
+            "name": "Traveler Trousers",
+            "category": "pants",
+            "spritesheet": "sheet_pants_traveler_trousers",
+            "texture": "tex_pants_traveler_trousers",
+            "occlusion_flags": [],
+            "tint": [255, 255, 255, 255],
+            "anchor_offset": [0.0, 0.0],
+            "visible": true
+        },
+        "shoes": {
+            "id": "shoes_leather_boots",
+            "name": "Leather Boots",
+            "category": "shoes",
+            "spritesheet": "sheet_shoes_leather_boots",
+            "texture": "tex_shoes_leather_boots",
+            "occlusion_flags": [],
+            "tint": [255, 255, 255, 255],
+            "anchor_offset": [0.0, 0.0],
+            "visible": true
+        },
+        "back": {
+            "id": "back_traveler_backpack",
+            "name": "Traveler Backpack",
+            "category": "back",
+            "spritesheet": "sheet_back_traveler_backpack",
+            "texture": "tex_back_traveler_backpack",
+            "occlusion_flags": [],
+            "tint": [255, 255, 255, 255],
+            "anchor_offset": [0.0, 0.0],
+            "visible": true
+        }
+    }
+}
+

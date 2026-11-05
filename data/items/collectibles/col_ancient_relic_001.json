@@ -1,0 +1,15 @@
+{
+  "id": "col_ancient_relic_001",
+  "display_name": "Ancient Relic",
+  "category": "collectible",
+  "subcategory": "relic",
+  "description": "An ornate bronze ceremonial chalice engraved with forgotten pre-collapse heraldry and set with a central ruby.",
+  "icon_file": "items/icons/col_ancient_relic_001_icon.png",
+  "world_file": "items/world/col_ancient_relic_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "swamp"
+  ],
+  "rarity_tier": "epic"
+}

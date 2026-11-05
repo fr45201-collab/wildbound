@@ -1,0 +1,41 @@
+{
+  "id": "log_trunk_001",
+  "name": "Large Fallen Tree Trunk",
+  "category": "nature",
+  "subcategory": "logs",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/logs/log_trunk_001.png",
+  "dimensions": {
+    "width": 64,
+    "height": 32
+  },
+  "anchors": {
+    "ground": [
+      32,
+      28
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      5,
+      14
+    ],
+    "size": [
+      54,
+      14
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

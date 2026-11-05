@@ -1,0 +1,34 @@
+{
+    "id": "goggles_adventure_001",
+    "name": "Adventurer Goggles",
+    "category": "goggles",
+    "layer": "eyewear",
+    "description": "Classic explorer brass/leather goggles.",
+    "sprite": "characters/player/goggles/goggles_adventure_001/sprite.png",
+    "spritesheet": "sheet_goggles_adventure_001",
+    "texture": "tex_goggles_adventure_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

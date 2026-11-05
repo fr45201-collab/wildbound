@@ -1,0 +1,144 @@
+{
+  "points_of_interest": [
+    {
+      "id": "poi_greenwood_village",
+      "name": "Greenwood Village",
+      "position": [
+        4160.0,
+        5920.0
+      ],
+      "type": "settlement",
+      "biome": "forest"
+    },
+    {
+      "id": "poi_sunfall_outpost",
+      "name": "Sunfall Outpost",
+      "position": [
+        7680.0,
+        7520.0
+      ],
+      "type": "settlement",
+      "biome": "desert"
+    },
+    {
+      "id": "poi_frostpeak_village",
+      "name": "Frostpeak Village",
+      "position": [
+        7840.0,
+        2560.0
+      ],
+      "type": "settlement",
+      "biome": "snow"
+    },
+    {
+      "id": "poi_mirewood_settlement",
+      "name": "Mirewood Settlement",
+      "position": [
+        2400.0,
+        2720.0
+      ],
+      "type": "settlement",
+      "biome": "swamp"
+    },
+    {
+      "id": "poi_highstone_village",
+      "name": "Highstone Village",
+      "position": [
+        5120.0,
+        2080.0
+      ],
+      "type": "settlement",
+      "biome": "mountain"
+    },
+    {
+      "id": "poi_ancient_fortress",
+      "name": "Ancient Fortress",
+      "position": [
+        5120.0,
+        4800.0
+      ],
+      "type": "fortress",
+      "biome": "forest"
+    },
+    {
+      "id": "poi_desert_temple",
+      "name": "Buried Temple of Sunfall",
+      "position": [
+        7200.0,
+        6400.0
+      ],
+      "type": "temple",
+      "biome": "desert"
+    },
+    {
+      "id": "poi_desert_oasis",
+      "name": "Sunfall Oasis & Bazaar",
+      "position": [
+        7680.0,
+        6720.0
+      ],
+      "type": "oasis",
+      "biome": "desert"
+    },
+    {
+      "id": "poi_forest_shrine",
+      "name": "Forgotten Forest Shrine",
+      "position": [
+        3200.0,
+        6800.0
+      ],
+      "type": "shrine",
+      "biome": "forest"
+    },
+    {
+      "id": "poi_frostfall_camp",
+      "name": "Frostfall Expedition Camp",
+      "position": [
+        6800.0,
+        3400.0
+      ],
+      "type": "camp",
+      "biome": "snow"
+    },
+    {
+      "id": "poi_frostpeak_glacier",
+      "name": "Frostpeak Glacial Cavern",
+      "position": [
+        7200.0,
+        2200.0
+      ],
+      "type": "landmark",
+      "biome": "snow"
+    },
+    {
+      "id": "poi_drowned_ruins",
+      "name": "Drowned Mire Ruins",
+      "position": [
+        3000.0,
+        3800.0
+      ],
+      "type": "ruins",
+      "biome": "swamp"
+    },
+    {
+      "id": "poi_highstone_mine",
+      "name": "Highstone Mine & Cave Portal",
+      "position": [
+        4400.0,
+        2080.0
+      ],
+      "type": "mine",
+      "biome": "mountain"
+    },
+    {
+      "id": "poi_river_crossing",
+      "name": "Great River Stone Bridge",
+      "position": [
+        5500.0,
+        5280.0
+      ],
+      "type": "bridge",
+      "biome": "forest"
+    }
+  ]
+}

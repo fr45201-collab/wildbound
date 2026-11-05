@@ -1,0 +1,17 @@
+{
+  "id": "con_health_potion_small_001",
+  "display_name": "Small Health Potion",
+  "category": "consumable",
+  "subcategory": "potion",
+  "description": "A spherical glass flask stoppered with cork, containing a modest dose of restorative crimson elixir.",
+  "icon_file": "items/icons/con_health_potion_small_001_icon.png",
+  "world_file": "items/world/con_health_potion_small_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "snow",
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "common"
+}

@@ -1,0 +1,44 @@
+{
+  "id": "ruin_building_abandoned_001",
+  "name": "Abandoned Stone Ruin",
+  "category": "building",
+  "subcategory": "ruins",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/ruins/ruin_building_abandoned_001.png",
+  "dimensions": {
+    "width": 96,
+    "height": 80
+  },
+  "anchors": {
+    "ground": [
+      48,
+      76
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      11,
+      36
+    ],
+    "size": [
+      74,
+      40
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "interior_compatibility": {
+    "supported": false
+  }
+}

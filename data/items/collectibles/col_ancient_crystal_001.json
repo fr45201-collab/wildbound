@@ -1,0 +1,15 @@
+{
+  "id": "col_ancient_crystal_001",
+  "display_name": "Ancient Crystal",
+  "category": "collectible",
+  "subcategory": "crystal",
+  "description": "A cluster of prismatic quartz shards shimmering with alternating violet and cyan phosphorescence.",
+  "icon_file": "items/icons/col_ancient_crystal_001_icon.png",
+  "world_file": "items/world/col_ancient_crystal_001_world.png",
+  "biome_tags": [
+    "mountain",
+    "snow",
+    "desert"
+  ],
+  "rarity_tier": "epic"
+}

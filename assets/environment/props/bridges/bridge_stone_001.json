@@ -1,0 +1,33 @@
+{
+  "id": "bridge_stone_001",
+  "name": "Arched Stone Bridge",
+  "category": "prop",
+  "subcategory": "bridges",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/bridges/bridge_stone_001.png",
+  "dimensions": {
+    "width": 96,
+    "height": 48
+  },
+  "anchors": {
+    "ground": [
+      48,
+      44
+    ]
+  },
+  "collision": {
+    "enabled": false,
+    "traversable": true
+  },
+  "rendering": {
+    "layer": "ground_decor",
+    "y_sort": false
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

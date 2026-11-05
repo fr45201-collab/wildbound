@@ -1,0 +1,35 @@
+{
+    "id": "fac_leather_mask_001",
+    "display_name": "Leather Mask",
+    "category": "face_accessories",
+    "slot": "mask",
+    "description": "Hardened leather combat respirator mask with brass rivets.",
+    "sprite": "cosmetics/face_accessories/fac_leather_mask_001/sprite.png",
+    "spritesheet": "sheet_fac_leather_mask_001",
+    "texture": "tex_fac_leather_mask_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "mask",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

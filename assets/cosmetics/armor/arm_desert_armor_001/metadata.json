@@ -1,0 +1,35 @@
+{
+    "id": "arm_desert_armor_001",
+    "display_name": "Desert Armor",
+    "category": "armor",
+    "slot": "armor",
+    "description": "Bronze-gilded lamellar cuirass tailored for searing dune combat.",
+    "sprite": "cosmetics/armor/arm_desert_armor_001/sprite.png",
+    "spritesheet": "sheet_arm_desert_armor_001",
+    "texture": "tex_arm_desert_armor_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "armor",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

@@ -1,0 +1,35 @@
+{
+    "id": "bag_small_traveler_001",
+    "display_name": "Small Traveler Backpack",
+    "category": "backpacks",
+    "slot": "backpack",
+    "description": "Compact canvas daypack with single brass-buckled flap.",
+    "sprite": "cosmetics/backpacks/bag_small_traveler_001/sprite.png",
+    "spritesheet": "sheet_bag_small_traveler_001",
+    "texture": "tex_bag_small_traveler_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "backpack",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

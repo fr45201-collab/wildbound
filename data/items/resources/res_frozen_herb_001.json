@@ -1,0 +1,13 @@
+{
+  "id": "res_frozen_herb_001",
+  "display_name": "Frozen Herb",
+  "category": "resource",
+  "subcategory": "flora_arctic",
+  "description": "A frost-rimed arctic alpine herb capable of surviving subzero blizzards under thick snow blankets.",
+  "icon_file": "items/icons/res_frozen_herb_001_icon.png",
+  "world_file": "items/world/res_frozen_herb_001_world.png",
+  "biome_tags": [
+    "snow"
+  ],
+  "rarity_tier": "uncommon"
+}

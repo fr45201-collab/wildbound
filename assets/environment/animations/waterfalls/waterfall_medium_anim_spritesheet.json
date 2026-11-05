@@ -1,0 +1,12 @@
+{
+  "id": "sheet_waterfall_medium_anim",
+  "texture": "environment/animations/waterfalls/waterfall_medium_anim.png",
+  "frame_width": 48,
+  "frame_height": 64,
+  "columns": 6,
+  "rows": 1,
+  "frame_count": 6,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

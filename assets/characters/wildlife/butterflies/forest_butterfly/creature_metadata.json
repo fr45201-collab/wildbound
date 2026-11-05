@@ -1,0 +1,37 @@
+{
+  "id": "creature_forest_butterfly",
+  "name": "Forest Butterfly",
+  "category": "ambient_wildlife",
+  "biome": [
+    "forest",
+    "meadow",
+    "river"
+  ],
+  "sprite": "characters/wildlife/butterflies/forest_butterfly/forest_butterfly_spritesheet.png",
+  "spritesheet": "forest_butterfly_spritesheet",
+  "dimensions": {
+    "frame_width": 16,
+    "frame_height": 16,
+    "columns": 4,
+    "rows": 2,
+    "frame_count": 8
+  },
+  "directions": [
+    "omni"
+  ],
+  "animations": {
+    "resting": "forest_butterfly_resting",
+    "fly": "forest_butterfly_fly"
+  },
+  "anchors": {
+    "ground": [
+      8,
+      8
+    ]
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 9 Production Wildlife",
+    "license": "CC0 1.0 Universal"
+  }
+}

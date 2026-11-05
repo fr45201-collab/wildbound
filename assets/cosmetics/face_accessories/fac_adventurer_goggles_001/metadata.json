@@ -1,0 +1,35 @@
+{
+    "id": "fac_adventurer_goggles_001",
+    "display_name": "Adventurer Goggles",
+    "category": "face_accessories",
+    "slot": "goggles",
+    "description": "Brass explorer goggles with amber-tinted lenses.",
+    "sprite": "cosmetics/face_accessories/fac_adventurer_goggles_001/sprite.png",
+    "spritesheet": "sheet_fac_adventurer_goggles_001",
+    "texture": "tex_fac_adventurer_goggles_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "goggles",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "ruin_tower_small_001",
+  "name": "Small Ruined Tower",
+  "category": "building",
+  "subcategory": "ruins",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/ruins/ruin_tower_small_001.png",
+  "dimensions": {
+    "width": 64,
+    "height": 88
+  },
+  "anchors": {
+    "ground": [
+      32,
+      84
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      10,
+      48
+    ],
+    "size": [
+      44,
+      36
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "interior_compatibility": {
+    "supported": false
+  }
+}

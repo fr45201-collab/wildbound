@@ -1,0 +1,34 @@
+{
+    "id": "hair_ponytail_001",
+    "name": "High Ponytail",
+    "category": "hair",
+    "layer": "head_hair",
+    "description": "Tied-back blonde ponytail with crimson ribbon.",
+    "sprite": "characters/player/hair/hair_ponytail_001/sprite.png",
+    "spritesheet": "sheet_hair_ponytail_001",
+    "texture": "tex_hair_ponytail_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

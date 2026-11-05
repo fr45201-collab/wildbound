@@ -81,3 +81,4 @@ void Player::ResolveMovement(Vector2 delta, const world::World& world) {
 When moving diagonally into a vertical wall (e.g., $dx = +10, dy = +10$ against a wall on the right):
 1. The X displacement is stopped and clamped to the wall's left edge.
 2. The Y displacement continues unhindered, resulting in natural, responsive downward wall sliding.
+

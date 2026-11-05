@@ -1,0 +1,13 @@
+{
+  "id": "con_bread_001",
+  "display_name": "Bread",
+  "category": "consumable",
+  "subcategory": "food",
+  "description": "A crusty, freshly baked round loaf of hearth-fired sourdough scored with bakery hash marks.",
+  "icon_file": "items/icons/con_bread_001_icon.png",
+  "world_file": "items/world/con_bread_001_world.png",
+  "biome_tags": [
+    "forest"
+  ],
+  "rarity_tier": "common"
+}

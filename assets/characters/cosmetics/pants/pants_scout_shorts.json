@@ -1,0 +1,19 @@
+{
+    "id": "pants_scout_shorts",
+    "name": "Scout Shorts",
+    "category": "pants",
+    "spritesheet": "sheet_pants_scout_shorts",
+    "texture": "tex_pants_scout_shorts",
+    "occlusion_flags": [],
+    "tint": [
+        255,
+        255,
+        255,
+        255
+    ],
+    "anchor_offset": [
+        0.0,
+        0.0
+    ],
+    "visible": true
+}

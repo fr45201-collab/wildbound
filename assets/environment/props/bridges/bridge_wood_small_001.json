@@ -1,0 +1,33 @@
+{
+  "id": "bridge_wood_small_001",
+  "name": "Small Wooden Footbridge",
+  "category": "prop",
+  "subcategory": "bridges",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/bridges/bridge_wood_small_001.png",
+  "dimensions": {
+    "width": 64,
+    "height": 32
+  },
+  "anchors": {
+    "ground": [
+      32,
+      28
+    ]
+  },
+  "collision": {
+    "enabled": false,
+    "traversable": true
+  },
+  "rendering": {
+    "layer": "ground_decor",
+    "y_sort": false
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

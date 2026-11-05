@@ -1,0 +1,58 @@
+{
+  "id": "storage_warehouse_001",
+  "name": "Supply Warehouse",
+  "category": "building",
+  "subcategory": "storage",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/storage/storage_warehouse_001.png",
+  "dimensions": {
+    "width": 96,
+    "height": 88
+  },
+  "anchors": {
+    "ground": [
+      48,
+      84
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      9,
+      40
+    ],
+    "size": [
+      78,
+      44
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    48,
+    84
+  ],
+  "door": [
+    48,
+    82
+  ],
+  "windows": [],
+  "roof": {
+    "width": 86,
+    "height": 28
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_storage_warehouse_001"
+  }
+}

@@ -1,0 +1,34 @@
+{
+    "id": "pants_traveler_001",
+    "name": "Traveler Pants",
+    "category": "pants",
+    "layer": "lower_body",
+    "description": "Standard durable adventure trousers.",
+    "sprite": "characters/player/pants/pants_traveler_001/sprite.png",
+    "spritesheet": "sheet_pants_traveler_001",
+    "texture": "tex_pants_traveler_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

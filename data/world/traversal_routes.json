@@ -1,0 +1,76 @@
+{
+  "primary_routes": [
+    {
+      "id": "route_greenwood_fortress",
+      "name": "Forest King's Way",
+      "start_poi": "poi_greenwood_village",
+      "end_poi": "poi_ancient_fortress",
+      "distance_units": 1470.0,
+      "type": "highway"
+    },
+    {
+      "id": "route_fortress_highstone",
+      "name": "Highland Crest Road",
+      "start_poi": "poi_ancient_fortress",
+      "end_poi": "poi_highstone_village",
+      "distance_units": 2720.0,
+      "type": "highway"
+    },
+    {
+      "id": "route_fortress_sunfall",
+      "name": "Great Caravan Highway",
+      "start_poi": "poi_ancient_fortress",
+      "end_poi": "poi_sunfall_outpost",
+      "distance_units": 3720.0,
+      "type": "highway_bridge"
+    },
+    {
+      "id": "route_fortress_mirewood",
+      "name": "Mire Boardwalk Trail",
+      "start_poi": "poi_ancient_fortress",
+      "end_poi": "poi_mirewood_settlement",
+      "distance_units": 3430.0,
+      "type": "duckboard"
+    },
+    {
+      "id": "route_highstone_frostpeak",
+      "name": "Alpine Frost Pass",
+      "start_poi": "poi_highstone_village",
+      "end_poi": "poi_frostpeak_village",
+      "distance_units": 2760.0,
+      "type": "snow_pass"
+    }
+  ],
+  "chokepoints": [
+    {
+      "id": "choke_river_bridge",
+      "name": "Great River Stone Bridge",
+      "position": [
+        5500.0,
+        5280.0
+      ],
+      "width_units": 64.0,
+      "type": "river_crossing"
+    },
+    {
+      "id": "choke_mountain_pass",
+      "name": "Iron Crag Chasm Bridge",
+      "position": [
+        5120.0,
+        3360.0
+      ],
+      "width_units": 64.0,
+      "type": "chasm_crossing"
+    },
+    {
+      "id": "choke_swamp_boardwalk",
+      "name": "Murkwood Duckboard Pass",
+      "position": [
+        2400.0,
+        3600.0
+      ],
+      "width_units": 48.0,
+      "type": "bog_crossing"
+    }
+  ]
+}

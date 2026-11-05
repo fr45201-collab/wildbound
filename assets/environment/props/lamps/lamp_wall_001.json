@@ -1,0 +1,32 @@
+{
+  "id": "lamp_wall_001",
+  "name": "Wall-Mounted Lantern",
+  "category": "prop",
+  "subcategory": "lamps",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/lamps/lamp_wall_001.png",
+  "dimensions": {
+    "width": 16,
+    "height": 24
+  },
+  "anchors": {
+    "ground": [
+      8,
+      22
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

@@ -1,0 +1,35 @@
+{
+    "id": "arm_ancient_rune_001",
+    "display_name": "Ancient Rune Armor",
+    "category": "armor",
+    "slot": "armor",
+    "description": "Celestial meteoric plate armor pulsating with luminous azure runes.",
+    "sprite": "cosmetics/armor/arm_ancient_rune_001/sprite.png",
+    "spritesheet": "sheet_arm_ancient_rune_001",
+    "texture": "tex_arm_ancient_rune_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "render_order": "armor",
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 17 Costumes & Armor Collection",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

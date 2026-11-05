@@ -1,0 +1,17 @@
+{
+  "id": "col_silver_coin_001",
+  "display_name": "Silver Coin",
+  "category": "collectible",
+  "subcategory": "currency",
+  "description": "A polished silver coin stamped with a radiant star. Widely circulated among merchants and settlements.",
+  "icon_file": "items/icons/col_silver_coin_001_icon.png",
+  "world_file": "items/world/col_silver_coin_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "snow",
+    "swamp",
+    "mountain"
+  ],
+  "rarity_tier": "common"
+}

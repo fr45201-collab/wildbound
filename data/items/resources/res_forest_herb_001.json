@@ -1,0 +1,13 @@
+{
+  "id": "res_forest_herb_001",
+  "display_name": "Forest Herb",
+  "category": "resource",
+  "subcategory": "flora",
+  "description": "A bundle of fresh woodland herbs with serrated leaves, carrying a sharp peppermint fragrance.",
+  "icon_file": "items/icons/res_forest_herb_001_icon.png",
+  "world_file": "items/world/res_forest_herb_001_world.png",
+  "biome_tags": [
+    "forest"
+  ],
+  "rarity_tier": "common"
+}

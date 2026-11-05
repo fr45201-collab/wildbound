@@ -1,0 +1,32 @@
+{
+  "id": "log_branch_001",
+  "name": "Small Fallen Branch",
+  "category": "nature",
+  "subcategory": "logs",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/logs/log_branch_001.png",
+  "dimensions": {
+    "width": 24,
+    "height": 16
+  },
+  "anchors": {
+    "ground": [
+      12,
+      14
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

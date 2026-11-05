@@ -1,0 +1,16 @@
+{
+  "animations": [
+    {
+      "animation": "grass_small_wind_anim_loop",
+      "spritesheet": "sheet_grass_small_wind_anim",
+      "frame_duration": 0.2,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

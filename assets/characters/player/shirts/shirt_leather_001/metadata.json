@@ -1,0 +1,34 @@
+{
+    "id": "shirt_leather_001",
+    "name": "Leather Jacket",
+    "category": "shirt",
+    "layer": "upper_body",
+    "description": "Explorer-style studded leather jacket.",
+    "sprite": "characters/player/shirts/shirt_leather_001/sprite.png",
+    "spritesheet": "sheet_shirt_leather_001",
+    "texture": "tex_shirt_leather_001",
+    "compatible_directions": [
+        "up",
+        "down",
+        "left",
+        "right"
+    ],
+    "compatible_animations": [
+        "idle",
+        "walk",
+        "run"
+    ],
+    "occlusion_flags": [],
+    "anchors": {
+        "body": [
+            16,
+            48
+        ]
+    },
+    "provenance": {
+        "creator": "Wildbound Development Studio",
+        "source": "Wildbound Phase 8 Production Asset",
+        "license": "CC0 1.0 Universal",
+        "attribution_required": false
+    }
+}

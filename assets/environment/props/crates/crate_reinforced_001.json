@@ -1,0 +1,41 @@
+{
+  "id": "crate_reinforced_001",
+  "name": "Reinforced Storage Crate",
+  "category": "prop",
+  "subcategory": "crates",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/crates/crate_reinforced_001.png",
+  "dimensions": {
+    "width": 28,
+    "height": 28
+  },
+  "anchors": {
+    "ground": [
+      14,
+      25
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      3,
+      7
+    ],
+    "size": [
+      22,
+      18
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

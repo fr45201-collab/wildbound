@@ -1,0 +1,19 @@
+{
+  "id": "cloud_thin",
+  "name": "Thin Wispy Cirrus Cloud",
+  "category": "atmosphere",
+  "subcategory": "clouds",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/atmosphere/clouds/cloud_thin.png",
+  "dimensions": {
+    "width": 80,
+    "height": 24
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Atmospheric Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

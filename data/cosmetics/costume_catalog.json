@@ -1,0 +1,1772 @@
+{
+    "version": "1.0.0",
+    "total_cosmetics": 50,
+    "categories": {
+        "clothing": 8,
+        "armor": 8,
+        "pants": 6,
+        "footwear": 5,
+        "headwear": 6,
+        "face_accessories": 5,
+        "backpacks": 5,
+        "character_variations": 7
+    },
+    "cosmetics": [
+        {
+            "id": "clo_basic_traveler_001",
+            "display_name": "Basic Traveler Shirt",
+            "category": "clothing",
+            "slot": "shirt",
+            "description": "Linen traveler shirt with laced neck and rolled brown cuffs.",
+            "sprite": "cosmetics/clothing/clo_basic_traveler_001/sprite.png",
+            "spritesheet": "sheet_clo_basic_traveler_001",
+            "texture": "tex_clo_basic_traveler_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shirt",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_forest_tunic_001",
+            "display_name": "Forest Tunic",
+            "category": "clothing",
+            "slot": "shirt",
+            "description": "Deep woodland green tunic with reinforced hem and brass buckle.",
+            "sprite": "cosmetics/clothing/clo_forest_tunic_001/sprite.png",
+            "spritesheet": "sheet_clo_forest_tunic_001",
+            "texture": "tex_clo_forest_tunic_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shirt",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_desert_robe_001",
+            "display_name": "Desert Robe",
+            "category": "clothing",
+            "slot": "shirt",
+            "description": "Flowing light linen desert robe offering sun and sand protection.",
+            "sprite": "cosmetics/clothing/clo_desert_robe_001/sprite.png",
+            "spritesheet": "sheet_clo_desert_robe_001",
+            "texture": "tex_clo_desert_robe_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shirt",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_snow_jacket_001",
+            "display_name": "Snow Jacket",
+            "category": "clothing",
+            "slot": "shirt",
+            "description": "Heavy insulated winter parka with plush white fur collar trim.",
+            "sprite": "cosmetics/clothing/clo_snow_jacket_001/sprite.png",
+            "spritesheet": "sheet_clo_snow_jacket_001",
+            "texture": "tex_clo_snow_jacket_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shirt",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_leather_jacket_001",
+            "display_name": "Leather Jacket",
+            "category": "clothing",
+            "slot": "shirt",
+            "description": "Durable boiled cowhide jacket with brass buttons and lapel.",
+            "sprite": "cosmetics/clothing/clo_leather_jacket_001/sprite.png",
+            "spritesheet": "sheet_clo_leather_jacket_001",
+            "texture": "tex_clo_leather_jacket_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shirt",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_mystic_robe_001",
+            "display_name": "Mystic Robe",
+            "category": "clothing",
+            "slot": "shirt",
+            "description": "Arcane indigo vestment embroidered with gold runic script.",
+            "sprite": "cosmetics/clothing/clo_mystic_robe_001/sprite.png",
+            "spritesheet": "sheet_clo_mystic_robe_001",
+            "texture": "tex_clo_mystic_robe_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shirt",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_royal_outfit_001",
+            "display_name": "Royal Outfit",
+            "category": "clothing",
+            "slot": "shirt",
+            "description": "Velvet imperial tunic trimmed with ermine and gold thread.",
+            "sprite": "cosmetics/clothing/clo_royal_outfit_001/sprite.png",
+            "spritesheet": "sheet_clo_royal_outfit_001",
+            "texture": "tex_clo_royal_outfit_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shirt",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_dark_adventurer_001",
+            "display_name": "Dark Adventurer Outfit",
+            "category": "clothing",
+            "slot": "shirt",
+            "description": "Muted stealth adventurer tunic designed for night scouting.",
+            "sprite": "cosmetics/clothing/clo_dark_adventurer_001/sprite.png",
+            "spritesheet": "sheet_clo_dark_adventurer_001",
+            "texture": "tex_clo_dark_adventurer_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shirt",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "arm_leather_armor_001",
+            "display_name": "Leather Armor",
+            "category": "armor",
+            "slot": "armor",
+            "description": "Toughened boiled leather cuirass with riveted shoulder straps.",
+            "sprite": "cosmetics/armor/arm_leather_armor_001/sprite.png",
+            "spritesheet": "sheet_arm_leather_armor_001",
+            "texture": "tex_arm_leather_armor_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "armor",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "arm_reinforced_leather_001",
+            "display_name": "Reinforced Leather Armor",
+            "category": "armor",
+            "slot": "armor",
+            "description": "Studded leather breastplate reinforced with forged steel plates.",
+            "sprite": "cosmetics/armor/arm_reinforced_leather_001/sprite.png",
+            "spritesheet": "sheet_arm_reinforced_leather_001",
+            "texture": "tex_arm_reinforced_leather_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "armor",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "arm_iron_armor_001",
+            "display_name": "Iron Armor",
+            "category": "armor",
+            "slot": "armor",
+            "description": "Solid cast iron breastplate with flared neck guard and arming cops.",
+            "sprite": "cosmetics/armor/arm_iron_armor_001/sprite.png",
+            "spritesheet": "sheet_arm_iron_armor_001",
+            "texture": "tex_arm_iron_armor_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "armor",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "arm_steel_armor_001",
+            "display_name": "Steel Armor",
+            "category": "armor",
+            "slot": "armor",
+            "description": "Folded high-polish steel cuirass with central deflecting ridge.",
+            "sprite": "cosmetics/armor/arm_steel_armor_001/sprite.png",
+            "spritesheet": "sheet_arm_steel_armor_001",
+            "texture": "tex_arm_steel_armor_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "armor",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "arm_forest_guardian_001",
+            "display_name": "Forest Guardian Armor",
+            "category": "armor",
+            "slot": "armor",
+            "description": "Living heartwood scale armor enchanted by ancient forest spirits.",
+            "sprite": "cosmetics/armor/arm_forest_guardian_001/sprite.png",
+            "spritesheet": "sheet_arm_forest_guardian_001",
+            "texture": "tex_arm_forest_guardian_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "armor",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "arm_desert_armor_001",
+            "display_name": "Desert Armor",
+            "category": "armor",
+            "slot": "armor",
+            "description": "Bronze-gilded lamellar cuirass tailored for searing dune combat.",
+            "sprite": "cosmetics/armor/arm_desert_armor_001/sprite.png",
+            "spritesheet": "sheet_arm_desert_armor_001",
+            "texture": "tex_arm_desert_armor_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "armor",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "arm_frost_armor_001",
+            "display_name": "Frost Armor",
+            "category": "armor",
+            "slot": "armor",
+            "description": "Glacial steel cuirass radiating a crisp frost aura with fur rim.",
+            "sprite": "cosmetics/armor/arm_frost_armor_001/sprite.png",
+            "spritesheet": "sheet_arm_frost_armor_001",
+            "texture": "tex_arm_frost_armor_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "armor",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "arm_ancient_rune_001",
+            "display_name": "Ancient Rune Armor",
+            "category": "armor",
+            "slot": "armor",
+            "description": "Celestial meteoric plate armor pulsating with luminous azure runes.",
+            "sprite": "cosmetics/armor/arm_ancient_rune_001/sprite.png",
+            "spritesheet": "sheet_arm_ancient_rune_001",
+            "texture": "tex_arm_ancient_rune_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "armor",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_p_traveler_pants_001",
+            "display_name": "Traveler Pants",
+            "category": "pants",
+            "slot": "pants",
+            "description": "Rugged canvas trousers built for long journeys across the wild.",
+            "sprite": "cosmetics/pants/clo_p_traveler_pants_001/sprite.png",
+            "spritesheet": "sheet_clo_p_traveler_pants_001",
+            "texture": "tex_clo_p_traveler_pants_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "pants",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_p_leather_pants_001",
+            "display_name": "Leather Pants",
+            "category": "pants",
+            "slot": "pants",
+            "description": "Fitted dark leather riding breeches with reinforced knees.",
+            "sprite": "cosmetics/pants/clo_p_leather_pants_001/sprite.png",
+            "spritesheet": "sheet_clo_p_leather_pants_001",
+            "texture": "tex_clo_p_leather_pants_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "pants",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_p_armored_pants_001",
+            "display_name": "Armored Pants",
+            "category": "pants",
+            "slot": "pants",
+            "description": "Padded chausses fitted with steel poleyns and knee guards.",
+            "sprite": "cosmetics/pants/clo_p_armored_pants_001/sprite.png",
+            "spritesheet": "sheet_clo_p_armored_pants_001",
+            "texture": "tex_clo_p_armored_pants_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "pants",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_p_desert_trousers_001",
+            "display_name": "Desert Trousers",
+            "category": "pants",
+            "slot": "pants",
+            "description": "Lightweight loose-cut pleated trousers ideal for arid deserts.",
+            "sprite": "cosmetics/pants/clo_p_desert_trousers_001/sprite.png",
+            "spritesheet": "sheet_clo_p_desert_trousers_001",
+            "texture": "tex_clo_p_desert_trousers_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "pants",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_p_snow_trousers_001",
+            "display_name": "Snow Trousers",
+            "category": "pants",
+            "slot": "pants",
+            "description": "Quilted winter trousers stuffed with down insulation.",
+            "sprite": "cosmetics/pants/clo_p_snow_trousers_001/sprite.png",
+            "spritesheet": "sheet_clo_p_snow_trousers_001",
+            "texture": "tex_clo_p_snow_trousers_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "pants",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "clo_p_mystic_pants_001",
+            "display_name": "Mystic Pants",
+            "category": "pants",
+            "slot": "pants",
+            "description": "Midnight violet scholar's breeches hemmed with gold silk.",
+            "sprite": "cosmetics/pants/clo_p_mystic_pants_001/sprite.png",
+            "spritesheet": "sheet_clo_p_mystic_pants_001",
+            "texture": "tex_clo_p_mystic_pants_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "pants",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "sho_leather_boots_001",
+            "display_name": "Leather Boots",
+            "category": "footwear",
+            "slot": "shoes",
+            "description": "Mid-calf brown leather explorer boots with folded cuffs.",
+            "sprite": "cosmetics/footwear/sho_leather_boots_001/sprite.png",
+            "spritesheet": "sheet_sho_leather_boots_001",
+            "texture": "tex_sho_leather_boots_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shoes",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "sho_iron_boots_001",
+            "display_name": "Iron Boots",
+            "category": "footwear",
+            "slot": "shoes",
+            "description": "Heavy forged iron sabatons offering substantial foot protection.",
+            "sprite": "cosmetics/footwear/sho_iron_boots_001/sprite.png",
+            "spritesheet": "sheet_sho_iron_boots_001",
+            "texture": "tex_sho_iron_boots_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shoes",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "sho_traveler_shoes_001",
+            "display_name": "Traveler Shoes",
+            "category": "footwear",
+            "slot": "shoes",
+            "description": "Supple low-profile walking shoes tailored for swift travel.",
+            "sprite": "cosmetics/footwear/sho_traveler_shoes_001/sprite.png",
+            "spritesheet": "sheet_sho_traveler_shoes_001",
+            "texture": "tex_sho_traveler_shoes_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shoes",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "sho_snow_boots_001",
+            "display_name": "Snow Boots",
+            "category": "footwear",
+            "slot": "shoes",
+            "description": "Thick snow boots lined with fleece for arctic conditions.",
+            "sprite": "cosmetics/footwear/sho_snow_boots_001/sprite.png",
+            "spritesheet": "sheet_sho_snow_boots_001",
+            "texture": "tex_sho_snow_boots_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shoes",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "sho_desert_sandals_001",
+            "display_name": "Desert Sandals",
+            "category": "footwear",
+            "slot": "shoes",
+            "description": "Sturdy leather desert sandals with cross-straps and toe loops.",
+            "sprite": "cosmetics/footwear/sho_desert_sandals_001/sprite.png",
+            "spritesheet": "sheet_sho_desert_sandals_001",
+            "texture": "tex_sho_desert_sandals_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "shoes",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "hat_adventurer_hat_001",
+            "display_name": "Adventurer Hat",
+            "category": "headwear",
+            "slot": "headwear",
+            "description": "Wide-brimmed felt hat with a dark band and traveling feather.",
+            "sprite": "cosmetics/headwear/hat_adventurer_hat_001/sprite.png",
+            "spritesheet": "sheet_hat_adventurer_hat_001",
+            "texture": "tex_hat_adventurer_hat_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "headwear",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "hat_explorer_hood_001",
+            "display_name": "Explorer Hood",
+            "category": "headwear",
+            "slot": "headwear",
+            "description": "Woodland cowl hood draping smoothly over the shoulders.",
+            "sprite": "cosmetics/headwear/hat_explorer_hood_001/sprite.png",
+            "spritesheet": "sheet_hat_explorer_hood_001",
+            "texture": "tex_hat_explorer_hood_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "headwear",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "hat_iron_helmet_001",
+            "display_name": "Iron Helmet",
+            "category": "headwear",
+            "slot": "headwear",
+            "description": "Forged iron kettle helmet with nose guard protecting the skull.",
+            "sprite": "cosmetics/headwear/hat_iron_helmet_001/sprite.png",
+            "spritesheet": "sheet_hat_iron_helmet_001",
+            "texture": "tex_hat_iron_helmet_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [
+                "hair_hide_all"
+            ],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "headwear",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "hat_steel_helmet_001",
+            "display_name": "Steel Helmet",
+            "category": "headwear",
+            "slot": "headwear",
+            "description": "Full-face polished knight's bascinet with eye slits.",
+            "sprite": "cosmetics/headwear/hat_steel_helmet_001/sprite.png",
+            "spritesheet": "sheet_hat_steel_helmet_001",
+            "texture": "tex_hat_steel_helmet_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [
+                "hair_hide_all"
+            ],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "headwear",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "hat_mystic_hat_001",
+            "display_name": "Mystic Hat",
+            "category": "headwear",
+            "slot": "headwear",
+            "description": "Pointed indigo wizard hat adorned with celestial star embroidery.",
+            "sprite": "cosmetics/headwear/hat_mystic_hat_001/sprite.png",
+            "spritesheet": "sheet_hat_mystic_hat_001",
+            "texture": "tex_hat_mystic_hat_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "headwear",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "hat_forest_ranger_hood_001",
+            "display_name": "Forest Ranger Hood",
+            "category": "headwear",
+            "slot": "headwear",
+            "description": "Hunter's green hood fitted with a golden oak-leaf clasp.",
+            "sprite": "cosmetics/headwear/hat_forest_ranger_hood_001/sprite.png",
+            "spritesheet": "sheet_hat_forest_ranger_hood_001",
+            "texture": "tex_hat_forest_ranger_hood_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "headwear",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "fac_cloth_mask_001",
+            "display_name": "Cloth Mask",
+            "category": "face_accessories",
+            "slot": "mask",
+            "description": "Black assassin cloth bandana concealing mouth and nose.",
+            "sprite": "cosmetics/face_accessories/fac_cloth_mask_001/sprite.png",
+            "spritesheet": "sheet_fac_cloth_mask_001",
+            "texture": "tex_fac_cloth_mask_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "mask",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "fac_leather_mask_001",
+            "display_name": "Leather Mask",
+            "category": "face_accessories",
+            "slot": "mask",
+            "description": "Hardened leather combat respirator mask with brass rivets.",
+            "sprite": "cosmetics/face_accessories/fac_leather_mask_001/sprite.png",
+            "spritesheet": "sheet_fac_leather_mask_001",
+            "texture": "tex_fac_leather_mask_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "mask",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "fac_mystic_mask_001",
+            "display_name": "Mystic Mask",
+            "category": "face_accessories",
+            "slot": "mask",
+            "description": "Ornate porcelain mask painted with arcane sigils.",
+            "sprite": "cosmetics/face_accessories/fac_mystic_mask_001/sprite.png",
+            "spritesheet": "sheet_fac_mystic_mask_001",
+            "texture": "tex_fac_mystic_mask_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [
+                "mask_hide_goggles"
+            ],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "mask",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "fac_adventurer_goggles_001",
+            "display_name": "Adventurer Goggles",
+            "category": "face_accessories",
+            "slot": "goggles",
+            "description": "Brass explorer goggles with amber-tinted lenses.",
+            "sprite": "cosmetics/face_accessories/fac_adventurer_goggles_001/sprite.png",
+            "spritesheet": "sheet_fac_adventurer_goggles_001",
+            "texture": "tex_fac_adventurer_goggles_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "goggles",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "fac_mechanical_goggles_001",
+            "display_name": "Mechanical Goggles",
+            "category": "face_accessories",
+            "slot": "goggles",
+            "description": "Complex steampunk multi-lens goggles with optical gears.",
+            "sprite": "cosmetics/face_accessories/fac_mechanical_goggles_001/sprite.png",
+            "spritesheet": "sheet_fac_mechanical_goggles_001",
+            "texture": "tex_fac_mechanical_goggles_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "goggles",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "bag_small_traveler_001",
+            "display_name": "Small Traveler Backpack",
+            "category": "backpacks",
+            "slot": "backpack",
+            "description": "Compact canvas daypack with single brass-buckled flap.",
+            "sprite": "cosmetics/backpacks/bag_small_traveler_001/sprite.png",
+            "spritesheet": "sheet_bag_small_traveler_001",
+            "texture": "tex_bag_small_traveler_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "backpack",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "bag_leather_backpack_001",
+            "display_name": "Leather Backpack",
+            "category": "backpacks",
+            "slot": "backpack",
+            "description": "Sturdy saddle-leather expedition backpack with utility pouches.",
+            "sprite": "cosmetics/backpacks/bag_leather_backpack_001/sprite.png",
+            "spritesheet": "sheet_bag_leather_backpack_001",
+            "texture": "tex_bag_leather_backpack_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "backpack",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "bag_adventurer_backpack_001",
+            "display_name": "Adventurer Backpack",
+            "category": "backpacks",
+            "slot": "backpack",
+            "description": "Traveler pack with rolled woolen bedroll strapped on top.",
+            "sprite": "cosmetics/backpacks/bag_adventurer_backpack_001/sprite.png",
+            "spritesheet": "sheet_bag_adventurer_backpack_001",
+            "texture": "tex_bag_adventurer_backpack_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "backpack",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "bag_explorer_backpack_001",
+            "display_name": "Explorer Backpack",
+            "category": "backpacks",
+            "slot": "backpack",
+            "description": "Large field pack fitted with map tube and brass compass pouch.",
+            "sprite": "cosmetics/backpacks/bag_explorer_backpack_001/sprite.png",
+            "spritesheet": "sheet_bag_explorer_backpack_001",
+            "texture": "tex_bag_explorer_backpack_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "backpack",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "bag_military_backpack_001",
+            "display_name": "Military-Style Backpack",
+            "category": "backpacks",
+            "slot": "backpack",
+            "description": "Heavy-duty reinforced tactical ruck with modular gear straps.",
+            "sprite": "cosmetics/backpacks/bag_military_backpack_001/sprite.png",
+            "spritesheet": "sheet_bag_military_backpack_001",
+            "texture": "tex_bag_military_backpack_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "backpack",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "var_skin_pale_001",
+            "display_name": "Pale Skin Appearance",
+            "category": "character_variations",
+            "slot": "skin",
+            "description": "Fair alabaster skin tone option for player customization.",
+            "sprite": "cosmetics/character_variations/var_skin_pale_001/sprite.png",
+            "spritesheet": "sheet_var_skin_pale_001",
+            "texture": "tex_var_skin_pale_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "skin",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "var_skin_dark_001",
+            "display_name": "Umber Skin Appearance",
+            "category": "character_variations",
+            "slot": "skin",
+            "description": "Deep umber rich skin tone option for player customization.",
+            "sprite": "cosmetics/character_variations/var_skin_dark_001/sprite.png",
+            "spritesheet": "sheet_var_skin_dark_001",
+            "texture": "tex_var_skin_dark_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "skin",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "var_skin_olive_001",
+            "display_name": "Olive Skin Appearance",
+            "category": "character_variations",
+            "slot": "skin",
+            "description": "Warm sun-kissed olive complexion for player customization.",
+            "sprite": "cosmetics/character_variations/var_skin_olive_001/sprite.png",
+            "spritesheet": "sheet_var_skin_olive_001",
+            "texture": "tex_var_skin_olive_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "skin",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "var_hair_braided_red_001",
+            "display_name": "Braided Crimson Hair",
+            "category": "character_variations",
+            "slot": "hair",
+            "description": "Long warrior braids woven in vibrant flame-red hair.",
+            "sprite": "cosmetics/character_variations/var_hair_braided_red_001/sprite.png",
+            "spritesheet": "sheet_var_hair_braided_red_001",
+            "texture": "tex_var_hair_braided_red_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "hair",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "var_hair_spiky_black_001",
+            "display_name": "Spiky Obsidian Hair",
+            "category": "character_variations",
+            "slot": "hair",
+            "description": "Dynamic stylized spiky adventurer haircut in deep obsidian.",
+            "sprite": "cosmetics/character_variations/var_hair_spiky_black_001/sprite.png",
+            "spritesheet": "sheet_var_hair_spiky_black_001",
+            "texture": "tex_var_hair_spiky_black_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "hair",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "var_face_warpaint_001",
+            "display_name": "Azure Hunter Warpaint",
+            "category": "character_variations",
+            "slot": "face",
+            "description": "Tribal azure warpaint stripes painted across cheeks and nose.",
+            "sprite": "cosmetics/character_variations/var_face_warpaint_001/sprite.png",
+            "spritesheet": "sheet_var_face_warpaint_001",
+            "texture": "tex_var_face_warpaint_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "face",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        },
+        {
+            "id": "var_face_eyepatch_001",
+            "display_name": "Veteran Leather Eyepatch",
+            "category": "character_variations",
+            "slot": "face",
+            "description": "Weathered black leather eyepatch covering the right eye.",
+            "sprite": "cosmetics/character_variations/var_face_eyepatch_001/sprite.png",
+            "spritesheet": "sheet_var_face_eyepatch_001",
+            "texture": "tex_var_face_eyepatch_001",
+            "compatible_directions": [
+                "up",
+                "down",
+                "left",
+                "right"
+            ],
+            "compatible_animations": [
+                "idle",
+                "walk",
+                "run"
+            ],
+            "occlusion_flags": [],
+            "anchors": {
+                "body": [
+                    16,
+                    48
+                ]
+            },
+            "render_order": "face",
+            "provenance": {
+                "creator": "Wildbound Development Studio",
+                "source": "Wildbound Phase 17 Costumes & Armor Collection",
+                "license": "CC0 1.0 Universal",
+                "attribution_required": false
+            }
+        }
+    ]
+}

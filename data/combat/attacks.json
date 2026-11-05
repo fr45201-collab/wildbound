@@ -1,0 +1,41 @@
+{
+  "attacks": [
+    {
+      "id": "slash",
+      "name": "Sword Slash",
+      "damage_type": "physical",
+      "base_damage": 25.0,
+      "range": 32.0,
+      "cooldown": 0.5,
+      "hitbox_width": 36.0,
+      "hitbox_height": 28.0,
+      "forward_offset": 20.0,
+      "animation_prefix": "attack"
+    },
+    {
+      "id": "goblin_club",
+      "name": "Goblin Club Strike",
+      "damage_type": "physical",
+      "base_damage": 12.0,
+      "range": 28.0,
+      "cooldown": 1.0,
+      "hitbox_width": 28.0,
+      "hitbox_height": 24.0,
+      "forward_offset": 18.0,
+      "animation_prefix": "attack"
+    },
+    {
+      "id": "skeleton_blade",
+      "name": "Skeleton Blade Thrust",
+      "damage_type": "physical",
+      "base_damage": 18.0,
+      "range": 34.0,
+      "cooldown": 1.2,
+      "hitbox_width": 32.0,
+      "hitbox_height": 24.0,
+      "forward_offset": 22.0,
+      "animation_prefix": "attack"
+    }
+  ]
+}
+

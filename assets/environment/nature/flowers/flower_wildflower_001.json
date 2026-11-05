@@ -1,0 +1,32 @@
+{
+  "id": "flower_wildflower_001",
+  "name": "Wildflower Cluster",
+  "category": "nature",
+  "subcategory": "flowers",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/flowers/flower_wildflower_001.png",
+  "dimensions": {
+    "width": 24,
+    "height": 20
+  },
+  "anchors": {
+    "ground": [
+      12,
+      18
+    ]
+  },
+  "collision": {
+    "enabled": false
+  },
+  "rendering": {
+    "layer": "ground_decor",
+    "y_sort": false
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

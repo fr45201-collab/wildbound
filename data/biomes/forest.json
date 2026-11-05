@@ -1,0 +1,86 @@
+{
+  "id": "forest",
+  "display_name": "Verdant Forest",
+  "description": "Lush temperate woodland characterized by ancient oaks, towering pines, flowing streams, and rustic settlements.",
+  "tileset": "forest_tileset",
+  "tileset_image": "tilesets/forest/forest_tileset.png",
+  "terrain": [
+    {
+      "name": "Grass",
+      "gid": 1,
+      "walkable": true
+    },
+    {
+      "name": "Packed Road",
+      "gid": 9,
+      "walkable": true
+    },
+    {
+      "name": "Cliff Rock",
+      "gid": 17,
+      "walkable": false
+    },
+    {
+      "name": "River Water",
+      "gid": 25,
+      "walkable": false
+    },
+    {
+      "name": "Wood Bridge",
+      "gid": 33,
+      "walkable": true
+    }
+  ],
+  "vegetation": [
+    "tree_oak_001",
+    "tree_oak_002",
+    "tree_pine_001",
+    "tree_pine_002",
+    "bush_dense_001",
+    "bush_flowering_001",
+    "flower_wildflower_001"
+  ],
+  "environment_objects": [
+    "house_cottage_001",
+    "shop_general_001",
+    "blacksmith_forge_001",
+    "well_stone_001",
+    "barrel_standard_001",
+    "crate_large_001",
+    "lamp_post_001"
+  ],
+  "animations": [
+    "water_river_anim",
+    "waterfall_large_anim",
+    "tree_oak_breeze_anim",
+    "tree_pine_breeze_anim",
+    "grass_tall_wind_anim",
+    "smoke_chimney_anim",
+    "fire_medium_anim"
+  ],
+  "atmosphere": {
+    "weather": "temperate",
+    "fog_density": 0.25,
+    "cloud_speed": 18.0,
+    "cloud_layer_enabled": true,
+    "ambient_tint": {
+      "r": 255,
+      "g": 255,
+      "b": 255,
+      "a": 255
+    }
+  },
+  "ambient_entities": [
+    "ambient_bird",
+    "forest_butterfly",
+    "blue_butterfly",
+    "golden_butterfly"
+  ],
+  "maps": [
+    "maps/forest/forest_01.json"
+  ],
+  "default_spawn": {
+    "x": 256.0,
+    "y": 960.0
+  }
+}

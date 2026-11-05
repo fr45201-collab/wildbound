@@ -1,0 +1,43 @@
+{
+  "spawning": {
+    "enabled": true,
+    "max_active_enemies": 6,
+    "spawn_interval": 6.0,
+    "initial_spawn_count": 3,
+    "min_distance_from_player": 180.0,
+    "max_distance_from_player": 450.0,
+    "enemy_types": [
+      {
+        "type": "goblin",
+        "weight": 60,
+        "config_file": "data/characters/enemies/goblin.json"
+      },
+      {
+        "type": "skeleton",
+        "weight": 40,
+        "config_file": "data/characters/enemies/skeleton.json"
+      }
+    ],
+    "spawn_zones": [
+      {
+        "name": "NorthGrove",
+        "x": 600.0,
+        "y": 400.0,
+        "radius": 150.0
+      },
+      {
+        "name": "EastClearing",
+        "x": 1600.0,
+        "y": 800.0,
+        "radius": 180.0
+      },
+      {
+        "name": "SouthTrail",
+        "x": 900.0,
+        "y": 1400.0,
+        "radius": 160.0
+      }
+    ]
+  }
+}
+

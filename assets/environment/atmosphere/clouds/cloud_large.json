@@ -1,0 +1,19 @@
+{
+  "id": "cloud_large",
+  "name": "Large Atmospheric Cloud",
+  "category": "atmosphere",
+  "subcategory": "clouds",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/atmosphere/clouds/cloud_large.png",
+  "dimensions": {
+    "width": 128,
+    "height": 64
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Atmospheric Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

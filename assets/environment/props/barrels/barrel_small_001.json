@@ -1,0 +1,41 @@
+{
+  "id": "barrel_small_001",
+  "name": "Small Keg",
+  "category": "prop",
+  "subcategory": "barrels",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/barrels/barrel_small_001.png",
+  "dimensions": {
+    "width": 16,
+    "height": 18
+  },
+  "anchors": {
+    "ground": [
+      8,
+      16
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      2,
+      6
+    ],
+    "size": [
+      12,
+      10
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

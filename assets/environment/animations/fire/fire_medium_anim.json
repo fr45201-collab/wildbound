@@ -1,0 +1,28 @@
+{
+  "id": "fire_medium_anim",
+  "name": "Medium Campfire Flame Animation",
+  "category": "animated_environment",
+  "subcategory": "fire",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/fire/fire_medium_anim.png",
+  "spritesheet": "sheet_fire_medium_anim",
+  "dimensions": {
+    "frame_width": 24,
+    "frame_height": 32,
+    "columns": 6,
+    "rows": 1,
+    "frame_count": 6
+  },
+  "animation": {
+    "name": "fire_medium_anim_loop",
+    "frame_duration": 0.09,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

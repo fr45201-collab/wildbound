@@ -1,0 +1,14 @@
+{
+  "id": "mat_stone_001",
+  "display_name": "Stone",
+  "category": "material",
+  "subcategory": "raw_material",
+  "description": "A square-chiseled block of hard granite quarry stone ready for masonry or fortifications.",
+  "icon_file": "items/icons/mat_stone_001_icon.png",
+  "world_file": "items/world/mat_stone_001_world.png",
+  "biome_tags": [
+    "mountain",
+    "desert"
+  ],
+  "rarity_tier": "common"
+}

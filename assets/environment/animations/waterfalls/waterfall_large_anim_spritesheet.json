@@ -1,0 +1,12 @@
+{
+  "id": "sheet_waterfall_large_anim",
+  "texture": "environment/animations/waterfalls/waterfall_large_anim.png",
+  "frame_width": 64,
+  "frame_height": 80,
+  "columns": 6,
+  "rows": 1,
+  "frame_count": 6,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

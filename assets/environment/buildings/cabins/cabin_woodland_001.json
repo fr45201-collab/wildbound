@@ -1,0 +1,63 @@
+{
+  "id": "cabin_woodland_001",
+  "name": "Remote Woodland Cabin",
+  "category": "building",
+  "subcategory": "cabins",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/buildings/cabins/cabin_woodland_001.png",
+  "dimensions": {
+    "width": 80,
+    "height": 76
+  },
+  "anchors": {
+    "ground": [
+      40,
+      72
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      8,
+      34
+    ],
+    "size": [
+      64,
+      38
+    ]
+  },
+  "rendering": {
+    "layer": "solid_structures",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  },
+  "entrance": [
+    32,
+    72
+  ],
+  "door": [
+    32,
+    70
+  ],
+  "windows": [
+    [
+      52,
+      58
+    ]
+  ],
+  "roof": {
+    "width": 74,
+    "height": 28
+  },
+  "interior_compatibility": {
+    "supported": true,
+    "map_reference": "interior_cabin_woodland_001"
+  }
+}

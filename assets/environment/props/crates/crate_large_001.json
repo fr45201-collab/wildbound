@@ -1,0 +1,41 @@
+{
+  "id": "crate_large_001",
+  "name": "Large Cargo Crate",
+  "category": "prop",
+  "subcategory": "crates",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/crates/crate_large_001.png",
+  "dimensions": {
+    "width": 32,
+    "height": 32
+  },
+  "anchors": {
+    "ground": [
+      16,
+      28
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      3,
+      8
+    ],
+    "size": [
+      26,
+      20
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

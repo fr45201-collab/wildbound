@@ -1,0 +1,13 @@
+{
+  "id": "res_desert_cactus_fruit_001",
+  "display_name": "Desert Cactus Fruit",
+  "category": "resource",
+  "subcategory": "flora_desert",
+  "description": "A deep magenta prickly pear harvested from arid desert saguaros, rich in natural moisture.",
+  "icon_file": "items/icons/res_desert_cactus_fruit_001_icon.png",
+  "world_file": "items/world/res_desert_cactus_fruit_001_world.png",
+  "biome_tags": [
+    "desert"
+  ],
+  "rarity_tier": "uncommon"
+}

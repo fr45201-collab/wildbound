@@ -1,0 +1,19 @@
+{
+  "id": "cloud_medium",
+  "name": "Medium Cumulus Cloud",
+  "category": "atmosphere",
+  "subcategory": "clouds",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/atmosphere/clouds/cloud_medium.png",
+  "dimensions": {
+    "width": 96,
+    "height": 48
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Atmospheric Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

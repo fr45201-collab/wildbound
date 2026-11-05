@@ -1,0 +1,12 @@
+{
+  "id": "sheet_airplane_recon_001",
+  "texture": "environment/events/airplanes/airplane_recon_001.png",
+  "frame_width": 48,
+  "frame_height": 48,
+  "columns": 4,
+  "rows": 1,
+  "frame_count": 4,
+  "spacing": 0,
+  "margin": 0,
+  "origin": "center"
+}

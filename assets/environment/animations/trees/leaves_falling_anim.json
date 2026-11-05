@@ -1,0 +1,28 @@
+{
+  "id": "leaves_falling_anim",
+  "name": "Falling Woodland Leaves",
+  "category": "animated_environment",
+  "subcategory": "trees",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/animations/trees/leaves_falling_anim.png",
+  "spritesheet": "sheet_leaves_falling_anim",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "columns": 6,
+    "rows": 1,
+    "frame_count": 6
+  },
+  "animation": {
+    "name": "leaves_falling_anim_loop",
+    "frame_duration": 0.14,
+    "loop": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 11 Environmental Animation",
+    "license": "CC0 1.0 Universal"
+  }
+}

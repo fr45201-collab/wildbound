@@ -1,0 +1,46 @@
+{
+  "id": "creature_wolf_001",
+  "name": "Forest Wolf",
+  "category": "hostile_creature",
+  "biome": [
+    "forest"
+  ],
+  "sprite": "characters/enemies/wolf/wolf_spritesheet.png",
+  "spritesheet": "wolf_spritesheet",
+  "dimensions": {
+    "frame_width": 48,
+    "frame_height": 40,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32
+  },
+  "directions": [
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": "wolf_idle_down",
+    "walk": "wolf_walk_down",
+    "run": "wolf_run_down",
+    "attack": "wolf_attack_down",
+    "hurt": "wolf_hurt_down",
+    "death": "wolf_death_down"
+  },
+  "anchors": {
+    "ground": [
+      24,
+      40
+    ]
+  },
+  "collision": {
+    "width": 24.0,
+    "height": 14.0
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 9 Production Creature",
+    "license": "CC0 1.0 Universal"
+  }
+}

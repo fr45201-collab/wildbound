@@ -59,3 +59,4 @@ This ensures footstep cadences visually match the increased locomotion speed wit
 2. Frame index is resolved via modulo arithmetic:
    $$\text{frameIndex} = \lfloor \frac{\text{m\_elapsedTime}}{\text{frameDuration}} \rfloor \pmod{\text{totalFrames}}$$
 3. Loop flags wrap back to index 0 smoothly.
+

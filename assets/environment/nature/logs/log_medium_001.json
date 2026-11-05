@@ -1,0 +1,41 @@
+{
+  "id": "log_medium_001",
+  "name": "Medium Fallen Log",
+  "category": "nature",
+  "subcategory": "logs",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/nature/logs/log_medium_001.png",
+  "dimensions": {
+    "width": 48,
+    "height": 24
+  },
+  "anchors": {
+    "ground": [
+      24,
+      20
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      4,
+      12
+    ],
+    "size": [
+      40,
+      10
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "animations": [
+    {
+      "animation": "grass_tall_wind_anim_loop",
+      "spritesheet": "sheet_grass_tall_wind_anim",
+      "frame_duration": 0.18,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    }
+  ]
+}

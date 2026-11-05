@@ -1,0 +1,12 @@
+{
+    "id": "sheet_arm_forest_guardian_001",
+    "texture": "cosmetics/armor/arm_forest_guardian_001/sprite.png",
+    "frame_width": 32,
+    "frame_height": 48,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32,
+    "spacing": 0,
+    "margin": 0,
+    "origin": "bottom_center"
+}

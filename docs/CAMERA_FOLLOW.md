@@ -52,3 +52,4 @@ snapped.target.y = std::round(m_camera.target.y);
 snapped.offset.x = std::round(m_camera.offset.x);
 snapped.offset.y = std::round(m_camera.offset.y);
 ```
+

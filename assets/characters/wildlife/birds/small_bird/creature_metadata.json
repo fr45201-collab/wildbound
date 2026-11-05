@@ -1,0 +1,40 @@
+{
+  "id": "creature_bird_001",
+  "name": "Small Songbird",
+  "category": "ambient_wildlife",
+  "biome": [
+    "forest",
+    "meadow"
+  ],
+  "sprite": "characters/wildlife/birds/small_bird/small_bird_spritesheet.png",
+  "spritesheet": "small_bird_spritesheet",
+  "dimensions": {
+    "frame_width": 24,
+    "frame_height": 24,
+    "columns": 4,
+    "rows": 4,
+    "frame_count": 16
+  },
+  "directions": [
+    "down",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": "bird_idle",
+    "fly": "bird_fly",
+    "takeoff": "bird_takeoff",
+    "landing": "bird_landing"
+  },
+  "anchors": {
+    "ground": [
+      12,
+      22
+    ]
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 9 Production Wildlife",
+    "license": "CC0 1.0 Universal"
+  }
+}

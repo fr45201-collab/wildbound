@@ -2,12 +2,12 @@ cmake_minimum_required(VERSION 3.20)
 
 # ============================================================================
 # WILDBOUND — 2D Fantasy Survival Adventure Engine
-# Phase 4: Player Character System & Animation Engine
+# Phase 5: Combat System, Enemy Entities & Basic Enemy AI
 # ============================================================================
 
 project(Wildbound
-    VERSION 0.5.0
-    DESCRIPTION "2D top-down fantasy survival adventure game engine"
+    VERSION 0.6.0
+    DESCRIPTION "2D top-down fantasy battle royale game engine"
     LANGUAGES CXX C
 )
 
@@ -27,6 +27,7 @@ if(MSVC)
         /utf-8       # Set source and execution character sets to UTF-8
         /permissive- # Enforce standards conformance
         /Zc:__cplusplus # Correct __cplusplus macro
+        /Z7          # Embed debug info in .obj files to eliminate PDB server mismatch
     )
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 endif()
@@ -163,7 +164,7 @@ set(WILDBOUND_SOURCES
     src/resources/AssetManager.cpp
     src/resources/AssetManager.hpp
 
-    # World & Tilemap System (Phase 3)
+    # World & Tilemap System (Phase 3 & 11)
     src/world/Tileset.cpp
     src/world/Tileset.hpp
     src/world/TileLayer.cpp
@@ -182,6 +183,80 @@ set(WILDBOUND_SOURCES
     src/world/World.hpp
     src/world/WorldRenderer.cpp
     src/world/WorldRenderer.hpp
+    src/world/EnemySpawner.cpp
+    src/world/EnemySpawner.hpp
+    src/world/environment/EnvironmentalAnimationSystem.cpp
+    src/world/environment/EnvironmentalAnimationSystem.hpp
+    src/world/BuildingData.hpp
+    src/world/BuildingManager.cpp
+    src/world/BuildingManager.hpp
+    src/world/BiomeData.hpp
+    src/world/BiomeManager.cpp
+    src/world/BiomeManager.hpp
+    src/world/WorldItem.hpp
+    src/world/WorldItem.cpp
+    src/world/LootContainer.hpp
+    src/world/LootContainer.cpp
+    src/world/WorldData.hpp
+    src/world/WorldManager.hpp
+    src/world/WorldManager.cpp
+    src/weapons/WeaponData.hpp
+    src/weapons/WeaponInstance.hpp
+    src/weapons/WeaponInstance.cpp
+    src/weapons/WeaponController.hpp
+    src/weapons/WeaponController.cpp
+    src/weapons/WeaponManager.cpp
+    src/weapons/WeaponManager.hpp
+    src/items/ItemData.hpp
+    src/items/ItemInstance.hpp
+    src/items/Inventory.hpp
+    src/items/Inventory.cpp
+    src/items/ItemManager.cpp
+    src/items/ItemManager.hpp
+    src/items/ConsumableSystem.hpp
+    src/items/ConsumableSystem.cpp
+
+    # Physics & Collision Subsystem (Phase 20)
+    src/physics/CollisionTypes.hpp
+    src/physics/CollisionFilter.hpp
+    src/physics/OverlapDetector.hpp
+    src/physics/Collider.hpp
+    src/physics/CollisionEvent.hpp
+    src/physics/TriggerVolume.hpp
+    src/physics/CollisionManager.hpp
+    src/physics/CollisionManager.cpp
+    src/physics/CollisionDebugRenderer.hpp
+    src/physics/CollisionDebugRenderer.cpp
+
+    # Advanced Input Management Subsystem (Phase 21)
+    src/input/InputAction.hpp
+    src/input/InputBinding.hpp
+    src/input/InputContext.hpp
+    src/input/InputBuffer.hpp
+    src/input/GamepadInput.hpp
+    src/input/GamepadInput.cpp
+    src/input/InputSettings.hpp
+    src/input/InputSettings.cpp
+    src/input/InputManager.hpp
+    src/input/InputManager.cpp
+
+    # World Interaction System (Phase 22)
+    src/interaction/InteractionTypes.hpp
+    src/interaction/InteractionDefinition.hpp
+    src/interaction/InteractionContext.hpp
+    src/interaction/InteractableComponent.hpp
+    src/interaction/InteractionEvent.hpp
+    src/interaction/InteractionPrompt.hpp
+    src/interaction/Door.hpp
+    src/interaction/Door.cpp
+    src/interaction/Mechanism.hpp
+    src/interaction/Mechanism.cpp
+    src/interaction/InteractionValidator.hpp
+    src/interaction/InteractionValidator.cpp
+    src/interaction/InteractionExecutor.hpp
+    src/interaction/InteractionExecutor.cpp
+    src/interaction/InteractionManager.hpp
+    src/interaction/InteractionManager.cpp
 
     # Animation Subsystem (Phase 4)
     src/graphics/animation/Direction.hpp
@@ -191,7 +266,7 @@ set(WILDBOUND_SOURCES
     src/graphics/animation/AnimationStateMachine.cpp
     src/graphics/animation/AnimationStateMachine.hpp
 
-    # Entities & Character System (Phase 4)
+    # Entities & Character System (Phase 4 & 5)
     src/entities/Entity.cpp
     src/entities/Entity.hpp
     src/entities/CharacterStats.hpp
@@ -203,12 +278,126 @@ set(WILDBOUND_SOURCES
     src/entities/Character.hpp
     src/entities/Player.cpp
     src/entities/Player.hpp
+    src/entities/EquipmentSystem.cpp
+    src/entities/EquipmentSystem.hpp
+    src/entities/ModularCharacter.cpp
+    src/entities/ModularCharacter.hpp
+    src/entities/EnemyConfig.cpp
+    src/entities/EnemyConfig.hpp
+    src/entities/Enemy.cpp
+    src/entities/Enemy.hpp
+
+    # Character Customization Subsystem (Phase 25)
+    src/customization/CosmeticTypes.hpp
+    src/customization/CosmeticDefinition.hpp
+    src/customization/CosmeticDefinition.cpp
+    src/customization/CosmeticRegistry.hpp
+    src/customization/CosmeticRegistry.cpp
+    src/customization/CharacterAppearance.hpp
+    src/customization/CharacterAppearance.cpp
+    src/customization/AppearancePreview.hpp
+    src/customization/AppearancePreview.cpp
+    src/customization/AppearanceLoadout.hpp
+    src/customization/AppearanceSerializer.hpp
+    src/customization/AppearanceSerializer.cpp
+    src/customization/CharacterCustomizationManager.hpp
+    src/customization/CharacterCustomizationManager.cpp
+
+    # Cosmetics Store & Wardrobe Subsystem (Phase 26)
+    src/cosmetics/CosmeticsRarity.hpp
+    src/cosmetics/CosmeticsColorVariant.hpp
+    src/cosmetics/CosmeticsOwnership.hpp
+    src/cosmetics/CosmeticsOwnershipManager.hpp
+    src/cosmetics/CosmeticsOwnershipManager.cpp
+    src/cosmetics/CosmeticsSearchFilter.hpp
+    src/cosmetics/CosmeticsSearchFilter.cpp
+    src/cosmetics/CosmeticsStoreManager.hpp
+    src/cosmetics/CosmeticsStoreManager.cpp
+
+    # Combat Subsystem (Phase 5 & 19)
+    src/combat/CombatTypes.hpp
+    src/combat/CombatEvents.hpp
+    src/combat/CombatRules.hpp
+    src/combat/HealthComponent.cpp
+    src/combat/HealthComponent.hpp
+    src/combat/DamageSystem.cpp
+    src/combat/DamageSystem.hpp
+    src/combat/AttackSystem.cpp
+    src/combat/AttackSystem.hpp
+    src/combat/ProjectileSystem.cpp
+    src/combat/ProjectileSystem.hpp
+    src/combat/HitDetection.cpp
+    src/combat/HitDetection.hpp
+    src/combat/Combatant.hpp
+    src/combat/DeathHandler.hpp
+    src/combat/CombatSystem.cpp
+    src/combat/CombatSystem.hpp
 
     # Scripting & UI
     src/scripting/LuaManager.cpp
     src/scripting/LuaManager.hpp
+    src/audio/AudioData.hpp
+    src/audio/AudioSystem.hpp
+    src/audio/AudioSystem.cpp
+    src/ui/UITheme.hpp
+    src/ui/UINotification.hpp
+    src/ui/hud/Minimap.hpp
+    src/ui/hud/Minimap.cpp
+    src/ui/hud/HUDManager.hpp
+    src/ui/hud/HUDManager.cpp
+    src/ui/menus/SettingsMenu.hpp
+    src/ui/menus/SettingsMenu.cpp
+    src/ui/menus/PauseMenu.hpp
+    src/ui/menus/PauseMenu.cpp
+    src/ui/menus/MainMenu.hpp
+    src/ui/menus/MainMenu.cpp
+    src/ui/inventory/InventoryUI.hpp
+    src/ui/inventory/InventoryUI.cpp
+    src/ui/UIManager.hpp
+    src/ui/UIManager.cpp
     src/ui/DevUI.cpp
     src/ui/DevUI.hpp
+
+    # AI & Navigation System (Phase 29)
+    src/ai/core/AITypes.hpp
+    src/ai/core/AIConfiguration.hpp
+    src/ai/core/AIConfiguration.cpp
+    src/ai/core/AIController.hpp
+    src/ai/core/AIController.cpp
+    src/ai/navigation/NavigationQuery.hpp
+    src/ai/navigation/NavigationGrid.hpp
+    src/ai/navigation/NavigationGrid.cpp
+    src/ai/navigation/Pathfinding.hpp
+    src/ai/navigation/Pathfinding.cpp
+    src/ai/movement/AIMovementController.hpp
+    src/ai/movement/AIMovementController.cpp
+    src/ai/movement/ObstacleAvoidance.hpp
+    src/ai/movement/ObstacleAvoidance.cpp
+    src/ai/movement/StuckDetector.hpp
+    src/ai/movement/StuckDetector.cpp
+    src/ai/targeting/PerceptionSystem.hpp
+    src/ai/targeting/PerceptionSystem.cpp
+    src/ai/targeting/TargetMemory.hpp
+    src/ai/targeting/TargetMemory.cpp
+    src/ai/targeting/TargetSelector.hpp
+    src/ai/targeting/TargetSelector.cpp
+    src/ai/behaviours/PatrolBehaviour.hpp
+    src/ai/behaviours/PatrolBehaviour.cpp
+    src/ai/behaviours/InvestigateBehaviour.hpp
+    src/ai/behaviours/InvestigateBehaviour.cpp
+    src/ai/AIManager.hpp
+    src/ai/AIManager.cpp
+
+    # Corruption Storm & Safe Zone System (Phase 31)
+    src/storm/StormTypes.hpp
+    src/storm/SafeZone.hpp
+    src/storm/SafeZone.cpp
+    src/storm/StormDamageSystem.hpp
+    src/storm/StormDamageSystem.cpp
+    src/storm/StormBoundaryRenderer.hpp
+    src/storm/StormBoundaryRenderer.cpp
+    src/storm/StormManager.hpp
+    src/storm/StormManager.cpp
 )
 
 add_executable(wildbound

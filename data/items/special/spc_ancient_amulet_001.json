@@ -1,0 +1,15 @@
+{
+  "id": "spc_ancient_amulet_001",
+  "display_name": "Ancient Amulet",
+  "category": "special",
+  "subcategory": "jewelry",
+  "description": "A heavy golden talisman set with an azure sapphire eye, suspended from an interlocking chain.",
+  "icon_file": "items/icons/spc_ancient_amulet_001_icon.png",
+  "world_file": "items/world/spc_ancient_amulet_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "mountain"
+  ],
+  "rarity_tier": "epic"
+}

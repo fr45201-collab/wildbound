@@ -1,0 +1,41 @@
+{
+  "id": "barrel_standard_001",
+  "name": "Standard Barrel",
+  "category": "prop",
+  "subcategory": "barrels",
+  "biomes": [
+    "forest"
+  ],
+  "sprite": "environment/props/barrels/barrel_standard_001.png",
+  "dimensions": {
+    "width": 20,
+    "height": 24
+  },
+  "anchors": {
+    "ground": [
+      10,
+      22
+    ]
+  },
+  "collision": {
+    "enabled": true,
+    "shape": "rectangle",
+    "offset": [
+      3,
+      10
+    ],
+    "size": [
+      14,
+      12
+    ]
+  },
+  "rendering": {
+    "layer": "environment",
+    "y_sort": true
+  },
+  "provenance": {
+    "creator": "Wildbound Development Studio",
+    "source": "Wildbound Phase 10 Production Environment Asset",
+    "license": "CC0 1.0 Universal"
+  }
+}

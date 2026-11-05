@@ -1,0 +1,14 @@
+{
+  "id": "col_sapphire_001",
+  "display_name": "Sapphire",
+  "category": "collectible",
+  "subcategory": "gemstone",
+  "description": "A deep radiant-cut cobalt sapphire reflecting deep ocean tones. Highly prized by lapidaries and sorcerers.",
+  "icon_file": "items/icons/col_sapphire_001_icon.png",
+  "world_file": "items/world/col_sapphire_001_world.png",
+  "biome_tags": [
+    "snow",
+    "mountain"
+  ],
+  "rarity_tier": "rare"
+}

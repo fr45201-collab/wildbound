@@ -92,6 +92,10 @@ ValidationReport AssetManager::ValidateAssets() {
 }
 
 Texture2D AssetManager::GetTexture(const std::string& assetId) {
+    if (assetId.empty()) {
+        return m_textureManager->GetTexture("");
+    }
+
     // 1. Check if already loaded in TextureManager
     if (m_textureManager->HasTexture(assetId)) {
         return m_textureManager->GetTexture(assetId);
@@ -109,14 +113,27 @@ Texture2D AssetManager::GetTexture(const std::string& assetId) {
         return m_textureManager->LoadTextureFile(assetId, meta->file);
     }
 
-    // 3. Fallback: attempt relative path directly
+    // 3. Check if assetId is a registered SpriteSheet
+    const auto* sheet = GetSpriteSheet(assetId);
+    if (sheet) {
+        Texture2D tex = GetTexture(sheet->GetTextureId());
+        if (tex.id != 0) {
+            return tex;
+        }
+    }
+
+    // 4. Fallback: attempt relative path directly
     return m_textureManager->LoadTextureFile(assetId, assetId);
 }
 
 bool AssetManager::HasTexture(const std::string& assetId) const {
+    if (assetId.empty()) return false;
     if (m_textureManager->HasTexture(assetId)) return true;
-    const AssetMetadata* meta = m_registry->GetMetadata(assetId);
-    return (meta != nullptr && meta->type == AssetType::Texture);
+    if (m_registry->HasAsset(assetId)) return true;
+    if (!assetId.starts_with("tex_") && m_registry->HasAsset("tex_" + assetId)) return true;
+    if (assetId.starts_with("tex_") && m_registry->HasAsset(assetId.substr(4))) return true;
+    if (GetSpriteSheet(assetId) != nullptr) return true;
+    return false;
 }
 
 bool AssetManager::RegisterSpriteSheet(const SpriteSheet& sheet) {

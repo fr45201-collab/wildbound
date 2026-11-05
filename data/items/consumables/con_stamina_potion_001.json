@@ -1,0 +1,15 @@
+{
+  "id": "con_stamina_potion_001",
+  "display_name": "Stamina Potion",
+  "category": "consumable",
+  "subcategory": "potion",
+  "description": "A triangular flask bubbling with effervescent emerald tonic that revitalizes tired muscles and lungs.",
+  "icon_file": "items/icons/con_stamina_potion_001_icon.png",
+  "world_file": "items/world/con_stamina_potion_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "mountain"
+  ],
+  "rarity_tier": "uncommon"
+}

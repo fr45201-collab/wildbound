@@ -1,0 +1,15 @@
+{
+  "id": "col_golden_emblem_001",
+  "display_name": "Golden Emblem",
+  "category": "collectible",
+  "subcategory": "emblem",
+  "description": "A solid gold heraldic insignia depicting an eight-pointed sun. Awarded to high-ranking knights and champions.",
+  "icon_file": "items/icons/col_golden_emblem_001_icon.png",
+  "world_file": "items/world/col_golden_emblem_001_world.png",
+  "biome_tags": [
+    "forest",
+    "desert",
+    "mountain"
+  ],
+  "rarity_tier": "legendary"
+}
