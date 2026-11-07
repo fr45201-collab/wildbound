@@ -1,4 +1,5 @@
 #include "Tilemap.hpp"
+#include <cmath>
 
 namespace wildbound::world {
 

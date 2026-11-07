@@ -1,16 +1,14 @@
 local Defend = {}
 
 function Defend.evaluate(ctx)
-    local dx = ctx.x - (ctx.target_x or ctx.x)
-    local dy = ctx.y - (ctx.target_y or ctx.y)
-
     return {
         next_state = "DEFEND",
-        move_x = dx,
-        move_y = dy,
-        request_attack = false
+        move_x = 0.0,
+        move_y = 0.0,
+        request_attack = false,
+        attack_id = ctx.default_attack or "default",
+        target_id = ctx.target_id or 0
     }
 end
 
 return Defend
-

@@ -1,0 +1,22 @@
+{
+  "id": "squads",
+  "displayName": "Squads Battle Royale",
+  "description": "Form a 4-player squad to dominate the island. Tactical coordination and team survival lead to victory as the last active squad.",
+  "minimumParticipants": 4,
+  "maximumParticipants": 100,
+  "teamSize": 4,
+  "teamsEnabled": true,
+  "friendlyFireEnabled": false,
+  "botsAllowed": true,
+  "defaultBotCount": 16,
+  "botDifficulty": "normal",
+  "respawnEnabled": false,
+  "stormEnabled": true,
+  "stormConfigId": "default_corruption_storm",
+  "competitiveResults": true,
+  "victoryCondition": "last_team",
+  "environment": "battle_royale_island",
+  "isAvailable": true,
+  "requiresNetworking": false
+}
+

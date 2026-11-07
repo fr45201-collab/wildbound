@@ -1,0 +1,21 @@
+{
+  "id": "duos",
+  "displayName": "Duos Battle Royale",
+  "description": "Pair up with a partner in 2-player teams. Cooperate to outlast opposing duos. The match is won by the final surviving team.",
+  "minimumParticipants": 2,
+  "maximumParticipants": 100,
+  "teamSize": 2,
+  "teamsEnabled": true,
+  "friendlyFireEnabled": false,
+  "botsAllowed": true,
+  "defaultBotCount": 14,
+  "botDifficulty": "normal",
+  "respawnEnabled": false,
+  "stormEnabled": true,
+  "stormConfigId": "default_corruption_storm",
+  "competitiveResults": true,
+  "victoryCondition": "last_team",
+  "environment": "battle_royale_island",
+  "isAvailable": true,
+  "requiresNetworking": false
+}

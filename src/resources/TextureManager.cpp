@@ -32,7 +32,7 @@ void TextureManager::Shutdown() {
         Logger::Info("TEXTURE_MGR", "Shutting down TextureManager, releasing cached textures.");
         UnloadAll();
 
-        if (m_fallbackTexture.id != 0) {
+        if (m_fallbackTexture.id != 0 && IsWindowReady()) {
             UnloadTexture(m_fallbackTexture);
             m_fallbackTexture = {};
         }
@@ -94,7 +94,19 @@ Texture2D TextureManager::LoadTextureFile(const std::string& id, const std::stri
         return m_fallbackTexture;
     }
 
-    // 3. Load via raylib
+    // 3. Load via raylib (or headless fallback if window/OpenGL context not initialized)
+    if (!IsWindowReady()) {
+        Texture2D dummy{};
+        dummy.id = 1;
+        dummy.width = 16;
+        dummy.height = 16;
+        dummy.mipmaps = 1;
+        dummy.format = PIXELFORMAT_UNCOMPRESSED_R8G8B8A8;
+        m_textures[id] = dummy;
+        m_memoryUsage[id] = 16 * 16 * 4;
+        return dummy;
+    }
+
     Texture2D tex = LoadTexture(resolvedPath.c_str());
     if (tex.id == 0) {
         Logger::Error("TEXTURE_MGR", "Failed decoding texture file: " + resolvedPath);
@@ -134,7 +146,9 @@ bool TextureManager::Unload(const std::string& id) {
     std::lock_guard<std::mutex> lock(m_mutex);
     auto it = m_textures.find(id);
     if (it != m_textures.end()) {
-        UnloadTexture(it->second);
+        if (IsWindowReady() && it->second.id != 0) {
+            UnloadTexture(it->second);
+        }
         m_textures.erase(it);
         m_memoryUsage.erase(id);
         Logger::Debug("TEXTURE_MGR", "Unloaded texture [" + id + "]");
@@ -146,7 +160,7 @@ bool TextureManager::Unload(const std::string& id) {
 void TextureManager::UnloadAll() {
     std::lock_guard<std::mutex> lock(m_mutex);
     for (auto& [id, tex] : m_textures) {
-        if (tex.id != 0) {
+        if (tex.id != 0 && IsWindowReady()) {
             UnloadTexture(tex);
         }
     }

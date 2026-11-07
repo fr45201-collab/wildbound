@@ -1,0 +1,31 @@
+{
+  "app_env": "development",
+  "api_host": "127.0.0.1",
+  "api_port": 8080,
+  "database": {
+    "host": "127.0.0.1",
+    "port": 5433,
+    "name": "wildbound",
+    "user": "wildbound_user",
+    "password": "",
+    "ssl_mode": "disable",
+    "max_conns": 25,
+    "min_conns": 2,
+    "max_conn_lifetime_minutes": 30
+  },
+  "jwt": {
+    "issuer": "wildbound",
+    "audience": "wildbound-client",
+    "access_ttl_minutes": 15,
+    "refresh_ttl_hours": 168,
+    "secret_key": "wildbound-development-secret-key-change-in-production"
+  },
+  "server_secret": "wildbound-server-internal-secret-token",
+  "coordinator_secret": "wildbound-coordinator-internal-secret-token",
+  "log_level": "debug",
+  "cors_allowed_origins": [
+    "http://localhost:8080",
+    "http://127.0.0.1:8080"
+  ]
+}
+

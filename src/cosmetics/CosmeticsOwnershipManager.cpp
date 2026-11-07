@@ -1,5 +1,6 @@
 #include "CosmeticsOwnershipManager.hpp"
 #include "../core/Logger.hpp"
+#include "../network/http/BackendClient.hpp"
 
 #include <filesystem>
 #include <fstream>
@@ -258,6 +259,44 @@ bool CosmeticsOwnershipManager::Load(const std::string& customPath) {
         core::Logger::Error("COSMETICS_OWNERSHIP", std::string("Exception loading cosmetic ownership: ") + e.what());
         return false;
     }
+}
+
+void CosmeticsOwnershipManager::SyncWithBackend(std::function<void(bool success)> onComplete) {
+    if (!m_backendClient || !m_backendClient->IsAuthenticated()) {
+        if (onComplete) onComplete(false);
+        return;
+    }
+
+    m_backendClient->ListMyCosmetics([this, onComplete](bool success, const nlohmann::json& items, const std::string& error) {
+        if (!success) {
+            core::Logger::Warn("COSMETICS_OWNERSHIP", "Failed to sync ownership with backend: " + error);
+            if (onComplete) onComplete(false);
+            return;
+        }
+
+        try {
+            for (const auto& it : items) {
+                std::string cid = it.value("cosmetic_id", "");
+                if (cid.empty()) continue;
+
+                auto& rec = m_records[cid];
+                rec.cosmeticId = cid;
+                rec.state = OwnershipState::Owned;
+                rec.acquisitionSource = it.value("acquisition_source", "backend");
+                rec.acquisitionDate = it.value("acquired_at", "");
+                if (rec.selectedVariantId.empty()) {
+                    rec.selectedVariantId = "variant_default";
+                }
+            }
+            m_syncedWithBackend = true;
+            Save(m_savePath);
+            core::Logger::Info("COSMETICS_OWNERSHIP", "Successfully synced " + std::to_string(items.size()) + " owned cosmetics with backend.");
+            if (onComplete) onComplete(true);
+        } catch (const std::exception& ex) {
+            core::Logger::Error("COSMETICS_OWNERSHIP", std::string("Error processing backend cosmetics: ") + ex.what());
+            if (onComplete) onComplete(false);
+        }
+    });
 }
 
 } // namespace wildbound::cosmetics

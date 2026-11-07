@@ -1,0 +1,24 @@
+{
+  "server": {
+    "name": "Wildbound Dedicated Server",
+    "host": "0.0.0.0",
+    "port": 7777,
+    "max_clients": 32,
+    "tick_rate": 30,
+    "max_frame_time_ms": 250,
+    "enable_console": true,
+    "enable_file_logging": true,
+    "log_level": "info"
+  },
+  "world": {
+    "map": "maps/world/battle_royale_island.json",
+    "game_mode": "solo",
+    "auto_start": false
+  },
+  "network": {
+    "connection_timeout_seconds": 30,
+    "max_packet_size_bytes": 65536,
+    "channel_count": 5
+  }
+}
+

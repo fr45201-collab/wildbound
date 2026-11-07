@@ -1,0 +1,765 @@
+openapi: 3.0.3
+info:
+  title: Wildbound Persistent Backend API
+  description: >
+    Production-grade persistent backend service for Wildbound Battle Royale.
+    Handles player authentication, persistent profiles, cosmetic ownership & equipping,
+    match records & history, and player progression statistics.
+  version: 1.0.0
+  contact:
+    name: Wildbound Infrastructure Team
+servers:
+  - url: http://127.0.0.1:8080
+    description: Local Development Server
+
+paths:
+  /health:
+    get:
+      summary: Health Probe
+      description: Returns service operational status.
+      responses:
+        '200':
+          description: Service is healthy.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /ready:
+    get:
+      summary: Readiness Probe
+      description: Checks database connectivity and readiness.
+      responses:
+        '200':
+          description: Database connected and ready.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReadyResponse'
+        '503':
+          description: Database unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/auth/register:
+    post:
+      summary: Register a new player account
+      description: Creates user, assigns starter cosmetics, initializes zeroed statistics, and issues JWT tokens.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: Player registered successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthEnvelope'
+        '400':
+          description: Validation failure (malformed email, weak password, invalid username).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '409':
+          description: Username or email already registered.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/auth/login:
+    post:
+      summary: Authenticate player credentials
+      description: Verifies password via Argon2id and generates short-lived access JWT and refresh token.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authentication successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthEnvelope'
+        '401':
+          description: Invalid username/email or password.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/auth/refresh:
+    post:
+      summary: Rotate refresh token and issue new access token
+      description: Rotates refresh token session; revokes old token and generates new token pair.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Tokens refreshed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenPairEnvelope'
+        '401':
+          description: Refresh token invalid, expired, or revoked.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/auth/logout:
+    post:
+      summary: Invalidate refresh token session
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '200':
+          description: Successfully logged out.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelope'
+
+  /api/v1/auth/me:
+    get:
+      summary: Retrieve authenticated account identity
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Authenticated user details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthUserEnvelope'
+        '401':
+          description: Missing or invalid authorization token.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/players/me:
+    get:
+      summary: Get authenticated player's full profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Full player profile details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileEnvelope'
+    patch:
+      summary: Update authenticated player's profile
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: Profile updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileEnvelope'
+        '403':
+          description: Avatar cosmetic item is not owned by the player.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/players/me/cosmetics:
+    get:
+      summary: List authenticated player's cosmetics inventory
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: List of cosmetics owned by the player.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlayerCosmeticsEnvelope'
+
+  /api/v1/players/me/cosmetics/equip:
+    post:
+      summary: Equip a cosmetic item
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EquipCosmeticRequest'
+      responses:
+        '200':
+          description: Cosmetic equipped.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipResponseEnvelope'
+        '403':
+          description: Player does not own this cosmetic.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/players/me/matches:
+    get:
+      summary: List authenticated player's match history
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Paginated match history.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedMatchesEnvelope'
+
+  /api/v1/players/me/statistics:
+    get:
+      summary: Get authenticated player's progression statistics
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Player statistics and calculated metrics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsEnvelope'
+
+  /api/v1/players/{player_id}:
+    get:
+      summary: Get public player profile
+      parameters:
+        - name: player_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Public player profile.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicProfileEnvelope'
+        '404':
+          description: Player not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/players/{player_id}/statistics:
+    get:
+      summary: Get public player statistics
+      parameters:
+        - name: player_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Public player statistics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StatisticsEnvelope'
+
+  /api/v1/cosmetics:
+    get:
+      summary: List all available cosmetic definitions
+      parameters:
+        - name: category
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of cosmetic definitions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CosmeticsListEnvelope'
+
+  /api/v1/matches/{match_id}:
+    get:
+      summary: Get full match record and scoreboard
+      parameters:
+        - name: match_id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Match details and participant list.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchRecordEnvelope'
+        '404':
+          description: Match not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/internal/matches/results:
+    post:
+      summary: Submit authoritative match results (Server-to-Backend)
+      description: Dedicated game server submits final match scoreboard. Updates player statistics with idempotent replay protection.
+      security:
+        - ServerTokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitMatchResultRequest'
+      responses:
+        '201':
+          description: Match record created and statistics aggregated.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchIngestEnvelope'
+        '200':
+          description: Idempotent replay; match previously ingested without double-counting statistics.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchIngestEnvelope'
+        '401':
+          description: Missing X-Server-Token header.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+        '403':
+          description: Invalid server token credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorEnvelope'
+
+  /api/v1/internal/cosmetics/grant:
+    post:
+      summary: Grant cosmetic item to player (Internal)
+      security:
+        - ServerTokenAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GrantCosmeticRequest'
+      responses:
+        '200':
+          description: Cosmetic granted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessEnvelope'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ServerTokenAuth:
+      type: apiKey
+      in: header
+      name: X-Server-Token
+    CoordinatorTokenAuth:
+      type: apiKey
+      in: header
+      name: X-Coordinator-Token
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [username, email, password]
+      properties:
+        username:
+          type: string
+          example: wild_hunter
+        email:
+          type: string
+          format: email
+          example: hunter@wildbound.io
+        password:
+          type: string
+          format: password
+          example: HunterPass2026!
+        display_name:
+          type: string
+          example: Wild Hunter
+
+    LoginRequest:
+      type: object
+      required: [email_or_username, password]
+      properties:
+        email_or_username:
+          type: string
+          example: wild_hunter
+        password:
+          type: string
+          format: password
+          example: HunterPass2026!
+
+    RefreshRequest:
+      type: object
+      required: [refresh_token]
+      properties:
+        refresh_token:
+          type: string
+
+    UpdateProfileRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+        biography:
+          type: string
+        avatar_cosmetic_id:
+          type: string
+        preferred_game_mode:
+          type: string
+
+    EquipCosmeticRequest:
+      type: object
+      required: [cosmetic_id]
+      properties:
+        cosmetic_id:
+          type: string
+          example: cosmetic_hat_adventurer
+
+    GrantCosmeticRequest:
+      type: object
+      required: [user_id, cosmetic_id]
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        cosmetic_id:
+          type: string
+
+    MatchParticipantPayload:
+      type: object
+      required: [participant_display_name, placement]
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        participant_display_name:
+          type: string
+        team_id:
+          type: integer
+        placement:
+          type: integer
+        eliminations:
+          type: integer
+        deaths:
+          type: integer
+        assists:
+          type: integer
+        damage_dealt:
+          type: number
+        damage_received:
+          type: number
+        survival_seconds:
+          type: number
+        result_status:
+          type: string
+
+    SubmitMatchResultRequest:
+      type: object
+      required: [match_id, game_mode, map_id, started_at, ended_at, duration_seconds, participants]
+      properties:
+        match_id:
+          type: string
+        game_mode:
+          type: string
+        map_id:
+          type: string
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        duration_seconds:
+          type: integer
+        winner_user_id:
+          type: string
+          format: uuid
+        winner_display_name:
+          type: string
+        result_status:
+          type: string
+        participants:
+          type: array
+          items:
+            $ref: '#/components/schemas/MatchParticipantPayload'
+
+    HealthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+              example: healthy
+            service:
+              type: string
+              example: wildbound-backend
+            version:
+              type: string
+              example: 1.0.0
+            time:
+              type: string
+              format: date-time
+
+    ReadyResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            status:
+              type: string
+              example: ready
+            database:
+              type: string
+              example: connected
+
+    AuthEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                username:
+                  type: string
+                email:
+                  type: string
+                display_name:
+                  type: string
+            tokens:
+              $ref: '#/components/schemas/TokenPair'
+
+    TokenPair:
+      type: object
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          example: Bearer
+        expires_at:
+          type: string
+          format: date-time
+        refresh_token:
+          type: string
+        refresh_expires_at:
+          type: string
+          format: date-time
+
+    TokenPairEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          $ref: '#/components/schemas/TokenPair'
+
+    AuthUserEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+
+    ProfileEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+
+    PublicProfileEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+
+    PlayerCosmeticsEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: array
+          items:
+            type: object
+
+    CosmeticsListEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: array
+          items:
+            type: object
+
+    EquipResponseEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+
+    StatisticsEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+
+    PaginatedMatchesEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          properties:
+            matches:
+              type: array
+              items:
+                type: object
+            total_count:
+              type: integer
+            page:
+              type: integer
+            limit:
+              type: integer
+            total_pages:
+              type: integer
+
+    MatchRecordEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+
+    MatchIngestEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+          properties:
+            created:
+              type: boolean
+            match:
+              type: object
+
+    SuccessEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+        data:
+          type: object
+
+    ErrorEnvelope:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              example: UNAUTHORIZED
+            message:
+              type: string
+              example: Missing or invalid token
+

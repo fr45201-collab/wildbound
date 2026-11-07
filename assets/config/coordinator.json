@@ -1,0 +1,16 @@
+{
+    "coordinatorName": "Wildbound Battle Royale Coordinator Service",
+    "bindAddress": "0.0.0.0",
+    "port": 7780,
+    "maxConnections": 128,
+    "tickRate": 30,
+    "logLevel": "info",
+    "sessionTimeoutSeconds": 30.0,
+    "serverHeartbeatTimeoutSeconds": 15.0,
+    "invitationTimeoutSeconds": 60.0,
+    "matchReservationTimeoutSeconds": 5.0,
+    "soloMinParticipants": 2,
+    "duosMinParticipants": 2,
+    "squadsMinParticipants": 4
+}
+

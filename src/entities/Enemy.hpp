@@ -115,8 +115,16 @@ public:
 
     bool IsPendingDestruction() const { return m_pendingDestruction; }
 
+    // Global Diagnostics & Telemetry
+    static uint64_t GetLuaDecisionCount() noexcept { return s_luaDecisionCount; }
+    static uint64_t GetFallbackAICount() noexcept { return s_fallbackAICount; }
+    static void ResetDiagnostics() noexcept { s_luaDecisionCount = 0; s_fallbackAICount = 0; }
+
 private:
     void ExecuteAIDecision(combat::CombatSystem& combatSys, scripting::LuaManager* luaMgr);
+
+    inline static uint64_t s_luaDecisionCount{0};
+    inline static uint64_t s_fallbackAICount{0};
 
     EnemyConfig m_config;
     combat::HealthComponent m_health{ 50.0f, 50.0f };

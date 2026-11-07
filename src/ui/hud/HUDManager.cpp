@@ -320,8 +320,29 @@ void HUDManager::RenderPlayerStatus(const entities::Player* player) {
 }
 
 void HUDManager::RenderMatchInfo() {
-    const float headerW = 160.0f;
+    float headerW = 180.0f;
     const float headerH = 22.0f;
+
+    if (m_matchInfo.isPracticeMode) {
+        headerW = 210.0f;
+        const float headerX = (UITheme::CanvasWidth - headerW) * 0.5f;
+        const float headerY = 6.0f;
+
+        DrawRectangle(static_cast<int>(headerX), static_cast<int>(headerY),
+                      static_cast<int>(headerW), static_cast<int>(headerH), UITheme::DarkBgOpaque);
+        DrawRectangleLines(static_cast<int>(headerX), static_cast<int>(headerY),
+                           static_cast<int>(headerW), static_cast<int>(headerH), UITheme::Gold);
+
+        const char* practiceMsg = "[ Practice Arena ] Freeplay Mode";
+        int tw = MeasureText(practiceMsg, UITheme::FontMicro);
+        DrawText(practiceMsg, static_cast<int>(headerX + (headerW - tw) * 0.5f), static_cast<int>(headerY + 6), UITheme::FontMicro, UITheme::Gold);
+        return;
+    }
+
+    if (m_matchInfo.teamsAlive > 0) {
+        headerW = 220.0f;
+    }
+
     const float headerX = (UITheme::CanvasWidth - headerW) * 0.5f;
     const float headerY = 6.0f;
 
@@ -336,10 +357,15 @@ void HUDManager::RenderMatchInfo() {
     char timeBuf[16];
     std::snprintf(timeBuf, sizeof(timeBuf), "%02d:%02d", minutes, seconds);
 
-    // Format Alive & Kills
-    char statsBuf[48];
-    std::snprintf(statsBuf, sizeof(statsBuf), "Alive: %d  Kills: %d  Time: %s",
-                  m_matchInfo.playersAlive, m_matchInfo.eliminations, timeBuf);
+    // Format Alive, Teams & Kills
+    char statsBuf[64];
+    if (m_matchInfo.teamsAlive > 0) {
+        std::snprintf(statsBuf, sizeof(statsBuf), "Alive: %d (Squads: %d) Kills: %d %s",
+                      m_matchInfo.playersAlive, m_matchInfo.teamsAlive, m_matchInfo.eliminations, timeBuf);
+    } else {
+        std::snprintf(statsBuf, sizeof(statsBuf), "Alive: %d  Kills: %d  Time: %s",
+                      m_matchInfo.playersAlive, m_matchInfo.eliminations, timeBuf);
+    }
 
     int tw = MeasureText(statsBuf, UITheme::FontMicro);
     DrawText(statsBuf, static_cast<int>(headerX + (headerW - tw) * 0.5f), static_cast<int>(headerY + 6), UITheme::FontMicro, UITheme::TextLight);

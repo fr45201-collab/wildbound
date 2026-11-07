@@ -73,6 +73,18 @@ namespace wildbound::storm {
     class StormManager;
 }
 
+namespace wildbound::match {
+    class MatchManager;
+}
+
+namespace wildbound::network {
+    class NetworkManager;
+}
+
+namespace wildbound::scripting {
+    class LuaManager;
+}
+
 namespace wildbound::ui {
     class UIManager;
 }
@@ -83,6 +95,18 @@ namespace wildbound::ai {
 
 namespace wildbound::storm {
     class StormManager;
+}
+
+namespace wildbound::match {
+    class MatchManager;
+}
+
+namespace wildbound::network {
+    class NetworkManager;
+}
+
+namespace wildbound::scripting {
+    class LuaManager;
 }
 
 namespace wildbound::ui {
@@ -130,7 +154,10 @@ public:
         ui::UIManager* uiMgr = nullptr,
         ai::AIManager* aiMgr = nullptr,
         world::WorldManager* worldMgr = nullptr,
-        storm::StormManager* stormMgr = nullptr
+        storm::StormManager* stormMgr = nullptr,
+        match::MatchManager* matchMgr = nullptr,
+        network::NetworkManager* netMgr = nullptr,
+        scripting::LuaManager* luaMgr = nullptr
     );
 
     void ToggleVisible() { m_visible = !m_visible; }
@@ -164,11 +191,19 @@ private:
     void RenderLootAndInventory(entities::Player* player, world::World* world, items::ItemManager* itemMgr, audio::AudioSystem* audioSys);
     void RenderUIAndHUD(ui::UIManager* uiMgr, entities::Player* player);
     void RenderStormDebug(storm::StormManager* stormMgr, entities::Player* player);
+    void RenderMatchDebug(match::MatchManager* matchMgr, entities::Player* player);
+    void RenderNetworkDiagnostics(network::NetworkManager* netMgr);
+    void RenderLuaDiagnostics(scripting::LuaManager* luaMgr, world::EnemySpawner* spawner);
 
     bool m_initialized = false;
     bool m_visible = false;
     bool m_showAnimDebug = false;
     bool m_showInteractionDebug = false;
+
+    // Network Diagnostics state (Phase 36)
+    char m_netAddressBuffer[64]{ "127.0.0.1" };
+    int m_netPortBuffer = 17777;
+    char m_netTestMessageBuffer[128]{ "TestHeartbeat" };
 
     // UI & HUD Debug state
     char m_notificationTextBuffer[128]{ "Test notification alert!" };

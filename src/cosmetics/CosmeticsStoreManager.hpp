@@ -16,6 +16,10 @@ namespace wildbound::audio {
     class AudioSystem;
 }
 
+namespace wildbound::network::http {
+    class BackendClient;
+}
+
 namespace wildbound::customization {
     class CharacterCustomizationManager;
     class AppearancePreview;
@@ -103,6 +107,8 @@ public:
     [[nodiscard]] CosmeticsOwnershipManager& GetOwnershipManager() noexcept { return m_ownershipMgr; }
     [[nodiscard]] const CosmeticsOwnershipManager& GetOwnershipManager() const noexcept { return m_ownershipMgr; }
     [[nodiscard]] customization::CharacterCustomizationManager* GetCustomizationManager() const noexcept { return m_customizationMgr; }
+    void SetBackendClient(network::http::BackendClient* client) noexcept { m_backendClient = client; m_ownershipMgr.SetBackendClient(client); }
+    [[nodiscard]] network::http::BackendClient* GetBackendClient() const noexcept { return m_backendClient; }
 
 private:
     void RefreshColorVariants();
@@ -118,6 +124,7 @@ private:
 
     CosmeticsOwnershipManager m_ownershipMgr;
     customization::CharacterCustomizationManager* m_customizationMgr = nullptr;
+    network::http::BackendClient* m_backendClient = nullptr;
     audio::AudioSystem* m_audioSystem = nullptr;
     bool m_initialized = false;
 };

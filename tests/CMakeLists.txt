@@ -2,7 +2,59 @@
 # WILDBOUND TEST SUITE (CTest)
 # ============================================================================
 
+include_directories(
+    ${CMAKE_SOURCE_DIR}/src
+    ${sol2_SOURCE_DIR}/include
+    ${lua_SOURCE_DIR}/lua-5.4.7/src
+    ${lua_SOURCE_DIR}/lua-5.4.7/include
+    ${imgui_SOURCE_DIR}
+    ${rlimgui_SOURCE_DIR}
+    ${enet_SOURCE_DIR}/include
+)
+
+link_libraries(sol2 lua_static)
+
+set(GAMEMODES_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/Team.cpp
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/TeamManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/TeamVictoryEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/GameModeDefinition.cpp
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/GameModeRules.cpp
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/BotMatchConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/PracticeMode.cpp
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/GameModeRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/gamemodes/GameModeManager.cpp
+)
+
+set(MATCH_RESULTS_STORM_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/ui/menus/ModeSelectMenu.cpp
+    ${GAMEMODES_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/match/MatchState.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipant.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipantRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/SpawnPoint.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchSpawner.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchCountdown.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchEliminationSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchStatistics.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchResult.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchOutcome.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/VictoryEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/DefeatEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultCalculator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultSerializer.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchResultManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/SafeZone.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormDamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormBoundaryRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormManager.cpp
+)
+
 set(GAMEPLAY_INTEGRATION_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
     ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
     ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
     ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
@@ -14,14 +66,24 @@ set(GAMEPLAY_INTEGRATION_SOURCES
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/AttackSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/ProjectileSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationStateMachine.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
@@ -31,7 +93,6 @@ set(GAMEPLAY_INTEGRATION_SOURCES
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/physics/CollisionManager.cpp
     ${CMAKE_SOURCE_DIR}/src/physics/CollisionDebugRenderer.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
@@ -44,6 +105,7 @@ set(GAMEPLAY_INTEGRATION_SOURCES
     ${CMAKE_SOURCE_DIR}/src/interaction/InteractionValidator.cpp
     ${CMAKE_SOURCE_DIR}/src/interaction/InteractionExecutor.cpp
     ${CMAKE_SOURCE_DIR}/src/interaction/InteractionManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
 )
 
 # 1. Core Configuration Test
@@ -69,6 +131,7 @@ target_include_directories(test_lua PRIVATE
     ${CMAKE_SOURCE_DIR}/src
     ${sol2_SOURCE_DIR}/include
     ${lua_SOURCE_DIR}/lua-5.4.7/src
+    ${raylib_SOURCE_DIR}/src
 )
 target_compile_features(test_lua PRIVATE cxx_std_20)
 target_link_libraries(test_lua PRIVATE sol2 lua_static)
@@ -157,6 +220,12 @@ add_executable(test_player
     ${CMAKE_SOURCE_DIR}/src/combat/AttackSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationStateMachine.cpp
     ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
@@ -186,6 +255,33 @@ add_executable(test_player
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -210,6 +306,12 @@ add_executable(test_combat
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
@@ -218,6 +320,7 @@ add_executable(test_combat
     ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/world/EnemySpawner.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationStateMachine.cpp
@@ -249,6 +352,33 @@ add_executable(test_combat
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -269,31 +399,25 @@ set_tests_properties(CombatSystemTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOUR
 # 8. Modular Character & Cosmetic Equipment Test (Phase 7)
 add_executable(test_modular_character
     entities/test_modular_character.cpp
-    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${GAMEPLAY_INTEGRATION_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AnimationMetadata.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/FontManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionDebugRenderer.cpp
 )
 target_include_directories(test_modular_character PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -307,31 +431,25 @@ set_tests_properties(ModularCharacterTest PROPERTIES WORKING_DIRECTORY "${CMAKE_
 # 9. Phase 8 Production Cosmetics Collection Test (32 Designs)
 add_executable(test_production_cosmetics
     entities/test_production_cosmetics.cpp
-    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${GAMEPLAY_INTEGRATION_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AnimationMetadata.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/FontManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionDebugRenderer.cpp
 )
 target_include_directories(test_production_cosmetics PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -401,6 +519,33 @@ add_executable(test_environmental_animation
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -446,6 +591,33 @@ add_executable(test_village_buildings
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -493,6 +665,33 @@ add_executable(test_biomes
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -511,9 +710,14 @@ set_tests_properties(BiomeSystemTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURC
 # 15. Weapon Asset Collection & Metadata Test (Phase 15)
 add_executable(test_weapons
     weapons/test_weapons.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
+    ${GAMEPLAY_INTEGRATION_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
@@ -525,14 +729,6 @@ add_executable(test_weapons
     ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
     ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionDebugRenderer.cpp
 )
 target_include_directories(test_weapons PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -546,7 +742,14 @@ set_tests_properties(WeaponSystemTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOUR
 # 16. Item & Collectible Asset Collection Test (Phase 16)
 add_executable(test_items
     items/test_items.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
+    ${GAMEPLAY_INTEGRATION_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
@@ -558,14 +761,6 @@ add_executable(test_items
     ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
     ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionDebugRenderer.cpp
 )
 target_include_directories(test_items PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -579,31 +774,25 @@ set_tests_properties(ItemSystemTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE
 # 17. Costumes & Armor Collection Test (Phase 17)
 add_executable(test_costumes_armor
     entities/test_costumes_armor.cpp
-    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
-    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${GAMEPLAY_INTEGRATION_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AnimationMetadata.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/FontManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
-    ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionManager.cpp
-    ${CMAKE_SOURCE_DIR}/src/physics/CollisionDebugRenderer.cpp
 )
 target_include_directories(test_costumes_armor PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -653,7 +842,11 @@ add_executable(test_ui
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
@@ -661,6 +854,12 @@ add_executable(test_ui
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/ProjectileSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationStateMachine.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
@@ -708,6 +907,7 @@ add_executable(test_ui
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsOwnershipManager.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsSearchFilter.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsStoreManager.cpp
+    ${MATCH_RESULTS_STORM_SOURCES}
 )
 target_include_directories(test_ui PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -719,7 +919,11 @@ add_test(NAME UISystemTest COMMAND test_ui)
 set_tests_properties(UISystemTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
 # 20. Executable Launch / Smoke Test (--test-run)
-add_test(NAME ExecutableSmokeTest COMMAND wildbound --test-run)
+if(TARGET wildbound)
+    add_test(NAME ExecutableSmokeTest COMMAND wildbound --test-run)
+else()
+    add_test(NAME ExecutableSmokeTest COMMAND WildboundServer --test-run)
+endif()
 set_tests_properties(ExecutableSmokeTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
 
 # 21. Gameplay Asset Integration Test Suite (Phase 19)
@@ -728,6 +932,33 @@ add_executable(test_gameplay_integration
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -736,7 +967,11 @@ add_executable(test_gameplay_integration
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
@@ -744,6 +979,12 @@ add_executable(test_gameplay_integration
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/ProjectileSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationStateMachine.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
@@ -788,6 +1029,7 @@ add_executable(test_gameplay_integration
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsOwnershipManager.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsSearchFilter.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsStoreManager.cpp
+    ${MATCH_RESULTS_STORM_SOURCES}
 )
 target_include_directories(test_gameplay_integration PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -847,6 +1089,33 @@ add_executable(test_interaction
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -855,7 +1124,11 @@ add_executable(test_interaction
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
@@ -863,6 +1136,12 @@ add_executable(test_interaction
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/ProjectileSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationStateMachine.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
@@ -928,6 +1207,9 @@ add_executable(test_inventory
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
@@ -936,6 +1218,12 @@ add_executable(test_inventory
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/ProjectileSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationStateMachine.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
@@ -967,6 +1255,7 @@ add_executable(test_inventory
     ${CMAKE_SOURCE_DIR}/src/interaction/InteractionValidator.cpp
     ${CMAKE_SOURCE_DIR}/src/interaction/InteractionExecutor.cpp
     ${CMAKE_SOURCE_DIR}/src/interaction/InteractionManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
 )
 target_include_directories(test_inventory PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -1004,6 +1293,33 @@ add_executable(test_weapons_equipment
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -1055,6 +1371,33 @@ add_executable(test_customization
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -1106,6 +1449,33 @@ add_executable(test_cosmetics_store
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -1149,7 +1519,11 @@ add_executable(test_game_ui
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
@@ -1157,6 +1531,12 @@ add_executable(test_game_ui
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/ProjectileSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationController.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/animation/AnimationStateMachine.cpp
     ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
@@ -1194,6 +1574,7 @@ add_executable(test_game_ui
     ${CMAKE_SOURCE_DIR}/src/input/InputSettings.cpp
     ${CMAKE_SOURCE_DIR}/src/input/InputManager.cpp
     ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${MATCH_RESULTS_STORM_SOURCES}
 )
 target_include_directories(test_game_ui PRIVATE
     ${CMAKE_SOURCE_DIR}/src
@@ -1221,12 +1602,17 @@ add_executable(test_ai
     ${CMAKE_SOURCE_DIR}/src/ai/behaviours/InvestigateBehaviour.cpp
     ${CMAKE_SOURCE_DIR}/src/ai/AIManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
     ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
     ${CMAKE_SOURCE_DIR}/src/world/EnemySpawner.cpp
     ${CMAKE_SOURCE_DIR}/src/world/World.cpp
@@ -1245,6 +1631,12 @@ add_executable(test_ai
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/ProjectileSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
@@ -1267,6 +1659,33 @@ add_executable(test_ai
     ${CMAKE_SOURCE_DIR}/src/items/Inventory.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Player.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterController.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/ModularCharacter.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EquipmentSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Camera2D.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Viewport.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/RenderTexture.cpp
+    ${CMAKE_SOURCE_DIR}/src/graphics/Renderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/HealthComponent.cpp
+    ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldItem.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/LootContainer.cpp
+    ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponInstance.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponController.cpp
     ${CMAKE_SOURCE_DIR}/src/weapons/WeaponManager.cpp
@@ -1330,6 +1749,12 @@ add_executable(test_battle_royale_world
     ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
     ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/CombatSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Entity.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Character.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/CharacterConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/EnemyConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/entities/Enemy.cpp
+    ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/AttackSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/DamageSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/combat/HitDetection.cpp
@@ -1353,6 +1778,9 @@ add_executable(test_corruption_storm
     ${CMAKE_SOURCE_DIR}/src/storm/StormDamageSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/storm/StormBoundaryRenderer.cpp
     ${CMAKE_SOURCE_DIR}/src/storm/StormManager.cpp
+    ${GAMEMODES_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipant.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipantRegistry.cpp
     ${GAMEPLAY_INTEGRATION_SOURCES}
     ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
     ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
@@ -1384,3 +1812,510 @@ target_link_libraries(test_corruption_storm PRIVATE raylib nlohmann_json::nlohma
 
 add_test(NAME CorruptionStormTest COMMAND test_corruption_storm)
 set_tests_properties(CorruptionStormTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 33. Battle Royale Match Lifecycle System Test (Phase 32)
+add_executable(test_match_lifecycle
+    match/test_match_lifecycle.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchState.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipant.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipantRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/SpawnPoint.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchSpawner.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchCountdown.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchEliminationSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchStatistics.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchResult.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchOutcome.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/VictoryEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/DefeatEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultCalculator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultSerializer.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchResultManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/SafeZone.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormDamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormBoundaryRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormManager.cpp
+    ${GAMEMODES_SOURCES}
+    ${GAMEPLAY_INTEGRATION_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AnimationMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/FontManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/hud/HUDManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/hud/Minimap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
+)
+target_include_directories(test_match_lifecycle PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_features(test_match_lifecycle PRIVATE cxx_std_20)
+target_link_libraries(test_match_lifecycle PRIVATE raylib nlohmann_json::nlohmann_json)
+
+add_test(NAME MatchLifecycleTest COMMAND test_match_lifecycle)
+set_tests_properties(MatchLifecycleTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 34. Victory Conditions, Player Statistics & Results System Test (Phase 33)
+add_executable(test_match_results
+    results/test_match_results.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchOutcome.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/VictoryEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/DefeatEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultCalculator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultSerializer.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchResultManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchState.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipant.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipantRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/SpawnPoint.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchSpawner.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchCountdown.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchEliminationSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchStatistics.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchResult.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchOutcome.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/VictoryEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/DefeatEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultCalculator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultSerializer.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchResultManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/SafeZone.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormDamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormBoundaryRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormManager.cpp
+    ${GAMEMODES_SOURCES}
+    ${GAMEPLAY_INTEGRATION_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AnimationMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/FontManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/hud/HUDManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/hud/Minimap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
+)
+target_include_directories(test_match_results PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_features(test_match_results PRIVATE cxx_std_20)
+target_link_libraries(test_match_results PRIVATE raylib nlohmann_json::nlohmann_json)
+
+add_test(NAME MatchResultsTest COMMAND test_match_results)
+set_tests_properties(MatchResultsTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 35. Game Modes Architecture & Implementation Test (Phase 34)
+add_executable(test_game_modes
+    modes/test_game_modes.cpp
+    ${GAMEMODES_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/results/MatchOutcome.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/VictoryEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/DefeatEvaluator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultCalculator.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/ResultSerializer.cpp
+    ${CMAKE_SOURCE_DIR}/src/results/MatchResultManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchState.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipant.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchParticipantRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/SpawnPoint.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchSpawner.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchCountdown.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchEliminationSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchStatistics.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchResult.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/match/MatchManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/SafeZone.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormDamageSystem.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormBoundaryRenderer.cpp
+    ${CMAKE_SOURCE_DIR}/src/storm/StormManager.cpp
+    ${GAMEPLAY_INTEGRATION_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AssetValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/TextureManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/SpriteSheet.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AnimationMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/FontManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/resources/AudioManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/hud/HUDManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/hud/Minimap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/World.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/WorldManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tilemap.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/CollisionMetadata.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/EnvironmentObject.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapLoader.cpp
+    ${CMAKE_SOURCE_DIR}/src/world/MapValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/EngineConfig.cpp
+)
+target_include_directories(test_game_modes PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_features(test_game_modes PRIVATE cxx_std_20)
+target_link_libraries(test_game_modes PRIVATE raylib nlohmann_json::nlohmann_json)
+
+add_test(NAME GameModesTest COMMAND test_game_modes)
+set_tests_properties(GameModesTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 36. Multiplayer Architecture & Protocol Test (Phase 35)
+add_executable(test_network_architecture
+    network/test_network_architecture.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkMessage.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkEvent.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ReplicationTypes.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkConfiguration.cpp
+)
+target_include_directories(test_network_architecture PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+)
+target_compile_features(test_network_architecture PRIVATE cxx_std_20)
+target_link_libraries(test_network_architecture PRIVATE nlohmann_json::nlohmann_json)
+
+add_test(NAME NetworkArchitectureTest COMMAND test_network_architecture)
+set_tests_properties(NetworkArchitectureTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 37. ENet Networking & Transport Layer Test (Phase 36)
+add_executable(test_network_transport
+    network/test_network_transport.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkMessage.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkEvent.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ReplicationTypes.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkStatistics.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkConnection.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ConnectionManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/PacketValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetTransport.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetServer.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetClient.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/Snapshot.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/SnapshotBuffer.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationInterpolator.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationEvents.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationManager.cpp
+)
+target_include_directories(test_network_transport PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_network_transport PRIVATE cxx_std_20)
+target_link_libraries(test_network_transport PRIVATE enet nlohmann_json::nlohmann_json)
+
+add_test(NAME NetworkTransportTest COMMAND test_network_transport)
+set_tests_properties(NetworkTransportTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 38. Entity Synchronization & Replication Test (Phase 37)
+add_executable(test_entity_replication
+    network/test_entity_replication.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkMessage.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkEvent.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ReplicationTypes.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkStatistics.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkConnection.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ConnectionManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/PacketValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetTransport.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetServer.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetClient.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/Snapshot.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/SnapshotBuffer.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationInterpolator.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationEvents.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/replication/ReplicationManager.cpp
+)
+target_include_directories(test_entity_replication PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_entity_replication PRIVATE cxx_std_20)
+target_link_libraries(test_entity_replication PRIVATE enet nlohmann_json::nlohmann_json)
+
+add_test(NAME EntityReplicationTest COMMAND test_entity_replication)
+set_tests_properties(EntityReplicationTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 39. Dedicated Server Foundation Test (Phase 39)
+set(WILDBOUND_SOURCES_ABSOLUTE "")
+foreach(src ${WILDBOUND_SOURCES})
+    list(APPEND WILDBOUND_SOURCES_ABSOLUTE "${CMAKE_SOURCE_DIR}/${src}")
+endforeach()
+
+add_executable(test_dedicated_server
+    server/test_dedicated_server.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerCommandLine.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerDiagnostics.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerLoop.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/DedicatedServer.cpp
+    ${WILDBOUND_SOURCES_ABSOLUTE}
+)
+target_include_directories(test_dedicated_server PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${sol2_SOURCE_DIR}/include
+    ${lua_SOURCE_DIR}/lua-5.4.7/src
+    ${imgui_SOURCE_DIR}
+    ${rlimgui_SOURCE_DIR}
+    ${enet_SOURCE_DIR}/include
+)
+
+link_libraries(sol2 lua_static)
+target_compile_features(test_dedicated_server PRIVATE cxx_std_20)
+target_link_libraries(test_dedicated_server PRIVATE
+    raylib
+    sol2
+    lua_static
+    imgui
+    rlimgui
+    nlohmann_json::nlohmann_json
+    enet
+)
+if(WIN32)
+    target_compile_definitions(test_dedicated_server PRIVATE NOGDI WIN32_LEAN_AND_MEAN NOUSER)
+    target_link_libraries(test_dedicated_server PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_dedicated_server PRIVATE pthread m)
+endif()
+
+add_test(NAME DedicatedServerTest COMMAND test_dedicated_server)
+set_tests_properties(DedicatedServerTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# ============================================================================
+# PHASE 41: LOBBY & MATCHMAKING TEST SUITES
+# ============================================================================
+
+set(COORDINATOR_COMMON_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkStatistics.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkConnection.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ConnectionManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/PacketValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetTransport.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetServer.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetClient.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ReplicationTypes.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/SessionManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/PartyManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/LobbyManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/PlayerInvitation.hpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/InvitationManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/MatchmakingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/DedicatedServerRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/MatchAssignmentManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorDiagnostics.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorServer.cpp
+)
+
+# 40. Sessions Test
+add_executable(test_matchmaking_sessions
+    matchmaking/test_sessions.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/SessionManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+)
+target_include_directories(test_matchmaking_sessions PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_matchmaking_sessions PRIVATE cxx_std_20)
+target_link_libraries(test_matchmaking_sessions PRIVATE enet nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_matchmaking_sessions PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_matchmaking_sessions PRIVATE pthread m)
+endif()
+add_test(NAME MatchmakingSessionsTest COMMAND test_matchmaking_sessions)
+set_tests_properties(MatchmakingSessionsTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 41. Parties & Lobbies Test
+add_executable(test_matchmaking_lobbies_parties
+    matchmaking/test_lobbies_parties.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/PartyManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/LobbyManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+)
+target_include_directories(test_matchmaking_lobbies_parties PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_matchmaking_lobbies_parties PRIVATE cxx_std_20)
+target_link_libraries(test_matchmaking_lobbies_parties PRIVATE enet nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_matchmaking_lobbies_parties PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_matchmaking_lobbies_parties PRIVATE pthread m)
+endif()
+add_test(NAME MatchmakingLobbiesPartiesTest COMMAND test_matchmaking_lobbies_parties)
+set_tests_properties(MatchmakingLobbiesPartiesTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 42. Invitations Test
+add_executable(test_matchmaking_invitations
+    matchmaking/test_invitations.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/InvitationManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+)
+target_include_directories(test_matchmaking_invitations PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_matchmaking_invitations PRIVATE cxx_std_20)
+target_link_libraries(test_matchmaking_invitations PRIVATE enet nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_matchmaking_invitations PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_matchmaking_invitations PRIVATE pthread m)
+endif()
+add_test(NAME MatchmakingInvitationsTest COMMAND test_matchmaking_invitations)
+set_tests_properties(MatchmakingInvitationsTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 43. Queues Test
+add_executable(test_matchmaking_queues
+    matchmaking/test_matchmaking_queues.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/MatchmakingManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+)
+target_include_directories(test_matchmaking_queues PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_matchmaking_queues PRIVATE cxx_std_20)
+target_link_libraries(test_matchmaking_queues PRIVATE enet nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_matchmaking_queues PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_matchmaking_queues PRIVATE pthread m)
+endif()
+add_test(NAME MatchmakingQueuesTest COMMAND test_matchmaking_queues)
+set_tests_properties(MatchmakingQueuesTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 44. Server Registry Test
+add_executable(test_matchmaking_server_registry
+    matchmaking/test_server_registry.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/DedicatedServerRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+)
+target_include_directories(test_matchmaking_server_registry PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_matchmaking_server_registry PRIVATE cxx_std_20)
+target_link_libraries(test_matchmaking_server_registry PRIVATE enet nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_matchmaking_server_registry PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_matchmaking_server_registry PRIVATE pthread m)
+endif()
+add_test(NAME MatchmakingServerRegistryTest COMMAND test_matchmaking_server_registry)
+set_tests_properties(MatchmakingServerRegistryTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 45. Match Assignment Test
+add_executable(test_matchmaking_assignment
+    matchmaking/test_match_assignment.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/MatchAssignmentManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/DedicatedServerRegistry.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/SessionManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+)
+target_include_directories(test_matchmaking_assignment PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_matchmaking_assignment PRIVATE cxx_std_20)
+target_link_libraries(test_matchmaking_assignment PRIVATE enet nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_matchmaking_assignment PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_matchmaking_assignment PRIVATE pthread m)
+endif()
+add_test(NAME MatchmakingAssignmentTest COMMAND test_matchmaking_assignment)
+set_tests_properties(MatchmakingAssignmentTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 46. Coordinator E2E Integration Test
+add_executable(test_matchmaking_coordinator_e2e
+    matchmaking/test_coordinator_e2e.cpp
+    ${COORDINATOR_COMMON_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/server/ServerConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerCommandLine.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerDiagnostics.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerLoop.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/DedicatedServer.cpp
+    ${WILDBOUND_SOURCES_ABSOLUTE}
+)
+target_include_directories(test_matchmaking_coordinator_e2e PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${sol2_SOURCE_DIR}/include
+    ${lua_SOURCE_DIR}/lua-5.4.7/src
+    ${imgui_SOURCE_DIR}
+    ${rlimgui_SOURCE_DIR}
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_matchmaking_coordinator_e2e PRIVATE cxx_std_20)
+target_link_libraries(test_matchmaking_coordinator_e2e PRIVATE
+    raylib
+    sol2
+    lua_static
+    imgui
+    rlimgui
+    nlohmann_json::nlohmann_json
+    enet
+)
+if(WIN32)
+    target_compile_definitions(test_matchmaking_coordinator_e2e PRIVATE NOGDI WIN32_LEAN_AND_MEAN NOUSER)
+    target_link_libraries(test_matchmaking_coordinator_e2e PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_matchmaking_coordinator_e2e PRIVATE pthread m)
+endif()
+add_test(NAME MatchmakingCoordinatorE2ETest COMMAND test_matchmaking_coordinator_e2e)
+set_tests_properties(MatchmakingCoordinatorE2ETest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

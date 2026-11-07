@@ -1,0 +1,15 @@
+{
+  "replication": {
+    "player_update_rate": 20,
+    "enemy_update_rate": 15,
+    "snapshot_interpolation_delay_ms": 100,
+    "max_snapshot_buffer": 32,
+    "enable_delta_snapshots": true,
+    "enable_movement_interpolation": true,
+    "enable_local_prediction": false,
+    "enable_entity_relevancy": false,
+    "max_replicated_entities": 2048,
+    "max_replication_payload_bytes": 65536
+  }
+}
+

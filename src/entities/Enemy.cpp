@@ -7,6 +7,7 @@
 #include <sol/sol.hpp>
 #include <algorithm>
 #include <cmath>
+#include <chrono>
 
 using wildbound::core::Logger;
 
@@ -189,26 +190,50 @@ void Enemy::ExecuteAIDecision(combat::CombatSystem& combatSys, scripting::LuaMan
 
     // Try Lua-Driven AI if initialized
     if (luaMgr && luaMgr->IsInitialized()) {
+        std::string scriptPath = m_config.ai.behaviorScript;
+        if (scriptPath.empty()) {
+            scriptPath = "scripts/gameplay/ai/enemy_base.lua";
+        }
+
         try {
             sol::state& lua = luaMgr->GetState();
-            sol::function updateAi = lua["wildbound"]["ai"]["update_enemy"];
+
+            // Archetype-specific or generic function selection
+            sol::protected_function updateAi;
+            if (m_config.id == "goblin" && lua["wildbound"]["ai"]["goblin_update"].valid()) {
+                updateAi = lua["wildbound"]["ai"]["goblin_update"];
+            } else if (m_config.id == "skeleton" && lua["wildbound"]["ai"]["skeleton_update"].valid()) {
+                updateAi = lua["wildbound"]["ai"]["skeleton_update"];
+            } else {
+                // Ensure script is loaded in registry
+                if (!luaMgr->IsScriptLoaded(scriptPath)) {
+                    luaMgr->LoadScript(scriptPath);
+                }
+                updateAi = lua["wildbound"]["ai"]["update_enemy"];
+            }
+
             if (updateAi.valid()) {
                 // Pass safe context table to Lua
                 sol::table ctx = lua.create_table();
                 ctx["enemy_id"] = GetId();
+                ctx["enemy_type"] = m_config.id;
                 ctx["x"] = m_position.x;
                 ctx["y"] = m_position.y;
                 ctx["spawn_x"] = m_spawnOrigin.x;
                 ctx["spawn_y"] = m_spawnOrigin.y;
                 ctx["hp_percent"] = m_health.GetHealthPercent();
+                ctx["can_retreat"] = (m_config.ai.retreatHealthPercent > 0.0f);
                 ctx["detection_radius"] = m_config.ai.detectionRadius;
                 ctx["attack_radius"] = m_config.ai.attackRadius;
                 ctx["retreat_hp"] = m_config.ai.retreatHealthPercent;
+                ctx["patrol_radius"] = m_config.ai.patrolRadius;
+                ctx["default_attack"] = m_config.combat.defaultAttack;
                 ctx["state"] = AIStateToString(m_aiState);
                 ctx["target_id"] = m_targetId;
 
                 // Find closest target
                 combat::Combatant* target = combatSys.FindClosestTarget(m_position, m_config.ai.detectionRadius, m_config.faction);
+                float targetDist = 99999.0f;
                 if (target) {
                     Vector2 tPos = target->GetCombatPosition();
                     ctx["has_target"] = true;
@@ -217,15 +242,25 @@ void Enemy::ExecuteAIDecision(combat::CombatSystem& combatSys, scripting::LuaMan
                     ctx["target_id"] = target->GetCombatantId();
                     float dx = tPos.x - m_position.x;
                     float dy = tPos.y - m_position.y;
-                    ctx["target_dist"] = std::sqrt(dx * dx + dy * dy);
+                    targetDist = std::sqrt(dx * dx + dy * dy);
+                    ctx["target_dist"] = targetDist;
                 } else {
                     ctx["has_target"] = false;
-                    ctx["target_dist"] = 99999.0f;
+                    ctx["target_dist"] = targetDist;
                 }
 
-                // Call Lua script function
-                sol::table result = updateAi(ctx);
-                if (result.valid()) {
+                // Call Lua script function safely under instruction budget
+                auto startTime = std::chrono::high_resolution_clock::now();
+                luaMgr->BeginExecutionBudget();
+
+                sol::protected_function_result pfr = updateAi(ctx);
+
+                luaMgr->EndExecutionBudget();
+                auto endTime = std::chrono::high_resolution_clock::now();
+                double durationUs = std::chrono::duration<double, std::micro>(endTime - startTime).count();
+
+                if (pfr.valid()) {
+                    sol::table result = pfr;
                     std::string nextStateStr = result["next_state"].get_or(std::string("IDLE"));
                     m_aiState = StringToAIState(nextStateStr);
                     m_targetId = result["target_id"].get_or(combat::CombatantId(0));
@@ -234,6 +269,13 @@ void Enemy::ExecuteAIDecision(combat::CombatSystem& combatSys, scripting::LuaMan
                     float moveY = result["move_y"].get_or(0.0f);
                     bool wantAttack = result["request_attack"].get_or(false);
                     std::string atkId = result["attack_id"].get_or(m_config.combat.defaultAttack);
+
+                    // 1. C++ Movement Validation (verify finite coordinates)
+                    if (!std::isfinite(moveX) || !std::isfinite(moveY)) {
+                        Logger::Warn("AI", "Invalid non-finite move vector from Lua AI for enemy " + std::to_string(GetId()));
+                        moveX = 0.0f;
+                        moveY = 0.0f;
+                    }
 
                     float speed = (m_aiState == AIState::Chase || m_aiState == AIState::Retreat)
                                       ? m_stats.runSpeed : m_stats.walkSpeed;
@@ -246,17 +288,31 @@ void Enemy::ExecuteAIDecision(combat::CombatSystem& combatSys, scripting::LuaMan
                         m_velocity = Vector2{ 0.0f, 0.0f };
                     }
 
-                    if (wantAttack && target) {
-                        combatSys.ProcessAttack(this, atkId, m_facing);
+                    // 2. C++ Combat Action Validation
+                    if (wantAttack && target && target->IsAlive()) {
+                        // Validate target range (allow up to 1.5x attack radius tolerance for tick variance)
+                        if (targetDist <= m_config.ai.attackRadius * 1.5f && m_attackSystem.CanAttack(atkId)) {
+                            combatSys.ProcessAttack(this, atkId, m_facing);
+                        }
                     }
+
+                    s_luaDecisionCount++;
+                    luaMgr->RecordExecution(scriptPath, durationUs, true);
                     return;
+                } else {
+                    sol::error err = pfr;
+                    luaMgr->RecordExecution(scriptPath, durationUs, false, err.what());
+                    Logger::Warn("AI", "Lua AI error in " + scriptPath + " for enemy [" + std::to_string(GetId()) + "]: " + err.what());
                 }
             }
         }
         catch (const std::exception& ex) {
+            luaMgr->RecordExecution(scriptPath, 0.0, false, ex.what());
             Logger::Error("AI", "Lua AI execution failed for enemy [" + std::to_string(GetId()) + "]: " + ex.what());
         }
     }
+
+    s_fallbackAICount++;
 
     // Robust C++ Fallback AI State Machine
     combat::Combatant* target = combatSys.FindClosestTarget(m_position, m_config.ai.detectionRadius, m_config.faction);

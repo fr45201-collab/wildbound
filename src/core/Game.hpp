@@ -57,6 +57,18 @@ namespace wildbound::storm {
     class StormManager;
 }
 
+namespace wildbound::match {
+    class MatchManager;
+}
+
+namespace wildbound::gamemodes {
+    class GameModeManager;
+}
+
+namespace wildbound::network {
+    class NetworkManager;
+}
+
 namespace wildbound::core {
 
 class Game {
@@ -113,6 +125,14 @@ public:
     const ai::AIManager& GetAIManager() const { return *m_aiManager; }
     storm::StormManager& GetStormManager() { return *m_stormManager; }
     const storm::StormManager& GetStormManager() const { return *m_stormManager; }
+    match::MatchManager& GetMatchManager() { return *m_matchManager; }
+    const match::MatchManager& GetMatchManager() const { return *m_matchManager; }
+    gamemodes::GameModeManager& GetGameModeManager() { return *m_gameModeManager; }
+    const gamemodes::GameModeManager& GetGameModeManager() const { return *m_gameModeManager; }
+    network::NetworkManager* GetNetworkManager() noexcept { return m_networkManager.get(); }
+    const network::NetworkManager* GetNetworkManager() const noexcept { return m_networkManager.get(); }
+
+    void StartSelectedGameMode();
 
     void ToggleCombatDebug() { m_showCombatDebug = !m_showCombatDebug; }
     bool IsCombatDebug() const { return m_showCombatDebug; }
@@ -151,6 +171,9 @@ private:
     std::unique_ptr<interaction::InteractionManager> m_interactionManager;
     std::unique_ptr<ai::AIManager> m_aiManager;
     std::unique_ptr<storm::StormManager> m_stormManager;
+    std::unique_ptr<match::MatchManager> m_matchManager;
+    std::unique_ptr<gamemodes::GameModeManager> m_gameModeManager;
+    std::unique_ptr<network::NetworkManager> m_networkManager;
     std::unique_ptr<customization::CharacterCustomizationManager> m_customizationManager;
     std::unique_ptr<cosmetics::CosmeticsStoreManager> m_cosmeticsStoreManager;
     std::unique_ptr<scripting::LuaManager> m_luaManager;

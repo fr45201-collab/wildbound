@@ -19,7 +19,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Option to build automated tests
 option(WILDBOUND_BUILD_TESTS "Build Wildbound automated test suite" ON)
 
-# Configure MSVC compiler options
+# Configure compiler options per platform
 if(MSVC)
     add_compile_options(
         /W4          # High warning level
@@ -30,6 +30,17 @@ if(MSVC)
         /Z7          # Embed debug info in .obj files to eliminate PDB server mismatch
     )
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
+    add_compile_options(
+        -Wall
+        -Wextra
+        -Wpedantic
+        -pthread
+    )
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "14.0")
+        add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Wno-template-body>)
+    endif()
+    add_compile_definitions(_GNU_SOURCE)
 endif()
 
 # ============================================================================
@@ -87,8 +98,38 @@ FetchContent_Declare(
     GIT_TAG        v3.11.3
 )
 
+# 7. ENet (Reliable UDP Networking) — Tag: v1.3.18
+FetchContent_Declare(
+    enet
+    GIT_REPOSITORY https://github.com/lsalzman/enet.git
+    GIT_TAG        v1.3.18
+)
+
 # Populate dependencies
-FetchContent_MakeAvailable(raylib lua imgui rlimgui nlohmann_json)
+if(WIN32)
+    FetchContent_MakeAvailable(raylib lua imgui rlimgui nlohmann_json enet)
+else()
+    # On Linux headless: avoid raylib desktop X11/Wayland dependencies
+    FetchContent_MakeAvailable(lua imgui rlimgui nlohmann_json enet)
+    FetchContent_GetProperties(raylib)
+    if(NOT raylib_POPULATED)
+        FetchContent_Populate(raylib)
+    endif()
+    add_library(raylib STATIC
+        src/platform/headless/raylib_stub.c
+    )
+    target_include_directories(raylib PUBLIC ${raylib_SOURCE_DIR}/src)
+    target_link_libraries(raylib PUBLIC m pthread)
+endif()
+
+if(TARGET enet)
+    target_include_directories(enet PUBLIC ${enet_SOURCE_DIR}/include)
+    if(WIN32)
+        target_link_libraries(enet PUBLIC ws2_32 winmm)
+    elseif(UNIX AND NOT APPLE)
+        target_link_libraries(enet PUBLIC pthread m)
+    endif()
+endif()
 
 # Setup sol2 interface target
 FetchContent_GetProperties(sol2)
@@ -111,17 +152,48 @@ add_library(imgui STATIC
 target_include_directories(imgui PUBLIC ${imgui_SOURCE_DIR})
 
 # Setup rlImGui static library
-add_library(rlimgui STATIC
-    ${rlimgui_SOURCE_DIR}/rlImGui.cpp
-)
+if(WIN32)
+    add_library(rlimgui STATIC
+        ${rlimgui_SOURCE_DIR}/rlImGui.cpp
+    )
+else()
+    add_library(rlimgui STATIC
+        src/platform/headless/rlimgui_stub.cpp
+    )
+endif()
 target_include_directories(rlimgui PUBLIC ${rlimgui_SOURCE_DIR})
 target_link_libraries(rlimgui PUBLIC raylib imgui)
+
+# ============================================================================
+# PLATFORM ABSTRACTION LAYER (Phase 40A)
+# ============================================================================
+set(PLATFORM_SOURCES
+    src/platform/Platform.hpp
+    src/platform/Platform.cpp
+)
+if(WIN32)
+    list(APPEND PLATFORM_SOURCES
+        src/platform/windows/WindowsPlatform.hpp
+        src/platform/windows/WindowsPlatform.cpp
+        src/platform/windows/WindowsConsole.hpp
+        src/platform/windows/WindowsConsole.cpp
+    )
+elseif(UNIX AND NOT APPLE)
+    list(APPEND PLATFORM_SOURCES
+        src/platform/linux/LinuxPlatform.hpp
+        src/platform/linux/LinuxPlatform.cpp
+        src/platform/linux/LinuxSignals.hpp
+        src/platform/linux/LinuxSignals.cpp
+    )
+endif()
 
 # ============================================================================
 # WILDBOUND ENGINE CORE SOURCES & EXECUTABLE
 # ============================================================================
 
 set(WILDBOUND_SOURCES
+    ${PLATFORM_SOURCES}
+
     # Core
     src/core/Game.cpp
     src/core/Game.hpp
@@ -398,48 +470,341 @@ set(WILDBOUND_SOURCES
     src/storm/StormBoundaryRenderer.cpp
     src/storm/StormManager.hpp
     src/storm/StormManager.cpp
+
+    # Match Lifecycle System (Phase 32)
+    src/match/MatchState.hpp
+    src/match/MatchState.cpp
+    src/match/MatchParticipant.hpp
+    src/match/MatchParticipant.cpp
+    src/match/MatchParticipantRegistry.hpp
+    src/match/MatchParticipantRegistry.cpp
+    src/match/SpawnPoint.hpp
+    src/match/SpawnPoint.cpp
+    src/match/MatchSpawner.hpp
+    src/match/MatchSpawner.cpp
+    src/match/MatchCountdown.hpp
+    src/match/MatchCountdown.cpp
+    src/match/MatchEliminationSystem.hpp
+    src/match/MatchEliminationSystem.cpp
+    src/match/MatchStatistics.hpp
+    src/match/MatchStatistics.cpp
+    src/match/MatchResult.hpp
+    src/match/MatchResult.cpp
+    src/match/MatchConfiguration.hpp
+    src/match/MatchConfiguration.cpp
+    src/match/MatchManager.hpp
+    src/match/MatchManager.cpp
+
+    # Victory Conditions, Player Statistics & Results System (Phase 33)
+    src/results/MatchOutcome.hpp
+    src/results/MatchOutcome.cpp
+    src/results/EliminationRecord.hpp
+    src/results/PlayerPerformance.hpp
+    src/results/MatchResultModel.hpp
+    src/results/VictoryEvaluator.hpp
+    src/results/VictoryEvaluator.cpp
+    src/results/DefeatEvaluator.hpp
+    src/results/DefeatEvaluator.cpp
+    src/results/ResultCalculator.hpp
+    src/results/ResultCalculator.cpp
+    src/results/ResultSerializer.hpp
+    src/results/ResultSerializer.cpp
+    src/results/MatchResultManager.hpp
+    src/results/MatchResultManager.cpp
+
+    # Game Modes & Teams (Phase 34)
+    src/gamemodes/Team.hpp
+    src/gamemodes/Team.cpp
+    src/gamemodes/TeamManager.hpp
+    src/gamemodes/TeamManager.cpp
+    src/gamemodes/TeamVictoryEvaluator.hpp
+    src/gamemodes/TeamVictoryEvaluator.cpp
+    src/gamemodes/GameModeDefinition.hpp
+    src/gamemodes/GameModeDefinition.cpp
+    src/gamemodes/GameModeRules.hpp
+    src/gamemodes/GameModeRules.cpp
+    src/gamemodes/BotMatchConfiguration.hpp
+    src/gamemodes/BotMatchConfiguration.cpp
+    src/gamemodes/PracticeMode.hpp
+    src/gamemodes/PracticeMode.cpp
+    src/gamemodes/GameModeRegistry.hpp
+    src/gamemodes/GameModeRegistry.cpp
+    src/gamemodes/GameModeManager.hpp
+    src/gamemodes/GameModeManager.cpp
+
+    # Menus
+    src/ui/menus/ModeSelectMenu.hpp
+    src/ui/menus/ModeSelectMenu.cpp
+    src/ui/menus/MultiplayerMenu.hpp
+    src/ui/menus/MultiplayerMenu.cpp
+    src/ui/menus/AuthMenu.hpp
+    src/ui/menus/AuthMenu.cpp
+
+    # Coordinator Protocol
+    src/coordinator/CoordinatorProtocol.hpp
+    src/coordinator/CoordinatorProtocol.cpp
+
+    # Network Architecture & Transport (Phase 35 & 36)
+    src/network/NetworkTypes.hpp
+    src/network/NetworkRole.hpp
+    src/network/INetworkTransport.hpp
+    src/network/NetworkProtocol.hpp
+    src/network/NetworkProtocol.cpp
+    src/network/NetworkMessage.hpp
+    src/network/NetworkMessage.cpp
+    src/network/NetworkEvent.hpp
+    src/network/NetworkEvent.cpp
+    src/network/ReplicationTypes.hpp
+    src/network/ReplicationTypes.cpp
+    src/network/NetworkConfiguration.hpp
+    src/network/NetworkConfiguration.cpp
+    src/network/ConnectionState.hpp
+    src/network/ConnectionEvents.hpp
+    src/network/NetworkStatistics.hpp
+    src/network/NetworkStatistics.cpp
+    src/network/NetworkConnection.hpp
+    src/network/NetworkConnection.cpp
+    src/network/ConnectionManager.hpp
+    src/network/ConnectionManager.cpp
+    src/network/PacketValidator.hpp
+    src/network/PacketValidator.cpp
+    src/network/ENetTransport.hpp
+    src/network/ENetTransport.cpp
+    src/network/ENetServer.hpp
+    src/network/ENetServer.cpp
+    src/network/ENetClient.hpp
+    src/network/ENetClient.cpp
+    src/network/NetworkManager.hpp
+    src/network/NetworkManager.cpp
+
+    # Entity Synchronization & Replication (Phase 37)
+    src/network/replication/NetworkEntityTypes.hpp
+    src/network/replication/ReplicationRegistry.hpp
+    src/network/replication/ReplicationRegistry.cpp
+    src/network/replication/Snapshot.hpp
+    src/network/replication/Snapshot.cpp
+    src/network/replication/SnapshotBuffer.hpp
+    src/network/replication/SnapshotBuffer.cpp
+    src/network/replication/ReplicationInterpolator.hpp
+    src/network/replication/ReplicationInterpolator.cpp
+    src/network/replication/ReplicationEvents.hpp
+    src/network/replication/ReplicationEvents.cpp
+    src/network/replication/ReplicationConfiguration.hpp
+    src/network/replication/ReplicationConfiguration.cpp
+    src/network/replication/ReplicationManager.hpp
+    src/network/replication/ReplicationManager.cpp
+
+    # HTTP Client & Backend Integration (Phase 42)
+    src/network/http/HttpClient.hpp
+    src/network/http/HttpClient.cpp
+    src/network/http/BackendClient.hpp
+    src/network/http/BackendClient.cpp
 )
 
-add_executable(wildbound
-    src/main.cpp
+if(WIN32)
+    add_executable(wildbound
+        src/main.cpp
+        ${WILDBOUND_SOURCES}
+    )
+
+    target_include_directories(wildbound PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src
+        ${sol2_SOURCE_DIR}/include
+        ${lua_SOURCE_DIR}/lua-5.4.7/src
+        ${imgui_SOURCE_DIR}
+        ${rlimgui_SOURCE_DIR}
+        ${enet_SOURCE_DIR}/include
+    )
+
+    target_link_libraries(wildbound PRIVATE
+        raylib
+        sol2
+        lua_static
+        imgui
+        rlimgui
+        nlohmann_json::nlohmann_json
+        enet
+        winhttp
+    )
+
+    target_compile_definitions(wildbound PRIVATE NOGDI WIN32_LEAN_AND_MEAN)
+
+    # Copy runtime assets, scripts, and configs to build target output directory
+    add_custom_command(TARGET wildbound POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/assets
+            $<TARGET_FILE_DIR:wildbound>/assets
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/scripts
+            $<TARGET_FILE_DIR:wildbound>/scripts
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/config
+            $<TARGET_FILE_DIR:wildbound>/config
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/maps
+            $<TARGET_FILE_DIR:wildbound>/maps
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_CURRENT_SOURCE_DIR}/data
+            $<TARGET_FILE_DIR:wildbound>/data
+        COMMENT "Deploying runtime assets, scripts, and config to target output directory"
+    )
+endif()
+
+# ============================================================================
+# DEDICATED SERVER EXECUTABLE (Phase 39)
+# Headless standalone authoritative server
+# ============================================================================
+set(WILDBOUND_SERVER_SOURCES
+    src/server/ServerLifecycle.hpp
+    src/server/ServerConfig.hpp
+    src/server/ServerConfig.cpp
+    src/server/ServerCommandLine.hpp
+    src/server/ServerCommandLine.cpp
+    src/server/ServerDiagnostics.hpp
+    src/server/ServerDiagnostics.cpp
+    src/server/ServerLoop.hpp
+    src/server/ServerLoop.cpp
+    src/server/DedicatedServer.hpp
+    src/server/DedicatedServer.cpp
+    src/server/MatchResultsOutbox.hpp
+    src/server/MatchResultsOutbox.cpp
+)
+
+add_executable(WildboundServer
+    src/server/main_server.cpp
+    ${WILDBOUND_SERVER_SOURCES}
     ${WILDBOUND_SOURCES}
 )
 
-target_include_directories(wildbound PRIVATE
+target_include_directories(WildboundServer PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${sol2_SOURCE_DIR}/include
     ${lua_SOURCE_DIR}/lua-5.4.7/src
+    ${lua_SOURCE_DIR}/lua-5.4.7/include
     ${imgui_SOURCE_DIR}
     ${rlimgui_SOURCE_DIR}
+    ${enet_SOURCE_DIR}/include
 )
 
-target_link_libraries(wildbound PRIVATE
+target_link_libraries(WildboundServer PRIVATE
     raylib
     sol2
     lua_static
     imgui
     rlimgui
     nlohmann_json::nlohmann_json
+    enet
 )
 
-# Copy runtime assets, scripts, and configs to build target output directory
-add_custom_command(TARGET wildbound POST_BUILD
+if(WIN32)
+    target_compile_definitions(WildboundServer PRIVATE NOGDI WIN32_LEAN_AND_MEAN NOUSER)
+    target_link_libraries(WildboundServer PRIVATE ws2_32 winmm winhttp)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(WildboundServer PRIVATE pthread m)
+endif()
+
+add_custom_command(TARGET WildboundServer POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/assets
-        $<TARGET_FILE_DIR:wildbound>/assets
+        $<TARGET_FILE_DIR:WildboundServer>/assets
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/scripts
-        $<TARGET_FILE_DIR:wildbound>/scripts
+        $<TARGET_FILE_DIR:WildboundServer>/scripts
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/config
-        $<TARGET_FILE_DIR:wildbound>/config
+        $<TARGET_FILE_DIR:WildboundServer>/config
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/maps
-        $<TARGET_FILE_DIR:wildbound>/maps
+        $<TARGET_FILE_DIR:WildboundServer>/maps
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_CURRENT_SOURCE_DIR}/data
-        $<TARGET_FILE_DIR:wildbound>/data
-    COMMENT "Deploying runtime assets, scripts, and config to target output directory"
+        $<TARGET_FILE_DIR:WildboundServer>/data
+    COMMENT "Deploying runtime assets, scripts, and config to dedicated server output directory"
+)
+
+# ============================================================================
+# COORDINATOR SERVICE EXECUTABLE (Phase 41)
+# Standalone headless pre-match coordination, lobby, and matchmaking service
+# ============================================================================
+set(WILDBOUND_COORDINATOR_SOURCES
+    src/core/Logger.hpp
+    src/core/Logger.cpp
+    src/network/NetworkTypes.hpp
+    src/network/NetworkProtocol.hpp
+    src/network/NetworkProtocol.cpp
+    src/network/NetworkStatistics.hpp
+    src/network/NetworkStatistics.cpp
+    src/network/ConnectionState.hpp
+    src/network/ConnectionEvents.hpp
+    src/network/NetworkConnection.hpp
+    src/network/NetworkConnection.cpp
+    src/network/ConnectionManager.hpp
+    src/network/ConnectionManager.cpp
+    src/network/PacketValidator.hpp
+    src/network/PacketValidator.cpp
+    src/network/ENetTransport.hpp
+    src/network/ENetTransport.cpp
+    src/network/ENetServer.hpp
+    src/network/ENetServer.cpp
+    src/network/ReplicationTypes.hpp
+    src/network/ReplicationTypes.cpp
+    src/coordinator/CoordinatorProtocol.hpp
+    src/coordinator/CoordinatorProtocol.cpp
+    src/coordinator/PlayerSession.hpp
+    src/coordinator/SessionManager.hpp
+    src/coordinator/SessionManager.cpp
+    src/coordinator/Party.hpp
+    src/coordinator/PartyManager.hpp
+    src/coordinator/PartyManager.cpp
+    src/coordinator/Lobby.hpp
+    src/coordinator/LobbyManager.hpp
+    src/coordinator/LobbyManager.cpp
+    src/coordinator/PlayerInvitation.hpp
+    src/coordinator/InvitationManager.hpp
+    src/coordinator/InvitationManager.cpp
+    src/coordinator/MatchmakingQueue.hpp
+    src/coordinator/MatchmakingManager.hpp
+    src/coordinator/MatchmakingManager.cpp
+    src/coordinator/DedicatedServerRegistry.hpp
+    src/coordinator/DedicatedServerRegistry.cpp
+    src/coordinator/MatchAssignment.hpp
+    src/coordinator/MatchAssignmentManager.hpp
+    src/coordinator/MatchAssignmentManager.cpp
+    src/coordinator/CoordinatorConfig.hpp
+    src/coordinator/CoordinatorConfig.cpp
+    src/coordinator/CoordinatorDiagnostics.hpp
+    src/coordinator/CoordinatorDiagnostics.cpp
+    src/coordinator/CoordinatorServer.hpp
+    src/coordinator/CoordinatorServer.cpp
+)
+
+add_executable(WildboundCoordinator
+    src/coordinator/main_coordinator.cpp
+    ${WILDBOUND_COORDINATOR_SOURCES}
+)
+
+target_include_directories(WildboundCoordinator PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
+)
+
+target_link_libraries(WildboundCoordinator PRIVATE
+    enet
+    nlohmann_json::nlohmann_json
+)
+
+if(WIN32)
+    target_compile_definitions(WildboundCoordinator PRIVATE NOGDI WIN32_LEAN_AND_MEAN)
+    target_link_libraries(WildboundCoordinator PRIVATE ws2_32 winmm winhttp)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(WildboundCoordinator PRIVATE pthread m)
+endif()
+
+add_custom_command(TARGET WildboundCoordinator POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/assets
+        $<TARGET_FILE_DIR:WildboundCoordinator>/assets
+    COMMENT "Deploying runtime assets to coordinator output directory"
 )
 
 # ============================================================================

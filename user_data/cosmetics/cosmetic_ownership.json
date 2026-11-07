@@ -1,72 +1,72 @@
 {
     "records": [
         {
-            "acquisitionDate": "2026-11-05 17:28:54",
+            "acquisitionDate": "2026-11-07 17:30:41",
             "acquisitionSource": "starter",
-            "cosmeticId": "cosmetic_skin_default",
+            "cosmeticId": "cosmetic_pants_leather",
             "selectedVariantId": "variant_default",
             "state": "owned"
         },
         {
-            "acquisitionDate": "2026-11-05 17:28:54",
-            "acquisitionSource": "starter",
-            "cosmeticId": "cosmetic_skin_dark",
-            "selectedVariantId": "variant_default",
-            "state": "owned"
-        },
-        {
-            "acquisitionDate": "2026-11-05 17:28:54",
-            "acquisitionSource": "starter",
-            "cosmeticId": "cosmetic_skin_pale",
-            "selectedVariantId": "variant_default",
-            "state": "owned"
-        },
-        {
-            "acquisitionDate": "2026-11-05 17:28:54",
+            "acquisitionDate": "2026-11-07 17:30:41",
             "acquisitionSource": "starter",
             "cosmeticId": "cosmetic_boots_leather",
             "selectedVariantId": "variant_default",
             "state": "owned"
         },
         {
-            "acquisitionDate": "2026-11-05 17:28:54",
-            "acquisitionSource": "starter",
-            "cosmeticId": "cosmetic_hair_long",
-            "selectedVariantId": "variant_default",
-            "state": "owned"
-        },
-        {
-            "acquisitionDate": "2026-11-05 17:28:54",
-            "acquisitionSource": "starter",
-            "cosmeticId": "cosmetic_skin_tan",
-            "selectedVariantId": "variant_default",
-            "state": "owned"
-        },
-        {
-            "acquisitionDate": "2026-11-05 17:28:54",
-            "acquisitionSource": "starter",
-            "cosmeticId": "cosmetic_hair_short",
-            "selectedVariantId": "variant_default",
-            "state": "owned"
-        },
-        {
-            "acquisitionDate": "2026-11-05 17:28:54",
-            "acquisitionSource": "starter",
-            "cosmeticId": "cosmetic_hair_medium",
-            "selectedVariantId": "variant_default",
-            "state": "owned"
-        },
-        {
-            "acquisitionDate": "2026-11-05 17:28:54",
+            "acquisitionDate": "2026-11-07 17:30:41",
             "acquisitionSource": "starter",
             "cosmeticId": "cosmetic_tunic_adventurer",
             "selectedVariantId": "variant_default",
             "state": "owned"
         },
         {
-            "acquisitionDate": "2026-11-05 17:28:54",
+            "acquisitionDate": "2026-11-07 17:30:41",
             "acquisitionSource": "starter",
-            "cosmeticId": "cosmetic_pants_leather",
+            "cosmeticId": "cosmetic_hair_medium",
+            "selectedVariantId": "variant_default",
+            "state": "owned"
+        },
+        {
+            "acquisitionDate": "2026-11-07 17:30:41",
+            "acquisitionSource": "starter",
+            "cosmeticId": "cosmetic_hair_short",
+            "selectedVariantId": "variant_default",
+            "state": "owned"
+        },
+        {
+            "acquisitionDate": "2026-11-07 17:30:41",
+            "acquisitionSource": "starter",
+            "cosmeticId": "cosmetic_skin_dark",
+            "selectedVariantId": "variant_default",
+            "state": "owned"
+        },
+        {
+            "acquisitionDate": "2026-11-07 17:30:41",
+            "acquisitionSource": "starter",
+            "cosmeticId": "cosmetic_hair_long",
+            "selectedVariantId": "variant_default",
+            "state": "owned"
+        },
+        {
+            "acquisitionDate": "2026-11-07 17:30:41",
+            "acquisitionSource": "starter",
+            "cosmeticId": "cosmetic_skin_pale",
+            "selectedVariantId": "variant_default",
+            "state": "owned"
+        },
+        {
+            "acquisitionDate": "2026-11-07 17:30:41",
+            "acquisitionSource": "starter",
+            "cosmeticId": "cosmetic_skin_tan",
+            "selectedVariantId": "variant_default",
+            "state": "owned"
+        },
+        {
+            "acquisitionDate": "2026-11-07 17:30:41",
+            "acquisitionSource": "starter",
+            "cosmeticId": "cosmetic_skin_default",
             "selectedVariantId": "variant_default",
             "state": "owned"
         }

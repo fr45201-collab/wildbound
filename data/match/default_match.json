@@ -1,0 +1,14 @@
+{
+  "match_id": "wildbound_default",
+  "match_countdown_seconds": 10.0,
+  "minimum_participants": 2,
+  "maximum_participants": 100,
+  "allow_ai_participants": false,
+  "world_id": "battle_royale_island",
+  "storm_config_id": "default_corruption_storm",
+  "respawn_enabled": false,
+  "victory_condition": "last_survivor",
+  "show_results_screen": true,
+  "allow_dev_single_participant": false
+}
+

@@ -16,7 +16,7 @@ World::~World() {
     UnloadMap();
 }
 
-bool World::LoadMap(const std::string& mapFilePath, resources::AssetManager& assetMgr) {
+bool World::LoadMap(const std::string& mapFilePath, resources::AssetManager* assetMgr) {
     UnloadMap();
 
     Logger::Info("WORLD", "Loading map: " + mapFilePath);

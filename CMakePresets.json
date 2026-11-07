@@ -41,6 +41,62 @@
         "BUILD_TESTING": "ON",
         "WILDBOUND_BUILD_TESTS": "ON"
       }
+    },
+    {
+      "name": "linux-gcc-debug",
+      "displayName": "Linux GCC Debug",
+      "description": "Configure build tree on Linux using GCC for Debug",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux/gcc-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
+        "BUILD_TESTING": "ON",
+        "WILDBOUND_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "linux-gcc-release",
+      "displayName": "Linux GCC Release",
+      "description": "Configure build tree on Linux using GCC for Release",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux/gcc-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++",
+        "BUILD_TESTING": "ON",
+        "WILDBOUND_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "linux-clang-debug",
+      "displayName": "Linux Clang Debug",
+      "description": "Configure build tree on Linux using Clang for Debug",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux/clang-debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "BUILD_TESTING": "ON",
+        "WILDBOUND_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "linux-clang-release",
+      "displayName": "Linux Clang Release",
+      "description": "Configure build tree on Linux using Clang for Release",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/linux/clang-release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "BUILD_TESTING": "ON",
+        "WILDBOUND_BUILD_TESTS": "ON"
+      }
     }
   ],
   "buildPresets": [
@@ -54,6 +110,30 @@
       "name": "release",
       "displayName": "Build Release",
       "configurePreset": "windows-msvc-release",
+      "configuration": "Release"
+    },
+    {
+      "name": "linux-gcc-debug",
+      "displayName": "Build Linux GCC Debug",
+      "configurePreset": "linux-gcc-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "linux-gcc-release",
+      "displayName": "Build Linux GCC Release",
+      "configurePreset": "linux-gcc-release",
+      "configuration": "Release"
+    },
+    {
+      "name": "linux-clang-debug",
+      "displayName": "Build Linux Clang Debug",
+      "configurePreset": "linux-clang-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "linux-clang-release",
+      "displayName": "Build Linux Clang Release",
+      "configurePreset": "linux-clang-release",
       "configuration": "Release"
     }
   ],
@@ -75,7 +155,42 @@
       "output": {
         "outputOnFailure": true
       }
+    },
+    {
+      "name": "linux-gcc-debug",
+      "displayName": "Test Linux GCC Debug",
+      "configurePreset": "linux-gcc-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-gcc-release",
+      "displayName": "Test Linux GCC Release",
+      "configurePreset": "linux-gcc-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-clang-debug",
+      "displayName": "Test Linux Clang Debug",
+      "configurePreset": "linux-clang-debug",
+      "configuration": "Debug",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "linux-clang-release",
+      "displayName": "Test Linux Clang Release",
+      "configurePreset": "linux-clang-release",
+      "configuration": "Release",
+      "output": {
+        "outputOnFailure": true
+      }
     }
   ]
 }
-

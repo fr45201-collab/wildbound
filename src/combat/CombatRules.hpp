@@ -4,6 +4,7 @@
 #include <nlohmann/json.hpp>
 #include <fstream>
 #include <string>
+#include <functional>
 
 namespace wildbound::combat {
 
@@ -58,9 +59,19 @@ public:
         return false;
     }
 
+    bool CanTarget(CombatantId attackerId, CombatantId targetId, Faction attackerFaction, Faction targetFaction) const {
+        if (friendlyFireFilter) {
+            if (!friendlyFireFilter(attackerId, targetId)) {
+                return false;
+            }
+        }
+        return CanTarget(attackerFaction, targetFaction);
+    }
+
     bool friendlyFire = false;
     bool allowPvE = true;
     bool allowPvP = false;
+    std::function<bool(CombatantId attackerId, CombatantId targetId)> friendlyFireFilter = nullptr;
 };
 
 } // namespace wildbound::combat

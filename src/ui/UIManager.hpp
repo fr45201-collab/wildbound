@@ -12,7 +12,12 @@
 #include "menus/SettingsMenu.hpp"
 #include "menus/PauseMenu.hpp"
 #include "menus/MainMenu.hpp"
+#include "menus/ModeSelectMenu.hpp"
 #include "inventory/InventoryUI.hpp"
+
+namespace wildbound::gamemodes {
+    class GameModeManager;
+}
 
 namespace wildbound::graphics {
     class Renderer;
@@ -54,11 +59,16 @@ namespace wildbound::cosmetics {
     class CosmeticsStoreManager;
 }
 
+namespace wildbound::match {
+    class MatchManager;
+}
+
 namespace wildbound::ui {
 
 enum class UIScreen {
     None = 0,         // Pure gameplay HUD
     MainMenu,
+    ModeSelect,
     CharacterSelect,
     Wardrobe,
     Store,
@@ -126,6 +136,14 @@ public:
     [[nodiscard]] const MainMenu& GetMainMenu() const { return m_mainMenu; }
     [[nodiscard]] InventoryUI& GetInventoryUI() { return m_inventoryUI; }
     [[nodiscard]] const InventoryUI& GetInventoryUI() const { return m_inventoryUI; }
+    [[nodiscard]] ModeSelectMenu& GetModeSelectMenu() { return m_modeSelectMenu; }
+    [[nodiscard]] const ModeSelectMenu& GetModeSelectMenu() const { return m_modeSelectMenu; }
+
+    void SetGameModeManager(gamemodes::GameModeManager* modeMgr) noexcept { m_gameModeManager = modeMgr; }
+    [[nodiscard]] gamemodes::GameModeManager* GetGameModeManager() const noexcept { return m_gameModeManager; }
+
+    using MatchStartCallback = std::function<void()>;
+    void SetMatchStartCallback(MatchStartCallback cb) { m_matchStartCallback = std::move(cb); }
 
     // Reusable UI Component Primitives
     void DrawPanel(Rectangle bounds, const std::string& style = "main");
@@ -135,6 +153,7 @@ public:
 
     // Audio integration
     void SetAudioSystem(audio::AudioSystem* audioSys) { m_audioSystem = audioSys; }
+    void SetMatchManager(match::MatchManager* matchMgr) { m_matchManager = matchMgr; }
 
 private:
     void RenderMainMenu(graphics::Renderer& renderer, resources::AssetManager& assetMgr);
@@ -165,6 +184,7 @@ private:
     SettingsMenu m_settingsMenu;
     PauseMenu m_pauseMenu;
     MainMenu m_mainMenu;
+    ModeSelectMenu m_modeSelectMenu;
     InventoryUI m_inventoryUI;
 
     // Submenu state
@@ -176,6 +196,11 @@ private:
     int m_selectedInventorySlot = -1;
     int m_selectedCharacterIndex = 0;
 
+    // Results screen navigation & tabs (Phase 33)
+    int m_resultsSelectedButton = 0; // 0 = PLAY AGAIN, 1 = MAIN MENU
+    int m_resultsActiveTab = 0;      // 0 = Summary & Performance, 1 = Leaderboard
+    float m_resultsEntranceTimer = 0.0f;
+
     // Cached gameplay system references
     entities::Player* m_lastPlayer = nullptr;
     const items::ItemManager* m_lastItemMgr = nullptr;
@@ -184,6 +209,9 @@ private:
     // Hover sound tracking
     std::string m_lastHoveredId;
     const interaction::InteractionPrompt* m_interactionPrompt = nullptr;
+    match::MatchManager* m_matchManager = nullptr;
+    gamemodes::GameModeManager* m_gameModeManager = nullptr;
+    MatchStartCallback m_matchStartCallback;
 };
 
 } // namespace wildbound::ui

@@ -12,6 +12,9 @@
 #include "../cosmetics/CosmeticsStoreManager.hpp"
 #include "../ai/AIManager.hpp"
 #include "../storm/StormManager.hpp"
+#include "../match/MatchManager.hpp"
+#include "../gamemodes/GameModeManager.hpp"
+#include "../network/NetworkManager.hpp"
 
 #include <raylib.h>
 #include <algorithm>
@@ -45,6 +48,9 @@ Game::Game(const EngineConfig& initialConfig)
     , m_cosmeticsStoreManager(std::make_unique<cosmetics::CosmeticsStoreManager>())
     , m_aiManager(std::make_unique<ai::AIManager>())
     , m_stormManager(std::make_unique<storm::StormManager>())
+    , m_matchManager(std::make_unique<match::MatchManager>())
+    , m_gameModeManager(std::make_unique<gamemodes::GameModeManager>())
+    , m_networkManager(std::make_unique<network::NetworkManager>())
     , m_luaManager(std::make_unique<scripting::LuaManager>())
     , m_devUI(std::make_unique<ui::DevUI>())
 {
@@ -213,9 +219,11 @@ bool Game::Initialize() {
         m_uiManager->SetScreen(ui::UIScreen::None);
     }
 
-    // 6. Initialize Combat System & AI Scripts (Phase 5)
+    // 6. Initialize Combat System & AI Scripts (Phase 5 & Phase 46)
     m_combatSystem->Initialize("data/combat/combat_rules.json", "data/combat/attacks.json");
-    m_luaManager->LoadScriptFile("scripts/gameplay/ai/enemy_base.lua");
+    m_luaManager->LoadScript("scripts/gameplay/ai/enemy_base.lua");
+    m_luaManager->LoadScript("scripts/gameplay/ai/goblin.lua");
+    m_luaManager->LoadScript("scripts/gameplay/ai/skeleton.lua");
 
     // 7. Initialize Player Entity & Spawn (Phase 4 & Phase 7)
     auto playerCfg = entities::CharacterConfig::LoadFromFile("data/characters/player.json");
@@ -357,6 +365,56 @@ bool Game::Initialize() {
             ? m_worldManager->GetPlayableBoundary()
             : (m_world && m_world->IsLoaded() ? m_world->GetWorldBounds() : Rectangle{ 768.0f, 768.0f, 8704.0f, 8704.0f });
         m_stormManager->Initialize("data/storm/storm_config.json", stormBounds);
+    }
+
+    // Phase 32: Initialize Battle Royale Match Lifecycle System
+    if (m_matchManager) {
+        m_matchManager->Initialize("data/match/default_match.json", m_worldManager.get());
+        if (m_player) {
+            m_matchManager->RegisterLocalPlayer(m_player.get());
+        }
+        if (m_uiManager) {
+            m_uiManager->SetMatchManager(m_matchManager.get());
+            m_matchManager->SetScreenCallback([this](const std::string& scr) {
+                if (!m_uiManager) return;
+                if (scr == "MatchResults") {
+                    m_uiManager->SetScreen(ui::UIScreen::MatchResults);
+                } else if (scr == "MainMenu") {
+                    m_uiManager->SetScreen(ui::UIScreen::MainMenu);
+                }
+            });
+        }
+        if (m_combatSystem) {
+            m_combatSystem->GetEvents().SubscribeDeath([this](const combat::DeathEvent& deathEvt) {
+                if (m_matchManager) {
+                    m_matchManager->HandleCombatDeath(deathEvt);
+                }
+            });
+        }
+    }
+
+    // Phase 34: Initialize Game Modes Architecture & Integration
+    if (m_gameModeManager) {
+        m_gameModeManager->Initialize("data/gamemodes", "data/gamemodes/bot_difficulty.json");
+        if (m_matchManager) {
+            m_matchManager->SetGameModeManager(m_gameModeManager.get());
+        }
+        if (m_uiManager) {
+            m_uiManager->SetGameModeManager(m_gameModeManager.get());
+            m_uiManager->SetMatchStartCallback([this]() {
+                StartSelectedGameMode();
+            });
+        }
+        if (m_combatSystem) {
+            m_combatSystem->GetRules().friendlyFireFilter = [this](combat::CombatantId attackerId, combat::CombatantId targetId) -> bool {
+                if (!m_matchManager || !m_gameModeManager) return true;
+                const auto& reg = m_matchManager->GetRegistry();
+                const auto* attackerP = reg.FindParticipantByEntityId(attackerId);
+                const auto* targetP = reg.FindParticipantByEntityId(targetId);
+                if (!attackerP || !targetP) return true;
+                return m_gameModeManager->CanDamage(attackerP->participantId, targetP->participantId);
+            };
+        }
     }
 
     // 11. Initialize DevUI (Dear ImGui + rlImGui)
@@ -762,6 +820,41 @@ void Game::Update(float dt) {
         m_stormManager->Update(dt, m_player.get(), m_audioSystem.get(), hudMgr);
     }
 
+    // Phase 32: Update Match Lifecycle System
+    if (m_matchManager) {
+        m_matchManager->Update(dt, m_player.get(), m_stormManager.get(), m_uiManager.get(), m_audioSystem.get());
+    }
+
+    // Phase 36: Update Network Transport Manager
+    if (m_networkManager) {
+        m_networkManager->Update(dt);
+    }
+
+    // Phase 34: Bot Storm Damage & HUD Sync
+    if (m_stormManager && m_stormManager->GetState() != storm::StormState::Idle && m_enemySpawner && m_matchManager && m_matchManager->IsActive()) {
+        const auto& safeZone = m_stormManager->GetCurrentSafeZone();
+        float dps = m_stormManager->GetCurrentDPS();
+        for (auto& enemy : m_enemySpawner->GetEnemies()) {
+            if (enemy && enemy->IsAlive()) {
+                m_stormManager->GetDamageSystem().Update(dt, safeZone, dps, enemy->GetCombatPosition(), enemy->GetHealth(), m_audioSystem.get());
+                if (enemy->GetHealth().IsDead()) {
+                    combat::DeathEvent dEvt;
+                    dEvt.victimId = enemy->GetCombatantId();
+                    dEvt.killerId = 0; // Storm
+                    m_matchManager->HandleCombatDeath(dEvt);
+                }
+            }
+        }
+    }
+
+    if (m_uiManager && m_gameModeManager && m_matchManager) {
+        auto& hud = m_uiManager->GetHUDManager().GetMatchInfo();
+        hud.gameModeName = m_gameModeManager->GetActiveMode().displayName;
+        hud.gameModeId = m_gameModeManager->GetActiveMode().id;
+        hud.isPracticeMode = (m_gameModeManager->GetActiveMode().id == "practice");
+        hud.teamsAlive = static_cast<int>(m_gameModeManager->GetTeamManager().GetAliveTeamCount(m_matchManager->GetRegistry()));
+    }
+
     m_camera->Update(dt);
 }
 
@@ -930,7 +1023,10 @@ void Game::Render(float dt) {
             m_uiManager.get(),
             m_aiManager.get(),
             m_worldManager.get(),
-            m_stormManager.get()
+            m_stormManager.get(),
+            m_matchManager.get(),
+            m_networkManager.get(),
+            m_luaManager.get()
         );
         m_devUI->EndFrame();
     }
@@ -938,13 +1034,92 @@ void Game::Render(float dt) {
     EndDrawing();
 }
 
+void Game::StartSelectedGameMode() {
+    if (!m_matchManager || !m_gameModeManager) return;
+
+    m_matchManager->ResetMatch(m_player.get(), m_stormManager.get(), m_uiManager.get());
+    if (m_enemySpawner && m_combatSystem) {
+        m_enemySpawner->ClearAllEnemies(*m_combatSystem);
+    }
+
+    auto modeDef = m_gameModeManager->GetActiveMode();
+    auto matchConfig = m_gameModeManager->GenerateMatchConfiguration("br_match_" + std::to_string(static_cast<int>(GetTime())));
+    m_matchManager->Initialize(matchConfig, m_worldManager.get());
+
+    if (m_player) {
+        m_matchManager->RegisterLocalPlayer(m_player.get());
+    }
+
+    if (modeDef.botsAllowed) {
+        uint32_t botCount = m_gameModeManager->GetBotConfig().GetBotCount();
+        auto params = m_gameModeManager->GetBotConfig().GetActiveParams();
+
+        for (uint32_t i = 1; i <= botCount; ++i) {
+            if (m_enemySpawner && m_combatSystem) {
+                Vector2 botSpawnPos{ 200.0f + (i % 8) * 60.0f, 200.0f + (i / 8) * 60.0f };
+                auto* enemy = m_enemySpawner->SpawnEnemy("goblin", botSpawnPos, *m_combatSystem);
+                if (enemy) {
+                    entities::EnemyConfig cfg = enemy->GetConfig();
+                    cfg.ai.detectionRadius = params.perceptionRange;
+                    cfg.combat.attackCooldown = params.attackCooldownMultiplier * 1.0f;
+                    cfg.ai.retreatHealthPercent = params.retreatHealthPercentage;
+                    cfg.faction = combat::Faction::Players; // PvP competitor
+                    enemy->ApplyConfig(cfg);
+
+                    match::MatchParticipant botP;
+                    botP.participantId = 100 + i;
+                    botP.type = match::ParticipantType::AI;
+                    botP.displayName = "Gladiator_Bot_" + std::to_string(i);
+                    botP.entityId = enemy->GetCombatantId();
+                    botP.status = match::ParticipantStatus::Registered;
+                    m_matchManager->RegisterParticipant(botP);
+                }
+            }
+        }
+    }
+
+    m_gameModeManager->SetupTeamsForParticipants(m_matchManager->GetRegistry());
+
+    if (modeDef.id == "practice") {
+        m_matchManager->ForceStartMatch();
+        m_gameModeManager->GetPracticeMode().Initialize(m_player ? m_player->GetPosition() : Vector2{ 100.0f, 100.0f });
+        m_gameModeManager->GetPracticeMode().SetDummyCallbacks(
+            [this](Vector2 pos) -> uint32_t {
+                if (m_enemySpawner && m_combatSystem) {
+                    auto* e = m_enemySpawner->SpawnEnemy("goblin", pos, *m_combatSystem);
+                    return e ? e->GetCombatantId() : 0;
+                }
+                return 0;
+            },
+            [this]() {
+                if (m_enemySpawner && m_combatSystem) {
+                    m_enemySpawner->ClearAllEnemies(*m_combatSystem);
+                }
+            }
+        );
+    } else {
+        m_matchManager->StartCountdown();
+    }
+
+    Logger::Info("ENGINE", "Started match in game mode: [" + modeDef.displayName + "] with " +
+                 std::to_string(m_matchManager->GetRegistry().GetTotalCount()) + " participants.");
+}
+
 void Game::Shutdown() {
     if (m_isShutdown) return;
     m_isShutdown = true;
     m_running = false;
 
+    if (m_matchManager) {
+        m_matchManager->ResetMatch();
+    }
+
     if (m_stormManager) {
         m_stormManager->Reset();
+    }
+
+    if (m_networkManager) {
+        m_networkManager->Shutdown();
     }
 
     if (m_uiManager) {

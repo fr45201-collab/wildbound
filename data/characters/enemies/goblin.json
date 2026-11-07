@@ -28,7 +28,7 @@
     "attack_range": 28.0
   },
   "ai": {
-    "behavior_script": "scripts/gameplay/ai/enemy_base.lua",
+    "behavior_script": "scripts/gameplay/ai/goblin.lua",
     "detection_radius": 140.0,
     "attack_radius": 32.0,
     "retreat_health_percent": 0.2,

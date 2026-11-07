@@ -35,7 +35,7 @@ std::vector<int> MapLoader::ParseCsvData(const std::string& csv) {
     return data;
 }
 
-std::unique_ptr<Tilemap> MapLoader::LoadMap(const std::string& mapFilePath, resources::AssetManager& assetMgr) {
+std::unique_ptr<Tilemap> MapLoader::LoadMap(const std::string& mapFilePath, resources::AssetManager* assetMgr) {
     if (!fs::exists(mapFilePath)) {
         Logger::Error("MAP_LOADER", "Map file does not exist: " + mapFilePath);
         return nullptr;
@@ -56,7 +56,7 @@ std::unique_ptr<Tilemap> MapLoader::LoadMap(const std::string& mapFilePath, reso
     }
 }
 
-std::unique_ptr<Tilemap> MapLoader::LoadFromJson(const std::string& jsonFilePath, resources::AssetManager& assetMgr) {
+std::unique_ptr<Tilemap> MapLoader::LoadFromJson(const std::string& jsonFilePath, resources::AssetManager* assetMgr) {
     try {
         std::ifstream file(jsonFilePath);
         if (!file.is_open()) {
@@ -90,10 +90,12 @@ std::unique_ptr<Tilemap> MapLoader::LoadFromJson(const std::string& jsonFilePath
 
                 Tileset tileset(firstGid, tsName, tw, th, cols, tileCount, image, spacing, margin);
 
-                // Register texture with AssetManager
+                // Register texture with AssetManager if available
                 if (!image.empty()) {
                     tileset.SetTextureId(tsName);
-                    assetMgr.GetTexture(tsName); // Preload texture into cache
+                    if (assetMgr) {
+                        assetMgr->GetTexture(tsName); // Preload texture into cache
+                    }
                 }
 
                 tilemap->AddTileset(std::move(tileset));
@@ -194,7 +196,7 @@ std::unique_ptr<Tilemap> MapLoader::LoadFromJson(const std::string& jsonFilePath
     }
 }
 
-std::unique_ptr<Tilemap> MapLoader::LoadFromTmx(const std::string& tmxFilePath, resources::AssetManager& assetMgr) {
+std::unique_ptr<Tilemap> MapLoader::LoadFromTmx(const std::string& tmxFilePath, resources::AssetManager* assetMgr) {
     try {
         std::ifstream file(tmxFilePath);
         if (!file.is_open()) {
@@ -260,7 +262,9 @@ std::unique_ptr<Tilemap> MapLoader::LoadFromTmx(const std::string& tmxFilePath, 
 
             // Preload texture into AssetManager cache if available
             if (!imageSource.empty()) {
-                assetMgr.GetTexture(tsName);
+                if (assetMgr) {
+                    assetMgr->GetTexture(tsName);
+                }
             }
 
             tilemap->AddTileset(std::move(tileset));

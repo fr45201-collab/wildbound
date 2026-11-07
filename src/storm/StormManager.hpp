@@ -67,7 +67,7 @@ public:
     // Queries
     [[nodiscard]] StormState GetState() const noexcept { return m_state; }
     [[nodiscard]] bool IsPaused() const noexcept { return m_isPaused; }
-    [[nodiscard]] int GetCurrentPhaseIndex() const noexcept { return m_currentPhaseIndex; }
+    [[nodiscard]] int GetCurrentPhaseIndex() const noexcept { return static_cast<int>(m_currentPhaseIndex); }
     [[nodiscard]] size_t GetTotalPhases() const noexcept { return m_config.phases.size(); }
     [[nodiscard]] const StormPhaseConfig* GetCurrentPhaseConfig() const noexcept;
 

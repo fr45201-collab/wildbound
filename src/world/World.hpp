@@ -47,7 +47,8 @@ public:
     World(const World&) = delete;
     World& operator=(const World&) = delete;
 
-    bool LoadMap(const std::string& mapFilePath, resources::AssetManager& assetMgr);
+    bool LoadMap(const std::string& mapFilePath, resources::AssetManager* assetMgr = nullptr);
+    bool LoadMap(const std::string& mapFilePath, resources::AssetManager& assetMgr) { return LoadMap(mapFilePath, &assetMgr); }
     void UnloadMap();
 
     bool IsLoaded() const { return m_tilemap != nullptr; }

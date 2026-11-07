@@ -2,6 +2,7 @@
 #include "../customization/CharacterCustomizationManager.hpp"
 #include "../audio/AudioSystem.hpp"
 #include "../core/Logger.hpp"
+#include "../network/http/BackendClient.hpp"
 
 #include <algorithm>
 
@@ -194,6 +195,18 @@ bool CosmeticsStoreManager::EquipSelected() {
         return false;
     }
 
+    if (m_backendClient && m_backendClient->IsAuthenticated()) {
+        std::string cosmeticToEquip = m_selectedCosmeticId;
+        m_backendClient->EquipLoadoutItem(cosmeticToEquip, 0, [this, cosmeticToEquip](bool success, const nlohmann::json& loadout, const std::string& error) {
+            if (!success) {
+                core::Logger::Warn("COSMETICS_STORE", "Backend rejected equip request for " + cosmeticToEquip + ": " + error);
+                PlayAudioEvent("cosmetics.error");
+            } else {
+                core::Logger::Info("COSMETICS_STORE", "Backend confirmed equip for " + cosmeticToEquip);
+            }
+        });
+    }
+
     bool success = m_customizationMgr->EquipCosmetic(m_selectedCosmeticId);
     if (success) {
         PlayAudioEvent("cosmetics.equip");
@@ -203,6 +216,16 @@ bool CosmeticsStoreManager::EquipSelected() {
 
 bool CosmeticsStoreManager::UnequipSlot(customization::CustomizationSlot slot) {
     if (!m_customizationMgr) return false;
+
+    if (m_backendClient && m_backendClient->IsAuthenticated()) {
+        std::string slotStr = std::string(customization::CustomizationSlotToString(slot));
+        m_backendClient->UnequipLoadoutSlot(slotStr, 0, [slotStr](bool success, const nlohmann::json& loadout, const std::string& error) {
+            if (!success) {
+                core::Logger::Warn("COSMETICS_STORE", "Backend rejected unequip for " + slotStr + ": " + error);
+            }
+        });
+    }
+
     bool success = m_customizationMgr->UnequipCosmetic(slot);
     if (success) {
         PlayAudioEvent("cosmetics.unequip");
@@ -213,6 +236,13 @@ bool CosmeticsStoreManager::UnequipSlot(customization::CustomizationSlot slot) {
 bool CosmeticsStoreManager::UnlockPrototypeSelected() {
     if (m_selectedCosmeticId.empty()) return false;
     if (IsSelectedOwned()) return true;
+
+    // In production online mode, direct purchasing is disabled until store purchase provider phase
+    if (m_backendClient && m_backendClient->IsAuthenticated()) {
+        core::Logger::Warn("COSMETICS_STORE", "Direct store purchasing is disabled in this phase. Items must be unlocked via progression or server grant.");
+        PlayAudioEvent("cosmetics.error");
+        return false;
+    }
 
     bool success = m_ownershipMgr.UnlockPrototype(m_selectedCosmeticId, "prototype_unlock");
     if (success) {

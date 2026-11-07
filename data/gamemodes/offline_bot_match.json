@@ -1,0 +1,21 @@
+{
+  "id": "offline_bots",
+  "displayName": "Offline Bot Matches",
+  "description": "Engage fully autonomous AI competitors in simulated Battle Royale matches across multiple difficulties without an internet connection.",
+  "minimumParticipants": 2,
+  "maximumParticipants": 32,
+  "teamSize": 1,
+  "teamsEnabled": false,
+  "friendlyFireEnabled": false,
+  "botsAllowed": true,
+  "defaultBotCount": 15,
+  "botDifficulty": "normal",
+  "respawnEnabled": false,
+  "stormEnabled": true,
+  "stormConfigId": "default_corruption_storm",
+  "competitiveResults": true,
+  "victoryCondition": "last_survivor",
+  "environment": "battle_royale_island",
+  "isAvailable": true,
+  "requiresNetworking": false
+}

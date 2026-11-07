@@ -38,6 +38,10 @@ struct MatchHUDInfo {
     int eliminations = 0;
     std::string phaseName = "Phase 1 - In Progress";
     float stormTimer = 180.0f;
+    std::string gameModeName = "Solo Battle Royale";
+    std::string gameModeId = "solo";
+    int teamsAlive = 0;
+    bool isPracticeMode = false;
 };
 
 /**

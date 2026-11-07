@@ -25,6 +25,11 @@
 #include "../ai/AIManager.hpp"
 #include "../world/WorldManager.hpp"
 #include "../storm/StormManager.hpp"
+#include "../match/MatchManager.hpp"
+#include "../gamemodes/GameModeManager.hpp"
+#include "../network/NetworkManager.hpp"
+#include "../network/replication/ReplicationManager.hpp"
+#include "../scripting/LuaManager.hpp"
 
 #include <imgui.h>
 #include <rlImGui.h>
@@ -107,7 +112,10 @@ void DevUI::RenderDebugOverlay(
     ui::UIManager* uiMgr,
     ai::AIManager* aiMgr,
     world::WorldManager* worldMgr,
-    storm::StormManager* stormMgr)
+    storm::StormManager* stormMgr,
+    match::MatchManager* matchMgr,
+    network::NetworkManager* netMgr,
+    scripting::LuaManager* luaMgr)
 {
     if (m_showAnimDebug) {
         RenderAnimationHUD(player);
@@ -269,6 +277,24 @@ void DevUI::RenderDebugOverlay(
             // Tab 19: Corruption Storm & Safe Zone (Phase 31)
             if (ImGui::BeginTabItem("Corruption Storm")) {
                 RenderStormDebug(stormMgr, player);
+                ImGui::EndTabItem();
+            }
+
+            // Tab 20: Match Lifecycle (Phase 32)
+            if (ImGui::BeginTabItem("Match Lifecycle")) {
+                RenderMatchDebug(matchMgr, player);
+                ImGui::EndTabItem();
+            }
+
+            // Tab 21: Network Diagnostics (Phase 36)
+            if (ImGui::BeginTabItem("Network Diagnostics")) {
+                RenderNetworkDiagnostics(netMgr);
+                ImGui::EndTabItem();
+            }
+
+            // Tab 22: Lua & Scripting (Phase 46)
+            if (ImGui::BeginTabItem("Lua & Scripting")) {
+                RenderLuaDiagnostics(luaMgr, spawner);
                 ImGui::EndTabItem();
             }
 
@@ -3731,6 +3757,577 @@ void DevUI::RenderStormDebug(storm::StormManager* stormMgr, entities::Player* pl
     }
     if (ImGui::Checkbox("Render Atmospheric Particles", &renderParticles)) {
         renderer.SetRenderParticles(renderParticles);
+    }
+}
+
+void DevUI::RenderMatchDebug(match::MatchManager* matchMgr, entities::Player* player) {
+    if (!matchMgr) {
+        ImGui::TextColored(ImVec4(0.9f, 0.4f, 0.4f, 1.0f), "MatchManager is not initialized.");
+        return;
+    }
+
+    ImGui::TextColored(ImVec4(0.4f, 0.9f, 0.5f, 1.0f), "Battle Royale Match Lifecycle System (Phase 32)");
+    ImGui::Separator();
+
+    // 1. Match State & Timers
+    auto state = matchMgr->GetState();
+    ImVec4 stateColor = ImVec4(0.5f, 0.9f, 0.5f, 1.0f);
+    if (state == match::MatchState::Failed) stateColor = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);
+    else if (state == match::MatchState::Countdown) stateColor = ImVec4(1.0f, 0.85f, 0.2f, 1.0f);
+    else if (state == match::MatchState::Active) stateColor = ImVec4(0.2f, 0.9f, 1.0f, 1.0f);
+
+    ImGui::TextColored(stateColor, "Current State:    %s", matchMgr->GetStateString());
+    ImGui::Text("Match ID:         %s", matchMgr->GetConfig().matchId.c_str());
+    ImGui::Text("World ID:         %s", matchMgr->GetConfig().worldId.c_str());
+
+    float matchTime = matchMgr->GetMatchTime();
+    int mins = static_cast<int>(matchTime) / 60;
+    int secs = static_cast<int>(matchTime) % 60;
+    ImGui::Text("Match Elapsed:    %02d:%02d (%.1f s)", mins, secs, matchTime);
+
+    if (state == match::MatchState::Countdown) {
+        const auto& cd = matchMgr->GetCountdown();
+        ImGui::TextColored(ImVec4(1.0f, 0.9f, 0.3f, 1.0f), "Countdown:        %.1f s remaining", cd.GetTimeRemaining());
+        ImGui::ProgressBar(cd.GetProgress(), ImVec2(-1, 0));
+    }
+
+    ImGui::Separator();
+
+    // 2. Participant Registry Summary
+    const auto& reg = matchMgr->GetRegistry();
+    size_t total = reg.GetTotalCount();
+    size_t alive = reg.GetAliveCount();
+    size_t elim = total - alive;
+
+    ImGui::TextColored(ImVec4(0.95f, 0.85f, 0.3f, 1.0f), "Competitors: %zu Total | %zu Alive | %zu Eliminated", total, alive, elim);
+
+    const auto& participants = reg.GetAllParticipants();
+    if (ImGui::BeginTable("ParticipantsTable", 6, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollY, ImVec2(0, 160))) {
+        ImGui::TableSetupColumn("ID", ImGuiTableColumnFlags_WidthFixed, 30.0f);
+        ImGui::TableSetupColumn("Name", ImGuiTableColumnFlags_WidthStretch);
+        ImGui::TableSetupColumn("Status", ImGuiTableColumnFlags_WidthFixed, 80.0f);
+        ImGui::TableSetupColumn("Kills", ImGuiTableColumnFlags_WidthFixed, 40.0f);
+        ImGui::TableSetupColumn("Damage", ImGuiTableColumnFlags_WidthFixed, 60.0f);
+        ImGui::TableSetupColumn("Rank", ImGuiTableColumnFlags_WidthFixed, 40.0f);
+        ImGui::TableHeadersRow();
+
+        for (const auto& p : participants) {
+            ImGui::TableNextRow();
+            ImGui::TableNextColumn();
+            ImGui::Text("%u", p.participantId);
+
+            ImGui::TableNextColumn();
+            if (p.isWinner) {
+                ImGui::TextColored(ImVec4(1.0f, 0.85f, 0.2f, 1.0f), "%s (WINNER)", p.displayName.c_str());
+            } else if (p.type == match::ParticipantType::LocalHuman) {
+                ImGui::TextColored(ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "%s (YOU)", p.displayName.c_str());
+            } else {
+                ImGui::Text("%s", p.displayName.c_str());
+            }
+
+            ImGui::TableNextColumn();
+            if (p.IsAlive()) {
+                ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.3f, 1.0f), "Alive");
+            } else {
+                ImGui::TextColored(ImVec4(0.8f, 0.4f, 0.4f, 1.0f), "Eliminated");
+            }
+
+            ImGui::TableNextColumn();
+            ImGui::Text("%u", p.kills);
+
+            ImGui::TableNextColumn();
+            ImGui::Text("%.0f", p.damageDealt);
+
+            ImGui::TableNextColumn();
+            if (p.placement > 0) {
+                ImGui::Text("#%u", p.placement);
+            } else {
+                ImGui::Text("-");
+            }
+        }
+        ImGui::EndTable();
+    }
+
+    ImGui::Separator();
+
+    // 3. Developer Controls
+    ImGui::TextColored(ImVec4(1.0f, 0.6f, 0.2f, 1.0f), "Lifecycle Controls:");
+    if (ImGui::Button("Initialize Match")) {
+        matchMgr->Initialize();
+        if (player) {
+            matchMgr->RegisterLocalPlayer(player);
+        }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Start Countdown")) {
+        matchMgr->StartCountdown();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Force Start Match")) {
+        matchMgr->ForceStartMatch();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Complete Match")) {
+        matchMgr->CompleteMatch();
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Reset Match")) {
+        matchMgr->ResetMatch(player);
+    }
+
+    // Add Simulated Participant for developer testing
+    if (ImGui::Button("+ Add Test Competitor")) {
+        match::MatchParticipant testP;
+        testP.participantId = static_cast<uint32_t>(reg.GetTotalCount() + 1);
+        testP.type = match::ParticipantType::AI;
+        testP.displayName = "Bot_" + std::to_string(testP.participantId);
+        testP.status = match::ParticipantStatus::Registered;
+        testP.spawnPosition = Vector2{ 4200.0f + testP.participantId * 40.0f, 5200.0f };
+        matchMgr->RegisterParticipant(testP);
+    }
+
+    // Manual Elimination
+    static int selectedVictimId = 1;
+    ImGui::InputInt("Target Victim ID", &selectedVictimId);
+    if (ImGui::Button("Eliminate Participant")) {
+        matchMgr->ProcessElimination(static_cast<uint32_t>(selectedVictimId), match::EliminationCause::Combat, 0);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Storm Eliminate Participant")) {
+        matchMgr->ProcessElimination(static_cast<uint32_t>(selectedVictimId), match::EliminationCause::CorruptionStorm, 0);
+    }
+
+    ImGui::Separator();
+
+    // 4. Results & Post-Match Telemetry Diagnostics (Phase 33)
+    ImGui::TextColored(ImVec4(0.4f, 0.9f, 0.5f, 1.0f), "Results & Statistics Diagnostics (Phase 33):");
+    const auto& resMgr = matchMgr->GetResultManager();
+    const auto& finalModel = resMgr.GetFinalResult();
+
+    if (finalModel.isFinalized) {
+        ImGui::TextColored(ImVec4(0.3f, 1.0f, 0.4f, 1.0f), "Results Status: FINALIZED");
+        ImGui::Text("  Match Outcome:  %s", results::MatchOutcomeToString(finalModel.matchOutcome));
+        ImGui::Text("  Local Outcome:  %s", results::PlayerOutcomeToString(finalModel.localPlayerOutcome));
+        ImGui::Text("  Winner:         [%s] (ID: %u)", finalModel.winnerDisplayName.c_str(), finalModel.winnerParticipantId);
+        ImGui::Text("  Local Rank:     #%u of %u", finalModel.localPlayerPerformance.placement, finalModel.totalParticipants);
+        ImGui::Text("  Local Survival: %.1f s", finalModel.localPlayerPerformance.survivalDuration);
+        ImGui::Text("  Damage Recv:    %.0f (Combat: %.0f, Storm: %.0f)",
+                    finalModel.localPlayerPerformance.totalDamageReceived,
+                    finalModel.localPlayerPerformance.combatDamageReceived,
+                    finalModel.localPlayerPerformance.stormDamageReceived);
+    } else {
+        ImGui::TextColored(ImVec4(1.0f, 0.7f, 0.2f, 1.0f), "Results Status: PENDING / IN PROGRESS");
+    }
+
+    // Elimination Records Log
+    const auto& elimLogs = resMgr.GetEliminationRecords();
+    ImGui::TextColored(ImVec4(0.9f, 0.8f, 0.3f, 1.0f), "Chronological Elimination Records (%zu events):", elimLogs.size());
+
+    if (!elimLogs.empty()) {
+        if (ImGui::BeginTable("ElimLogTable", 5, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
+            ImGui::TableSetupColumn("Evt#");
+            ImGui::TableSetupColumn("Victim");
+            ImGui::TableSetupColumn("Killer");
+            ImGui::TableSetupColumn("Cause");
+            ImGui::TableSetupColumn("Time");
+            ImGui::TableHeadersRow();
+
+            for (const auto& log : elimLogs) {
+                ImGui::TableNextRow();
+                ImGui::TableNextColumn();
+                ImGui::Text("#%u", log.eventId);
+                ImGui::TableNextColumn();
+                ImGui::Text("%s", log.victimName.c_str());
+                ImGui::TableNextColumn();
+                ImGui::Text("%s", log.killerName.empty() ? "-" : log.killerName.c_str());
+                ImGui::TableNextColumn();
+                ImGui::Text("%s", match::EliminationCauseToString(log.cause));
+                ImGui::TableNextColumn();
+                ImGui::Text("%.1fs", log.matchElapsedTime);
+            }
+            ImGui::EndTable();
+        }
+    }
+
+    if (ImGui::Button("Force Finalize Results")) {
+        matchMgr->GetResultManager().FinalizeMatchResult(
+            matchMgr->GetConfig().matchId,
+            matchMgr->GetMatchTime(),
+            matchMgr->GetLocalParticipantId(),
+            matchMgr->GetRegistry(),
+            matchMgr->GetStatistics(),
+            true
+        );
+    }
+
+    // 5. Game Modes & Teams Diagnostics (Phase 34)
+    if (auto* modeMgr = matchMgr->GetGameModeManager()) {
+        ImGui::Separator();
+        ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f), "Game Modes & Team Diagnostics (Phase 34):");
+        const auto& activeMode = modeMgr->GetActiveMode();
+        ImGui::Text("  Active Mode:     [%s] (ID: %s)", activeMode.displayName.c_str(), activeMode.id.c_str());
+        ImGui::Text("  Team Structure:  %s (Team Size: %u)", activeMode.teamsEnabled ? "Enabled" : "Disabled (Solo)", activeMode.teamSize);
+        ImGui::Text("  Friendly Fire:   %s", activeMode.friendlyFireEnabled ? "ENABLED" : "DISABLED");
+        ImGui::Text("  Victory Rule:    %s", activeMode.victoryCondition.c_str());
+
+        // Team Status Table
+        const auto& teamMgr = modeMgr->GetTeamManager();
+        size_t aliveTeams = teamMgr.GetAliveTeamCount(matchMgr->GetRegistry());
+        ImGui::Text("  Total Teams:     %zu | Alive Teams: %zu", teamMgr.GetTotalTeamCount(), aliveTeams);
+
+        if (teamMgr.GetTotalTeamCount() > 0) {
+            if (ImGui::BeginTable("TeamStatusTable", 4, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg)) {
+                ImGui::TableSetupColumn("Team ID");
+                ImGui::TableSetupColumn("Name");
+                ImGui::TableSetupColumn("Alive Members");
+                ImGui::TableSetupColumn("Status");
+                ImGui::TableHeadersRow();
+
+                for (const auto& [tid, team] : teamMgr.GetAllTeams()) {
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%u", tid);
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%s", team.name.c_str());
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%zu / %zu", team.GetAliveMemberCount(matchMgr->GetRegistry()), team.GetMemberCount());
+                    ImGui::TableNextColumn();
+                    if (team.eliminated) {
+                        ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), "ELIMINATED");
+                    } else {
+                        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "ALIVE");
+                    }
+                }
+                ImGui::EndTable();
+            }
+        }
+
+        // Mode Switching in Developer Tools
+        ImGui::Spacing();
+        ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "Developer Mode Controls:");
+        if (ImGui::Button("Select Solo")) modeMgr->SelectMode("solo");
+        ImGui::SameLine();
+        if (ImGui::Button("Select Duos")) modeMgr->SelectMode("duos");
+        ImGui::SameLine();
+        if (ImGui::Button("Select Squads")) modeMgr->SelectMode("squads");
+        ImGui::SameLine();
+        if (ImGui::Button("Select Practice")) modeMgr->SelectMode("practice");
+        ImGui::SameLine();
+        if (ImGui::Button("Select Offline Bots")) modeMgr->SelectMode("offline_bots");
+    }
+}
+
+void DevUI::RenderNetworkDiagnostics(network::NetworkManager* netMgr) {
+    if (!netMgr) {
+        ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), "[NETWORK] NetworkManager is not available.");
+        return;
+    }
+
+    auto role = netMgr->GetRole();
+    bool isServerListening = netMgr->IsServerRunning();
+    bool isClientConnected = netMgr->IsClientConnected();
+    auto clientState = netMgr->GetClientState();
+
+    ImGui::TextColored(ImVec4(0.2f, 0.8f, 1.0f, 1.0f), "=== Phase 36: ENet Transport Layer Diagnostics ===");
+    ImGui::Spacing();
+
+    // 1. Role & Status Badges
+    const char* roleStr = (role == network::NetworkRole::Server) ? "Server Host" :
+                          (role == network::NetworkRole::Client) ? "Client Connection" : "Standalone / Inactive";
+    ImGui::Text("Network Role: %s", roleStr);
+
+    ImGui::SameLine();
+    if (isServerListening) {
+        ImGui::TextColored(ImVec4(0.2f, 1.0f, 0.2f, 1.0f), "[SERVER LISTENING]");
+    } else if (isClientConnected) {
+        ImGui::TextColored(ImVec4(0.2f, 1.0f, 0.2f, 1.0f), "[CLIENT CONNECTED]");
+    } else if (clientState == network::ConnectionState::Connecting) {
+        ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "[CLIENT CONNECTING...]");
+    } else {
+        ImGui::TextColored(ImVec4(0.6f, 0.6f, 0.6f, 1.0f), "[IDLE / DISCONNECTED]");
+    }
+
+    ImGui::Separator();
+
+    // 2. Server Control & Management
+    ImGui::TextColored(ImVec4(1.0f, 0.9f, 0.3f, 1.0f), "Server Management:");
+    ImGui::InputInt("Port##NetPort", &m_netPortBuffer);
+    if (m_netPortBuffer < 1024) m_netPortBuffer = 1024;
+    if (m_netPortBuffer > 65535) m_netPortBuffer = 65535;
+
+    if (!isServerListening) {
+        if (ImGui::Button("Start Server Host")) {
+            netMgr->StartServer(static_cast<uint16_t>(m_netPortBuffer), 32);
+        }
+    } else {
+        if (ImGui::Button("Stop Server")) {
+            netMgr->StopServer();
+        }
+        ImGui::SameLine();
+        ImGui::TextColored(ImVec4(0.2f, 1.0f, 0.2f, 1.0f), "Listening on Port %u | Connected: %zu / 32",
+                           netMgr->GetServerPort(), netMgr->GetServerConnectedCount());
+    }
+
+    // Active Connections Table
+    if (isServerListening) {
+        ImGui::Spacing();
+        ImGui::Text("Server Active Connections (%zu):", netMgr->GetServerConnectedCount());
+        const auto& conns = netMgr->GetServerConnections();
+        if (conns.empty()) {
+            ImGui::TextDisabled("  (No clients currently connected)");
+        } else {
+            if (ImGui::BeginTable("ServerConnTable", 7, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_Resizable)) {
+                ImGui::TableSetupColumn("Conn ID");
+                ImGui::TableSetupColumn("Remote Address");
+                ImGui::TableSetupColumn("State");
+                ImGui::TableSetupColumn("RTT (ms)");
+                ImGui::TableSetupColumn("Packets (S/R)");
+                ImGui::TableSetupColumn("Bytes (S/R)");
+                ImGui::TableSetupColumn("Action");
+                ImGui::TableHeadersRow();
+
+                for (const auto& [cid, conn] : conns) {
+                    ImGui::TableNextRow();
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%u", cid);
+
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%s:%u", conn.GetAddress().c_str(), conn.GetPort());
+
+                    ImGui::TableNextColumn();
+                    auto stateStr = network::ToString(conn.GetState());
+                    ImGui::Text("%.*s", static_cast<int>(stateStr.size()), stateStr.data());
+
+                    ImGui::TableNextColumn();
+                    const auto& m = conn.GetStats().GetMetrics();
+                    ImGui::Text("%u ms (loss: %.1f%%)", m.roundTripTimeMs, m.packetLossPercent);
+
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%llu / %llu", m.packetsSent, m.packetsReceived);
+
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%llu / %llu", m.bytesSent, m.bytesReceived);
+
+                    ImGui::TableNextColumn();
+                    std::string kickId = "Disconnect##" + std::to_string(cid);
+                    if (ImGui::Button(kickId.c_str())) {
+                        netMgr->DisconnectServerClient(cid, 0);
+                    }
+                }
+                ImGui::EndTable();
+            }
+        }
+    }
+
+    ImGui::Separator();
+
+    // 3. Client Connection Controls & Diagnostics
+    ImGui::TextColored(ImVec4(1.0f, 0.9f, 0.3f, 1.0f), "Client Connection:");
+    ImGui::InputText("Server Address", m_netAddressBuffer, sizeof(m_netAddressBuffer));
+
+    auto clientStateStr = network::ToString(clientState);
+    ImGui::Text("Client State: %.*s", static_cast<int>(clientStateStr.size()), clientStateStr.data());
+
+    if (!isClientConnected && clientState != network::ConnectionState::Connecting) {
+        if (ImGui::Button("Connect to Server")) {
+            netMgr->ConnectClient(m_netAddressBuffer, static_cast<uint16_t>(m_netPortBuffer), 5000);
+        }
+    } else {
+        if (ImGui::Button("Disconnect Client")) {
+            netMgr->DisconnectClient();
+        }
+        ImGui::SameLine();
+        ImGui::Text("RTT: %u ms | Target: %s:%u",
+                    netMgr->GetClientRoundTripTimeMs(),
+                    netMgr->GetClientServerAddress().c_str(),
+                    netMgr->GetClientServerPort());
+    }
+
+    ImGui::Spacing();
+    ImGui::InputText("Test Message", m_netTestMessageBuffer, sizeof(m_netTestMessageBuffer));
+    if (ImGui::Button("Send Reliable Ping")) {
+        netMgr->SendTestMessage(true, m_netTestMessageBuffer);
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Send Unreliable Ping")) {
+        netMgr->SendTestMessage(false, m_netTestMessageBuffer);
+    }
+
+    ImGui::Separator();
+
+    // 4. Aggregate Network Statistics & Bandwidth Meter
+    ImGui::TextColored(ImVec4(1.0f, 0.9f, 0.3f, 1.0f), "Bandwidth & Packet Metrics:");
+    const auto& sNetStats = netMgr->GetServerGlobalStats();
+    const auto& cNetStats = netMgr->GetClientStats();
+    const auto& sStats = sNetStats.GetMetrics();
+    const auto& cStats = cNetStats.GetMetrics();
+
+    ImGui::Columns(2, "NetMetricsColumns", true);
+    ImGui::TextColored(ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Server Aggregates:");
+    ImGui::Text("Packets Sent:     %llu", sStats.packetsSent);
+    ImGui::Text("Packets Recv:     %llu", sStats.packetsReceived);
+    ImGui::Text("Bytes Sent:       %llu B (%.2f KB/s)", sStats.bytesSent, sNetStats.GetBytesSentPerSec() / 1024.0f);
+    ImGui::Text("Bytes Recv:       %llu B (%.2f KB/s)", sStats.bytesReceived, sNetStats.GetBytesReceivedPerSec() / 1024.0f);
+    ImGui::Text("Reliable Sent:    %llu", sStats.reliablePacketsSent);
+    ImGui::Text("Validation Drops: %u", sStats.validationFailures);
+
+    ImGui::NextColumn();
+    ImGui::TextColored(ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Client Metrics:");
+    ImGui::Text("Packets Sent:     %llu", cStats.packetsSent);
+    ImGui::Text("Packets Recv:     %llu", cStats.packetsReceived);
+    ImGui::Text("Bytes Sent:       %llu B (%.2f KB/s)", cStats.bytesSent, cNetStats.GetBytesSentPerSec() / 1024.0f);
+    ImGui::Text("Bytes Recv:       %llu B (%.2f KB/s)", cStats.bytesReceived, cNetStats.GetBytesReceivedPerSec() / 1024.0f);
+    ImGui::Text("Reliable Sent:    %llu", cStats.reliablePacketsSent);
+    ImGui::Text("Validation Drops: %u", cStats.validationFailures);
+    ImGui::Columns(1);
+
+    // 5. Replication & Entity Synchronization (Phase 37)
+    auto* replMgr = netMgr->GetReplicationManager();
+    if (replMgr && ImGui::CollapsingHeader("Replication & Entity Synchronization (Phase 37)", ImGuiTreeNodeFlags_DefaultOpen)) {
+        auto rDiag = replMgr->GetDiagnostics();
+        const auto& rCfg = replMgr->GetConfig();
+
+        ImGui::TextColored(ImVec4(0.2f, 0.8f, 1.0f, 1.0f), "Replicated Entity Registry:");
+        ImGui::Columns(4, "ReplicationEntities", true);
+        ImGui::Text("Total Active: %zu", rDiag.totalReplicatedEntities);
+        ImGui::NextColumn();
+        ImGui::Text("Players: %zu", rDiag.playerCount);
+        ImGui::NextColumn();
+        ImGui::Text("Enemies: %zu", rDiag.enemyCount);
+        ImGui::NextColumn();
+        ImGui::Text("Loot / Env: %zu / %zu", rDiag.lootCount, rDiag.environmentalCount);
+        ImGui::Columns(1);
+
+        ImGui::Separator();
+        ImGui::TextColored(ImVec4(0.4f, 1.0f, 0.4f, 1.0f), "Snapshot & Delta Metrics:");
+        ImGui::Columns(3, "SnapshotMetrics", true);
+        ImGui::Text("Snapshots Sent: %llu (Delta: %llu)", rDiag.snapshotsSent, rDiag.deltaSnapshotsSent);
+        ImGui::NextColumn();
+        ImGui::Text("Snapshots Recv: %llu (Delta: %llu)", rDiag.snapshotsReceived, rDiag.deltaSnapshotsReceived);
+        ImGui::NextColumn();
+        ImGui::Text("Buffer Depth: %zu / %u (Alpha: %.2f)", rDiag.currentSnapshotBufferSize, rCfg.maxSnapshotBuffer, rDiag.lastInterpolationAlpha);
+        ImGui::Columns(1);
+
+        ImGui::Separator();
+        ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "Synchronization Health & Transactions:");
+        ImGui::Columns(3, "SyncHealth", true);
+        ImGui::Text("Stale Snapshots Rejected: %llu", rDiag.staleSnapshotsRejected);
+        ImGui::NextColumn();
+        ImGui::Text("Duplicate Events Filtered: %llu", rDiag.duplicateEventsRejected);
+        ImGui::NextColumn();
+        ImGui::Text("Combat Events: %llu | Pickups: %llu (Succ: %llu, Rej: %llu)",
+                    rDiag.combatEventsDispatched, rDiag.pickupTransactionsProcessed,
+                    rDiag.pickupTransactionsSuccessful, rDiag.pickupTransactionsRejected);
+        ImGui::Columns(1);
+    }
+}
+
+void DevUI::RenderLuaDiagnostics(scripting::LuaManager* luaMgr, world::EnemySpawner* spawner) {
+    if (!luaMgr) {
+        ImGui::TextColored(ImVec4(0.9f, 0.4f, 0.4f, 1.0f), "Lua scripting manager is not available.");
+        return;
+    }
+
+    bool isInit = luaMgr->IsInitialized();
+    if (isInit) {
+        ImGui::TextColored(ImVec4(0.3f, 0.9f, 0.3f, 1.0f), "[ACTIVE] Lua 5.4 Runtime Initialized (sol2 safeties enabled)");
+    } else {
+        ImGui::TextColored(ImVec4(0.9f, 0.3f, 0.3f, 1.0f), "[DISABLED] Lua Runtime Offline");
+        return;
+    }
+
+    ImGui::Separator();
+    ImGui::Columns(4, "LuaMetricsColumns", true);
+    ImGui::Text("Memory Usage: %zu KB", luaMgr->GetMemoryUsageKb());
+    ImGui::NextColumn();
+    ImGui::Text("Executions: %llu", static_cast<unsigned long long>(luaMgr->GetTotalExecutionCount()));
+    ImGui::NextColumn();
+    ImGui::Text("Errors: %llu", static_cast<unsigned long long>(luaMgr->GetTotalErrorCount()));
+    ImGui::NextColumn();
+    ImGui::Text("Last Duration: %.2f us", luaMgr->GetLastExecutionTimeUs());
+    ImGui::Columns(1);
+
+    ImGui::Spacing();
+    if (ImGui::CollapsingHeader("Instruction Budget & Infinite Loop Protection", ImGuiTreeNodeFlags_DefaultOpen)) {
+        bool budgetEnabled = luaMgr->IsInstructionBudgetEnabled();
+        if (ImGui::Checkbox("Enable Instruction Budget", &budgetEnabled)) {
+            luaMgr->EnableInstructionBudget(budgetEnabled);
+        }
+        int budget = luaMgr->GetInstructionBudget();
+        if (ImGui::SliderInt("Budget (Instructions)", &budget, 1000, 1000000)) {
+            luaMgr->SetInstructionBudget(budget);
+        }
+        ImGui::TextColored(
+            luaMgr->GetBudgetViolationCount() > 0 ? ImVec4(1.0f, 0.4f, 0.4f, 1.0f) : ImVec4(0.5f, 0.8f, 0.5f, 1.0f),
+            "Budget Violations: %llu", static_cast<unsigned long long>(luaMgr->GetBudgetViolationCount())
+        );
+    }
+
+    ImGui::Spacing();
+    if (ImGui::CollapsingHeader("Enemy AI Script Telemetry", ImGuiTreeNodeFlags_DefaultOpen)) {
+        size_t activeEnemies = spawner ? spawner->GetActiveEnemyCount() : 0;
+        ImGui::Text("Active Enemies in World: %zu", activeEnemies);
+        ImGui::Text("Authoritative Lua AI Decisions: %llu", static_cast<unsigned long long>(entities::Enemy::GetLuaDecisionCount()));
+        ImGui::Text("C++ Fallback AI Executions: %llu", static_cast<unsigned long long>(entities::Enemy::GetFallbackAICount()));
+
+        if (ImGui::Button("Reset AI Telemetry Counters")) {
+            entities::Enemy::ResetDiagnostics();
+        }
+    }
+
+    ImGui::Spacing();
+    if (ImGui::CollapsingHeader("Loaded Scripts & Hot Reload", ImGuiTreeNodeFlags_DefaultOpen)) {
+        if (ImGui::Button("Reload All Scripts")) {
+            luaMgr->ReloadAllScripts();
+        }
+        ImGui::SameLine();
+        ImGui::TextDisabled("(Hot reload re-executes Lua files without restarting engine)");
+
+        const auto& scripts = luaMgr->GetLoadedScripts();
+        ImGui::Text("Tracked Scripts Count: %zu", scripts.size());
+
+        if (ImGui::BeginTable("ScriptsTable", 6, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit)) {
+            ImGui::TableSetupColumn("Script Path");
+            ImGui::TableSetupColumn("Status");
+            ImGui::TableSetupColumn("Executions");
+            ImGui::TableSetupColumn("Errors");
+            ImGui::TableSetupColumn("Last Time");
+            ImGui::TableSetupColumn("Actions");
+            ImGui::TableHeadersRow();
+
+            for (const auto& [path, meta] : scripts) {
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                ImGui::Text("%s", path.c_str());
+
+                ImGui::TableSetColumnIndex(1);
+                if (meta.isLoaded) {
+                    ImGui::TextColored(ImVec4(0.4f, 0.9f, 0.4f, 1.0f), "Loaded");
+                } else {
+                    ImGui::TextColored(ImVec4(0.9f, 0.4f, 0.4f, 1.0f), "Error");
+                }
+
+                ImGui::TableSetColumnIndex(2);
+                ImGui::Text("%llu", static_cast<unsigned long long>(meta.executionCount));
+
+                ImGui::TableSetColumnIndex(3);
+                if (meta.errorCount > 0) {
+                    ImGui::TextColored(ImVec4(1.0f, 0.4f, 0.4f, 1.0f), "%llu", static_cast<unsigned long long>(meta.errorCount));
+                } else {
+                    ImGui::Text("0");
+                }
+
+                ImGui::TableSetColumnIndex(4);
+                ImGui::Text("%.1f us", meta.lastExecutionTimeUs);
+
+                ImGui::TableSetColumnIndex(5);
+                std::string btnId = "Reload##" + path;
+                if (ImGui::SmallButton(btnId.c_str())) {
+                    luaMgr->ReloadScript(path);
+                }
+            }
+            ImGui::EndTable();
+        }
     }
 }
 

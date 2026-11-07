@@ -1,0 +1,80 @@
+{
+    "completion_reason": "Sole survivor emerged victorious.",
+    "eliminations": [
+        {
+            "cause": 0,
+            "event_id": 1,
+            "killer_id": 1,
+            "killer_name": "LocalHero",
+            "match_time": 0.0,
+            "placement": 2,
+            "victim_id": 2,
+            "victim_name": "Gladiator_Bot"
+        }
+    ],
+    "leaderboard": [
+        {
+            "combat_damage_received": 20.0,
+            "damage_dealt": 75.0,
+            "deaths": 0,
+            "display_name": "LocalHero",
+            "elimination_cause": 4,
+            "is_winner": true,
+            "killer_display_name": "",
+            "killer_participant_id": 0,
+            "kills": 1,
+            "outcome": "Victory",
+            "participant_id": 1,
+            "placement": 1,
+            "storm_damage_received": 0.0,
+            "survival_duration": 0.10000000149011612,
+            "total_damage_received": 20.0,
+            "type": 0
+        },
+        {
+            "combat_damage_received": 75.0,
+            "damage_dealt": 20.0,
+            "deaths": 1,
+            "display_name": "Gladiator_Bot",
+            "elimination_cause": 0,
+            "is_winner": false,
+            "killer_display_name": "LocalHero",
+            "killer_participant_id": 1,
+            "kills": 0,
+            "outcome": "Defeat",
+            "participant_id": 2,
+            "placement": 2,
+            "storm_damage_received": 0.0,
+            "survival_duration": 0.0,
+            "total_damage_received": 75.0,
+            "type": 2
+        }
+    ],
+    "local_player": {
+        "combat_damage_received": 20.0,
+        "damage_dealt": 75.0,
+        "deaths": 0,
+        "display_name": "LocalHero",
+        "elimination_cause": 4,
+        "is_winner": true,
+        "killer_display_name": "",
+        "killer_participant_id": 0,
+        "kills": 1,
+        "outcome": "Victory",
+        "participant_id": 1,
+        "placement": 1,
+        "storm_damage_received": 0.0,
+        "survival_duration": 0.10000000149011612,
+        "total_damage_received": 20.0,
+        "type": 0
+    },
+    "local_player_outcome": "Victory",
+    "match_duration": 0.10000000149011612,
+    "match_id": "test_cycle_1",
+    "match_outcome": "Victory",
+    "survivors_count": 1,
+    "total_eliminations": 1,
+    "total_participants": 2,
+    "winner_display_name": "LocalHero",
+    "winner_participant_id": 1
+}

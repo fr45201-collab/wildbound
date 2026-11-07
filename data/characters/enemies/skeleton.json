@@ -28,7 +28,7 @@
     "attack_range": 34.0
   },
   "ai": {
-    "behavior_script": "scripts/gameplay/ai/enemy_base.lua",
+    "behavior_script": "scripts/gameplay/ai/skeleton.lua",
     "detection_radius": 160.0,
     "attack_radius": 36.0,
     "retreat_health_percent": 0.0,

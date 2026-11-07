@@ -40,3 +40,10 @@ desktop.ini
 *.tmp
 *~
 
+# Environment & Credentials
+.env
+*.env
+!.env.example
+user_data/postgres/
+
+

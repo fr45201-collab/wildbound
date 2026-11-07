@@ -1,0 +1,22 @@
+{
+  "id": "solo",
+  "displayName": "Solo Battle Royale",
+  "description": "Every participant fights independently. Survive against all competitors to become the last warrior standing on Wildbound Island.",
+  "minimumParticipants": 2,
+  "maximumParticipants": 100,
+  "teamSize": 1,
+  "teamsEnabled": false,
+  "friendlyFireEnabled": false,
+  "botsAllowed": true,
+  "defaultBotCount": 15,
+  "botDifficulty": "normal",
+  "respawnEnabled": false,
+  "stormEnabled": true,
+  "stormConfigId": "default_corruption_storm",
+  "competitiveResults": true,
+  "victoryCondition": "last_survivor",
+  "environment": "battle_royale_island",
+  "isAvailable": true,
+  "requiresNetworking": false
+}
+

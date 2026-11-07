@@ -1,0 +1,90 @@
+{
+    "completion_reason": "All competitors were eliminated simultaneously.",
+    "eliminations": [
+        {
+            "cause": 1,
+            "event_id": 1,
+            "killer_id": 0,
+            "killer_name": "Corruption Storm",
+            "match_time": 0.0,
+            "placement": 1,
+            "victim_id": 1,
+            "victim_name": "Gladiator_A"
+        },
+        {
+            "cause": 1,
+            "event_id": 2,
+            "killer_id": 0,
+            "killer_name": "Corruption Storm",
+            "match_time": 0.0,
+            "placement": 1,
+            "victim_id": 2,
+            "victim_name": "Gladiator_B"
+        }
+    ],
+    "leaderboard": [
+        {
+            "combat_damage_received": 0.0,
+            "damage_dealt": 0.0,
+            "deaths": 1,
+            "display_name": "Gladiator_A",
+            "elimination_cause": 1,
+            "is_winner": false,
+            "killer_display_name": "Corruption Storm",
+            "killer_participant_id": 0,
+            "kills": 0,
+            "outcome": "Draw",
+            "participant_id": 1,
+            "placement": 1,
+            "storm_damage_received": 0.0,
+            "survival_duration": 0.0,
+            "total_damage_received": 0.0,
+            "type": 0
+        },
+        {
+            "combat_damage_received": 0.0,
+            "damage_dealt": 0.0,
+            "deaths": 1,
+            "display_name": "Gladiator_B",
+            "elimination_cause": 1,
+            "is_winner": false,
+            "killer_display_name": "Corruption Storm",
+            "killer_participant_id": 0,
+            "kills": 0,
+            "outcome": "Draw",
+            "participant_id": 2,
+            "placement": 1,
+            "storm_damage_received": 0.0,
+            "survival_duration": 0.0,
+            "total_damage_received": 0.0,
+            "type": 0
+        }
+    ],
+    "local_player": {
+        "combat_damage_received": 0.0,
+        "damage_dealt": 0.0,
+        "deaths": 1,
+        "display_name": "Gladiator_A",
+        "elimination_cause": 1,
+        "is_winner": false,
+        "killer_display_name": "Corruption Storm",
+        "killer_participant_id": 0,
+        "kills": 0,
+        "outcome": "Draw",
+        "participant_id": 1,
+        "placement": 1,
+        "storm_damage_received": 0.0,
+        "survival_duration": 0.0,
+        "total_damage_received": 0.0,
+        "type": 0
+    },
+    "local_player_outcome": "Draw",
+    "match_duration": 0.10000000149011612,
+    "match_id": "draw_simulation_match",
+    "match_outcome": "Draw",
+    "survivors_count": 0,
+    "total_eliminations": 2,
+    "total_participants": 2,
+    "winner_display_name": "No Winner (Draw)",
+    "winner_participant_id": 0
+}

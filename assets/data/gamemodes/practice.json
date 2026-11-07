@@ -1,0 +1,22 @@
+{
+  "id": "practice",
+  "displayName": "Practice Arena",
+  "description": "Explore, test weapons, and improve combat skills in a stress-free environment without competitive storm hazards or eliminations.",
+  "minimumParticipants": 1,
+  "maximumParticipants": 1,
+  "teamSize": 1,
+  "teamsEnabled": false,
+  "friendlyFireEnabled": false,
+  "botsAllowed": false,
+  "defaultBotCount": 0,
+  "botDifficulty": "normal",
+  "respawnEnabled": true,
+  "stormEnabled": false,
+  "stormConfigId": "none",
+  "competitiveResults": false,
+  "victoryCondition": "practice_freeplay",
+  "environment": "forest_01",
+  "isAvailable": true,
+  "requiresNetworking": false
+}
+

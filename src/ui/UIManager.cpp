@@ -14,6 +14,10 @@
 #include "../customization/CharacterCustomizationManager.hpp"
 #include "../cosmetics/CosmeticsStoreManager.hpp"
 #include "../cosmetics/CosmeticsRarity.hpp"
+#include "../match/MatchManager.hpp"
+#include "../results/MatchResultModel.hpp"
+#include "../results/ResultCalculator.hpp"
+#include "../gamemodes/GameModeManager.hpp"
 #include "../core/Logger.hpp"
 #include <algorithm>
 
@@ -93,7 +97,10 @@ void UIManager::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPressed, bo
     if (m_currentScreen == UIScreen::MainMenu) {
         MainMenuAction act = m_mainMenu.Update(dt, mouseVirtual, mouseLeftPressed, navUp, navDown, navConfirm);
         if (act == MainMenuAction::PlayGame) {
-            SetScreen(UIScreen::None);
+            if (m_gameModeManager) {
+                m_modeSelectMenu.SyncFromActiveMode(m_gameModeManager->GetActiveMode());
+            }
+            SetScreen(UIScreen::ModeSelect);
             if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
         } else if (act == MainMenuAction::CharacterSelect) {
             SetScreen(UIScreen::CharacterSelect);
@@ -109,6 +116,29 @@ void UIManager::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPressed, bo
             if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
         } else if (act == MainMenuAction::ExitGame) {
             ::CloseWindow();
+        }
+        return;
+    }
+
+    if (m_currentScreen == UIScreen::ModeSelect) {
+        m_modeSelectMenu.Update(dt, mouseVirtual, mouseLeftPressed,
+                                navUp, navDown, navLeft, navRight,
+                                navConfirm, navCancel, m_audioSystem);
+
+        if (m_modeSelectMenu.RequestBack()) {
+            m_modeSelectMenu.ClearRequestBack();
+            SetScreen(UIScreen::MainMenu);
+        } else if (m_modeSelectMenu.RequestStartMatch()) {
+            m_modeSelectMenu.ClearRequestStartMatch();
+            if (m_gameModeManager) {
+                m_gameModeManager->SelectMode(m_modeSelectMenu.GetSelectedModeId());
+                m_gameModeManager->GetBotConfig().SetBotCount(m_modeSelectMenu.GetConfiguredBotCount());
+                m_gameModeManager->GetBotConfig().SetDifficulty(gamemodes::StringToBotDifficulty(m_modeSelectMenu.GetConfiguredDifficulty()));
+            }
+            if (m_matchStartCallback) {
+                m_matchStartCallback();
+            }
+            SetScreen(UIScreen::None);
         }
         return;
     }
@@ -323,6 +353,11 @@ void UIManager::Render(graphics::Renderer& renderer,
             break;
         case UIScreen::MainMenu:
             RenderMainMenu(renderer, assetMgr);
+            break;
+        case UIScreen::ModeSelect:
+            if (m_gameModeManager) {
+                m_modeSelectMenu.Render(m_gameModeManager->GetRegistry());
+            }
             break;
         case UIScreen::CharacterSelect:
             RenderCharacterSelect(renderer, assetMgr, player, customMgr);
@@ -641,18 +676,235 @@ void UIManager::RenderGameplayHUD(graphics::Renderer& renderer, resources::Asset
 void UIManager::RenderMatchResults(graphics::Renderer& renderer, resources::AssetManager& assetMgr) {
     (void)renderer;
     (void)assetMgr;
-    ::DrawRectangleGradientV(0, 0, 640, 360, Color{ 28, 24, 38, 255 }, Color{ 14, 12, 18, 255 });
-    DrawPanel(Rectangle{ 120, 40, 400, 280 }, "main");
-    ::DrawText("MATCH RESULTS", 245, 60, 20, Color{ 255, 215, 80, 255 });
-    ::DrawText("VICTORY ACHIEVED", 235, 95, 16, Color{ 80, 235, 120, 255 });
 
-    DrawPanel(Rectangle{ 150, 130, 340, 110 }, "dark");
-    ::DrawText("Eliminations: 5", 170, 145, 12, WHITE);
-    ::DrawText("Damage Dealt: 1,450", 170, 165, 12, WHITE);
-    ::DrawText("Surviving Time: 12:45", 170, 185, 12, WHITE);
-    ::DrawText("Rank: #1 Champion", 170, 205, 12, Color{ 255, 215, 80, 255 });
+    m_resultsEntranceTimer += ::GetFrameTime();
 
-    if (DrawButton(Rectangle{ 240, 265, 160, 30 }, "RETURN TO MENU", "confirm")) {
+    // Default stats
+    bool isVictory = false;
+    bool isDraw = false;
+    uint32_t placement = 1;
+    uint32_t totalParticipants = 1;
+    uint32_t kills = 0;
+    float dmgDealt = 0.0f;
+    float combatDmgRecv = 0.0f;
+    float stormDmgRecv = 0.0f;
+    float totalDmgRecv = 0.0f;
+    float survTime = 0.0f;
+    float matchDuration = 0.0f;
+    std::string winnerName = "No Winner (Draw)";
+    std::string elimCause = "Unknown";
+    std::string killerName;
+    std::string matchId = "wildbound_match";
+    std::string completionReason = "Match completed.";
+    std::vector<results::PlayerPerformance> leaderboard;
+
+    if (m_matchManager) {
+        const auto& model = m_matchManager->GetFinalResultModel();
+        if (model.isFinalized) {
+            matchId = model.matchId;
+            matchDuration = model.matchDuration;
+            totalParticipants = model.totalParticipants;
+            winnerName = model.winnerDisplayName;
+            completionReason = model.completionReason;
+            leaderboard = model.participantPerformances;
+
+            isVictory = (model.localPlayerOutcome == results::PlayerOutcome::Victory);
+            isDraw = (model.matchOutcome == results::MatchOutcome::Draw);
+
+            const auto& lp = model.localPlayerPerformance;
+            placement = lp.placement;
+            kills = lp.kills;
+            dmgDealt = lp.damageDealt;
+            combatDmgRecv = lp.combatDamageReceived;
+            stormDmgRecv = lp.stormDamageReceived;
+            totalDmgRecv = lp.totalDamageReceived;
+            survTime = lp.survivalDuration;
+            killerName = lp.killerDisplayName;
+            elimCause = match::EliminationCauseToString(lp.eliminationCause);
+        } else {
+            const auto& res = m_matchManager->GetResult();
+            isVictory = res.isVictory;
+            isDraw = (res.winnerParticipantId == 0 && res.winnerDisplayName.find("Draw") != std::string::npos);
+            placement = res.localPlayerPlacement;
+            totalParticipants = res.totalParticipants;
+            kills = res.localPlayerKills;
+            dmgDealt = res.localPlayerDamageDealt;
+            totalDmgRecv = res.localPlayerDamageReceived;
+            combatDmgRecv = totalDmgRecv;
+            survTime = res.localPlayerSurvivalDuration;
+            matchDuration = res.matchDuration;
+            winnerName = res.winnerDisplayName;
+            killerName = res.killerDisplayName;
+            elimCause = match::EliminationCauseToString(res.localPlayerEliminationCause);
+        }
+    }
+
+    // Keyboard navigation
+    if (::IsKeyPressed(KEY_LEFT) || ::IsKeyPressed(KEY_A)) {
+        m_resultsSelectedButton = 0;
+        if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
+    }
+    if (::IsKeyPressed(KEY_RIGHT) || ::IsKeyPressed(KEY_D)) {
+        m_resultsSelectedButton = 1;
+        if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
+    }
+    if (::IsKeyPressed(KEY_TAB)) {
+        m_resultsActiveTab = (m_resultsActiveTab == 0) ? 1 : 0;
+        if (m_audioSystem) m_audioSystem->DispatchEvent("UI.TabSwitch");
+    }
+
+    bool triggerPlayAgain = false;
+    bool triggerMainMenu = false;
+
+    if (::IsKeyPressed(KEY_ENTER) || ::IsKeyPressed(KEY_SPACE)) {
+        if (m_resultsSelectedButton == 0) triggerPlayAgain = true;
+        else triggerMainMenu = true;
+    }
+
+    // Render themed background gradient
+    if (isVictory) {
+        ::DrawRectangleGradientV(0, 0, 640, 360, Color{ 18, 36, 26, 255 }, Color{ 8, 16, 12, 255 });
+    } else if (isDraw) {
+        ::DrawRectangleGradientV(0, 0, 640, 360, Color{ 32, 26, 16, 255 }, Color{ 14, 12, 8, 255 });
+    } else {
+        ::DrawRectangleGradientV(0, 0, 640, 360, Color{ 36, 16, 20, 255 }, Color{ 14, 8, 10, 255 });
+    }
+
+    DrawPanel(Rectangle{ 40, 15, 560, 330 }, "main");
+
+    // Header outcome banner
+    if (isVictory) {
+        ::DrawText("VICTORY ROYALE", 230, 24, 20, Color{ 80, 245, 120, 255 });
+        ::DrawText("LAST SURVIVOR STANDING", 235, 46, 11, Color{ 255, 215, 80, 255 });
+    } else if (isDraw) {
+        ::DrawText("MATCH DRAW", 250, 24, 20, Color{ 255, 195, 70, 255 });
+        ::DrawText("ALL COMPETITORS ELIMINATED", 220, 46, 11, Color{ 220, 200, 160, 255 });
+    } else {
+        std::string rankHeader = "DEFEAT — RANK #" + std::to_string(placement);
+        ::DrawText(rankHeader.c_str(), 230, 24, 20, Color{ 245, 75, 75, 255 });
+        ::DrawText("YOU WERE ELIMINATED IN BATTLE", 218, 46, 11, Color{ 210, 180, 180, 255 });
+    }
+
+    // Section Tabs: [ OVERVIEW & PERFORMANCE ]  [ LEADERBOARD ]
+    Rectangle tab0Rect{ 55, 66, 170, 22 };
+    Rectangle tab1Rect{ 235, 66, 150, 22 };
+
+    if (DrawButton(tab0Rect, "OVERVIEW & PERFORMANCE", "tab", m_resultsActiveTab == 0)) {
+        m_resultsActiveTab = 0;
+        if (m_audioSystem) m_audioSystem->DispatchEvent("UI.TabSwitch");
+    }
+    if (DrawButton(tab1Rect, "MATCH LEADERBOARD", "tab", m_resultsActiveTab == 1)) {
+        m_resultsActiveTab = 1;
+        if (m_audioSystem) m_audioSystem->DispatchEvent("UI.TabSwitch");
+    }
+
+    if (m_resultsActiveTab == 0) {
+        // Tab 0: Overview & Performance
+        // Left Card: Player Performance
+        DrawPanel(Rectangle{ 55, 92, 255, 186 }, "dark");
+        ::DrawText("YOUR PERFORMANCE", 68, 102, 12, Color{ 245, 215, 95, 255 });
+
+        std::string rankStr = "Final Placement: #" + std::to_string(placement) + " / " + std::to_string(totalParticipants);
+        std::string survStr = "Survival Duration: " + results::ResultCalculator::FormatDuration(survTime);
+        std::string killStr = "Total Eliminations: " + std::to_string(kills);
+        std::string dmgDStr = "Damage Inflicted: " + std::to_string(static_cast<int>(dmgDealt));
+        std::string dmgCStr = "Combat Damage Taken: " + std::to_string(static_cast<int>(combatDmgRecv));
+        std::string dmgSStr = "Storm Damage Taken: " + std::to_string(static_cast<int>(stormDmgRecv));
+
+        ::DrawText(rankStr.c_str(), 68, 122, 11, isVictory ? Color{ 100, 240, 140, 255 } : WHITE);
+        ::DrawText(survStr.c_str(), 68, 140, 11, Color{ 140, 205, 255, 255 });
+        ::DrawText(killStr.c_str(), 68, 158, 11, WHITE);
+        ::DrawText(dmgDStr.c_str(), 68, 176, 11, WHITE);
+        ::DrawText(dmgCStr.c_str(), 68, 194, 11, Color{ 220, 190, 190, 255 });
+        ::DrawText(dmgSStr.c_str(), 68, 212, 11, Color{ 200, 160, 240, 255 });
+
+        if (!isVictory) {
+            std::string elimByStr = "Eliminated by: " + (killerName.empty() ? "World Hazard" : killerName);
+            std::string causeStr = "Cause: " + elimCause;
+            ::DrawText(elimByStr.c_str(), 68, 234, 10, Color{ 245, 140, 140, 255 });
+            ::DrawText(causeStr.c_str(), 68, 250, 10, Color{ 200, 180, 180, 255 });
+        }
+
+        // Right Card: Match Summary
+        DrawPanel(Rectangle{ 325, 92, 260, 186 }, "dark");
+        ::DrawText("MATCH SUMMARY", 338, 102, 12, Color{ 245, 215, 95, 255 });
+
+        std::string idStr = "Match ID: " + matchId;
+        std::string durStr = "Match Duration: " + results::ResultCalculator::FormatDuration(matchDuration);
+        std::string champStr = "Match Champion: " + winnerName;
+        std::string compStr = "Competitors: " + std::to_string(totalParticipants);
+        std::string outStr = "Outcome: " + std::string(isVictory ? "Victory" : (isDraw ? "Draw" : "Defeat"));
+
+        ::DrawText(idStr.c_str(), 338, 122, 10, Color{ 180, 190, 210, 255 });
+        ::DrawText(durStr.c_str(), 338, 140, 11, WHITE);
+        ::DrawText(champStr.c_str(), 338, 158, 11, Color{ 255, 215, 80, 255 });
+        ::DrawText(compStr.c_str(), 338, 176, 11, WHITE);
+        ::DrawText(outStr.c_str(), 338, 194, 11, isVictory ? Color{ 100, 240, 140, 255 } : WHITE);
+
+        ::DrawText("Status Note:", 338, 222, 10, Color{ 180, 190, 200, 255 });
+        ::DrawText(completionReason.c_str(), 338, 238, 10, Color{ 210, 210, 210, 255 });
+
+    } else {
+        // Tab 1: Leaderboard
+        DrawPanel(Rectangle{ 55, 92, 530, 186 }, "dark");
+        ::DrawText("FINAL PARTICIPANT STANDINGS", 68, 102, 12, Color{ 245, 215, 95, 255 });
+
+        float startY = 124.0f;
+        size_t maxRows = std::min<size_t>(leaderboard.size(), 6);
+        for (size_t i = 0; i < maxRows; ++i) {
+            const auto& p = leaderboard[i];
+            bool isLocal = (p.participantId == (m_matchManager ? m_matchManager->GetLocalParticipantId() : 1));
+
+            Color rowColor = WHITE;
+            if (p.placement == 1) {
+                rowColor = Color{ 255, 215, 80, 255 }; // Gold for winner
+            } else if (isLocal) {
+                rowColor = Color{ 100, 210, 255, 255 }; // Cyan for local player
+            }
+
+            std::string rankStr = "#" + std::to_string(p.placement);
+            std::string nameStr = p.displayName + (isLocal ? " (You)" : "");
+            std::string statsStr = "Kills: " + std::to_string(p.kills) +
+                                  "  Dmg: " + std::to_string(static_cast<int>(p.damageDealt)) +
+                                  "  Time: " + results::ResultCalculator::FormatDuration(p.survivalDuration);
+
+            ::DrawText(rankStr.c_str(), 70, static_cast<int>(startY + i * 22.0f), 11, rowColor);
+            ::DrawText(nameStr.c_str(), 110, static_cast<int>(startY + i * 22.0f), 11, rowColor);
+            ::DrawText(statsStr.c_str(), 310, static_cast<int>(startY + i * 22.0f), 11, rowColor);
+        }
+
+        if (leaderboard.empty()) {
+            ::DrawText("No leaderboard records available for this match.", 150, 160, 12, Color{ 180, 180, 180, 255 });
+        }
+    }
+
+    // Action Buttons
+    Rectangle playAgainRect{ 130, 288, 170, 34 };
+    Rectangle mainMenuRect{ 340, 288, 170, 34 };
+
+    if (DrawButton(playAgainRect, "PLAY AGAIN", "confirm", m_resultsSelectedButton == 0)) {
+        triggerPlayAgain = true;
+    }
+    if (DrawButton(mainMenuRect, "MAIN MENU", "primary", m_resultsSelectedButton == 1)) {
+        triggerMainMenu = true;
+    }
+
+    if (triggerPlayAgain) {
+        if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonConfirm");
+        if (m_matchManager) {
+            m_matchManager->ResetMatch(m_lastPlayer);
+            m_matchManager->Initialize();
+            if (m_lastPlayer) {
+                m_matchManager->RegisterLocalPlayer(m_lastPlayer);
+            }
+            m_matchManager->StartCountdown();
+        }
+        SetScreen(UIScreen::None);
+    } else if (triggerMainMenu) {
+        if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonConfirm");
+        if (m_matchManager) {
+            m_matchManager->ResetMatch(m_lastPlayer);
+        }
         SetScreen(UIScreen::MainMenu);
     }
 }

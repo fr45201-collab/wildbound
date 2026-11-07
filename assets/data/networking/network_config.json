@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "server": {
+    "bind_port": 7777,
+    "max_clients": 64,
+    "simulation_tick_rate": 60,
+    "snapshot_broadcast_rate": 30,
+    "connection_timeout_ms": 15000,
+    "handshake_timeout_ms": 5000,
+    "reconnect_grace_period_ms": 15000,
+    "max_packet_rate_per_client": 80
+  },
+  "client": {
+    "input_sampling_rate": 60,
+    "interpolation_delay_ms": 100,
+    "prediction_enabled": true,
+    "reconciliation_tolerance_units": 1.0,
+    "max_extrapolation_ms": 150,
+    "heartbeat_interval_ms": 1000
+  },
+  "protocol": {
+    "protocol_magic": 1463963204,
+    "protocol_version": 1,
+    "max_packet_payload_bytes": 1200,
+    "channel_count": 5
+  },
+  "interest_management": {
+    "enabled": true,
+    "cell_width": 640.0,
+    "cell_height": 360.0,
+    "active_cell_radius": 1,
+    "high_priority_radius": 800.0,
+    "medium_priority_radius": 1500.0
+  }
+}
+

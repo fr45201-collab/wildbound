@@ -174,8 +174,8 @@ bool CombatSystem::ProcessAttack(Combatant* attacker, const std::string& attackI
             continue;
         }
 
-        // Faction friendliness check
-        if (!m_rules.CanTarget(attacker->GetFaction(), target->GetFaction())) {
+        // Faction and team friendly-fire check
+        if (!m_rules.CanTarget(attacker->GetCombatantId(), targetId, attacker->GetFaction(), target->GetFaction())) {
             continue;
         }
 

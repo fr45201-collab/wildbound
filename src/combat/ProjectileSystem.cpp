@@ -77,7 +77,7 @@ void ProjectileSystem::Update(float dt,
                 continue;
             }
 
-            if (!rules.CanTarget(p.faction, target->GetFaction())) {
+            if (!rules.CanTarget(p.sourceId, target->GetCombatantId(), p.faction, target->GetFaction())) {
                 continue;
             }
 
