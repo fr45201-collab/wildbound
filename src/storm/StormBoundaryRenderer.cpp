@@ -25,18 +25,20 @@ void StormBoundaryRenderer::Update(float dt, const SafeZone& currentZone, const 
         return;
     }
 
-    // Update existing particles
-    for (auto it = m_particles.begin(); it != m_particles.end();) {
-        it->life -= dt;
-        if (it->life <= 0.0f) {
-            it = m_particles.erase(it);
+    // Update existing particles with O(1) swap-and-pop removal for expired elements
+    for (size_t i = 0; i < m_particles.size();) {
+        m_particles[i].life -= dt;
+        if (m_particles[i].life <= 0.0f) {
+            // Swap with back element and pop to avoid O(N) array shifts
+            m_particles[i] = m_particles.back();
+            m_particles.pop_back();
         } else {
-            it->position.x += it->velocity.x * dt;
-            it->position.y += it->velocity.y * dt;
+            m_particles[i].position.x += m_particles[i].velocity.x * dt;
+            m_particles[i].position.y += m_particles[i].velocity.y * dt;
             // Fade alpha based on remaining life
-            float alphaRatio = it->life / it->maxLife;
-            it->color.a = static_cast<unsigned char>(std::clamp(alphaRatio * 200.0f, 0.0f, 255.0f));
-            ++it;
+            float alphaRatio = m_particles[i].life / m_particles[i].maxLife;
+            m_particles[i].color.a = static_cast<unsigned char>(std::clamp(alphaRatio * 200.0f, 0.0f, 255.0f));
+            ++i;
         }
     }
 

@@ -1,0 +1,27 @@
+{
+  "server": {
+    "host": "127.0.0.1",
+    "port": 7777
+  },
+  "clients": {
+    "initial_count": 10,
+    "maximum_count": 64,
+    "connection_interval_ms": 50
+  },
+  "simulation": {
+    "duration_seconds": 60,
+    "movement_enabled": true,
+    "combat_enabled": true,
+    "interaction_enabled": true,
+    "input_rate_hz": 30
+  },
+  "network_conditions": {
+    "simulated_latency_ms": 0,
+    "simulated_packet_loss_percent": 0.0
+  },
+  "reporting": {
+    "sample_interval_seconds": 1,
+    "output_directory": "test_results"
+  }
+}
+

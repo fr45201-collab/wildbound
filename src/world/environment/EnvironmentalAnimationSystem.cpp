@@ -426,10 +426,27 @@ void EnvironmentalAnimationSystem::UpdateAirplaneEvent(float dt) {
 void EnvironmentalAnimationSystem::RenderWorldGround(graphics::Renderer& renderer, const graphics::Camera2DSystem& camera, resources::AssetManager& assetMgr) {
     if (!m_initialized) return;
 
-    // Render Ground-layer animated objects (Water pond, river, lake ripples)
+    const auto& viewport = renderer.GetViewport();
+    float zoom = camera.GetZoom() > 0.05f ? camera.GetZoom() : 1.0f;
+    float vw = static_cast<float>(viewport.GetVirtualWidth()) / zoom;
+    float vh = static_cast<float>(viewport.GetVirtualHeight()) / zoom;
+    Vector2 target = camera.GetTarget();
+    constexpr float margin = 128.0f;
+    float minX = target.x - (vw * 0.5f) - margin;
+    float maxX = target.x + (vw * 0.5f) + margin;
+    float minY = target.y - (vh * 0.5f) - margin;
+    float maxY = target.y + (vh * 0.5f) + margin;
+
+    // Render Ground-layer animated objects (Water pond, river, lake ripples) with frustum culling
     for (const auto& obj : m_animatedObjects) {
         if (obj.layer != 0) continue;
         if (!m_waterEnabled && obj.type == "water") continue;
+
+        // Frustum cull offscreen animated water objects
+        if (obj.position.x < minX || obj.position.x > maxX ||
+            obj.position.y < minY || obj.position.y > maxY) {
+            continue;
+        }
 
         const auto* sheet = assetMgr.GetSpriteSheet(obj.spritesheetId);
         if (!sheet) continue;
@@ -446,12 +463,29 @@ void EnvironmentalAnimationSystem::RenderWorldGround(graphics::Renderer& rendere
 void EnvironmentalAnimationSystem::RenderWorldObjects(graphics::Renderer& renderer, const graphics::Camera2DSystem& camera, resources::AssetManager& assetMgr) {
     if (!m_initialized) return;
 
-    // 1. Render Object-layer animated world objects (Waterfalls, Fire, Grass, Tree sway)
+    const auto& viewport = renderer.GetViewport();
+    float zoom = camera.GetZoom() > 0.05f ? camera.GetZoom() : 1.0f;
+    float vw = static_cast<float>(viewport.GetVirtualWidth()) / zoom;
+    float vh = static_cast<float>(viewport.GetVirtualHeight()) / zoom;
+    Vector2 target = camera.GetTarget();
+    constexpr float margin = 128.0f;
+    float minX = target.x - (vw * 0.5f) - margin;
+    float maxX = target.x + (vw * 0.5f) + margin;
+    float minY = target.y - (vh * 0.5f) - margin;
+    float maxY = target.y + (vh * 0.5f) + margin;
+
+    // 1. Render Object-layer animated world objects (Waterfalls, Fire, Grass, Tree sway) with frustum culling
     for (const auto& obj : m_animatedObjects) {
         if (obj.layer != 1) continue;
         if (!m_fireEnabled && obj.type == "fire") continue;
         if (!m_waterEnabled && obj.type == "waterfall") continue;
         if (!m_windEnabled && (obj.type == "grass" || obj.type == "tree")) continue;
+
+        // Frustum cull offscreen animated objects
+        if (obj.position.x < minX || obj.position.x > maxX ||
+            obj.position.y < minY || obj.position.y > maxY) {
+            continue;
+        }
 
         const auto* sheet = assetMgr.GetSpriteSheet(obj.spritesheetId);
         if (!sheet) continue;
@@ -464,9 +498,14 @@ void EnvironmentalAnimationSystem::RenderWorldObjects(graphics::Renderer& render
         renderer.DrawSprite(tex, srcRect, destRect, Vector2{ 0.0f, 0.0f }, 0.0f, obj.tint);
     }
 
-    // 2. Render Ambient Creatures (Birds & Butterflies)
+    // 2. Render Ambient Creatures (Birds & Butterflies) with frustum culling
     if (m_ambientEnabled) {
         for (const auto& c : m_ambientCreatures) {
+            if (c.position.x < minX || c.position.x > maxX ||
+                c.position.y < minY || c.position.y > maxY) {
+                continue;
+            }
+
             const auto* sheet = assetMgr.GetSpriteSheet(c.spritesheetId);
             if (!sheet) continue;
 
@@ -500,8 +539,24 @@ void EnvironmentalAnimationSystem::RenderWorldObjects(graphics::Renderer& render
 void EnvironmentalAnimationSystem::RenderWorldOverhead(graphics::Renderer& renderer, const graphics::Camera2DSystem& camera, resources::AssetManager& assetMgr) {
     if (!m_initialized) return;
 
-    // 1. Smoke Plumes
+    const auto& viewport = renderer.GetViewport();
+    float zoom = camera.GetZoom() > 0.05f ? camera.GetZoom() : 1.0f;
+    float vw = static_cast<float>(viewport.GetVirtualWidth()) / zoom;
+    float vh = static_cast<float>(viewport.GetVirtualHeight()) / zoom;
+    Vector2 target = camera.GetTarget();
+    constexpr float margin = 128.0f;
+    float minX = target.x - (vw * 0.5f) - margin;
+    float maxX = target.x + (vw * 0.5f) + margin;
+    float minY = target.y - (vh * 0.5f) - margin;
+    float maxY = target.y + (vh * 0.5f) + margin;
+
+    // 1. Smoke Plumes with frustum culling
     for (const auto& smoke : m_smokePlumes) {
+        if (smoke.position.x < minX || smoke.position.x > maxX ||
+            smoke.position.y < minY || smoke.position.y > maxY) {
+            continue;
+        }
+
         const auto* sheet = assetMgr.GetSpriteSheet(smoke.spritesheetId);
         if (!sheet) continue;
 

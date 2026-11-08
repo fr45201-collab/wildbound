@@ -2092,6 +2092,7 @@ add_executable(test_dedicated_server
     ${CMAKE_SOURCE_DIR}/src/server/ServerDiagnostics.cpp
     ${CMAKE_SOURCE_DIR}/src/server/ServerLoop.cpp
     ${CMAKE_SOURCE_DIR}/src/server/DedicatedServer.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/MatchResultsOutbox.cpp
     ${WILDBOUND_SOURCES_ABSOLUTE}
 )
 target_include_directories(test_dedicated_server PRIVATE
@@ -2291,6 +2292,7 @@ add_executable(test_matchmaking_coordinator_e2e
     ${CMAKE_SOURCE_DIR}/src/server/ServerDiagnostics.cpp
     ${CMAKE_SOURCE_DIR}/src/server/ServerLoop.cpp
     ${CMAKE_SOURCE_DIR}/src/server/DedicatedServer.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/MatchResultsOutbox.cpp
     ${WILDBOUND_SOURCES_ABSOLUTE}
 )
 target_include_directories(test_matchmaking_coordinator_e2e PRIVATE
@@ -2319,3 +2321,74 @@ elseif(UNIX AND NOT APPLE)
 endif()
 add_test(NAME MatchmakingCoordinatorE2ETest COMMAND test_matchmaking_coordinator_e2e)
 set_tests_properties(MatchmakingCoordinatorE2ETest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 47. Security Validation Test (Phase 47)
+add_executable(test_security_validation
+    security/test_security_validation.cpp
+    ${CMAKE_SOURCE_DIR}/src/security/RateLimiter.cpp
+    ${CMAKE_SOURCE_DIR}/src/security/ServerSecurityManager.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkMessage.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkEvent.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ReplicationTypes.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkConfiguration.cpp
+    ${CMAKE_SOURCE_DIR}/src/core/Logger.cpp
+)
+target_include_directories(test_security_validation PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${raylib_SOURCE_DIR}/src
+)
+target_compile_features(test_security_validation PRIVATE cxx_std_20)
+target_link_libraries(test_security_validation PRIVATE
+    raylib
+    nlohmann_json::nlohmann_json
+)
+if(WIN32)
+    target_compile_definitions(test_security_validation PRIVATE NOGDI WIN32_LEAN_AND_MEAN NOUSER)
+    target_link_libraries(test_security_validation PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_security_validation PRIVATE pthread m)
+endif()
+add_test(NAME SecurityValidationTest COMMAND test_security_validation)
+set_tests_properties(SecurityValidationTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+
+# 48. Multiplayer Load, Stress & Stability Test (Phase 48)
+add_executable(test_multiplayer_load
+    load/test_multiplayer_load.cpp
+    load/LoadTestClient.cpp
+    load/LoadTestController.cpp
+    ${COORDINATOR_COMMON_SOURCES}
+    ${CMAKE_SOURCE_DIR}/src/server/ServerConfig.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerCommandLine.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerDiagnostics.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/ServerLoop.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/DedicatedServer.cpp
+    ${CMAKE_SOURCE_DIR}/src/server/MatchResultsOutbox.cpp
+    ${WILDBOUND_SOURCES_ABSOLUTE}
+)
+target_include_directories(test_multiplayer_load PRIVATE
+    ${CMAKE_SOURCE_DIR}/src
+    ${sol2_SOURCE_DIR}/include
+    ${lua_SOURCE_DIR}/lua-5.4.7/src
+    ${imgui_SOURCE_DIR}
+    ${rlimgui_SOURCE_DIR}
+    ${enet_SOURCE_DIR}/include
+)
+target_compile_features(test_multiplayer_load PRIVATE cxx_std_20)
+target_link_libraries(test_multiplayer_load PRIVATE
+    raylib
+    sol2
+    lua_static
+    imgui
+    rlimgui
+    nlohmann_json::nlohmann_json
+    enet
+)
+if(WIN32)
+    target_compile_definitions(test_multiplayer_load PRIVATE NOGDI WIN32_LEAN_AND_MEAN NOUSER)
+    target_link_libraries(test_multiplayer_load PRIVATE ws2_32 winmm)
+elseif(UNIX AND NOT APPLE)
+    target_link_libraries(test_multiplayer_load PRIVATE pthread m)
+endif()
+add_test(NAME MultiplayerLoadTest COMMAND test_multiplayer_load)
+set_tests_properties(MultiplayerLoadTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

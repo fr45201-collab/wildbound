@@ -1,4 +1,6 @@
 #include "NetworkMessage.hpp"
+#include <cmath>
+#include <algorithm>
 
 namespace wildbound::network {
 
@@ -14,6 +16,10 @@ bool MsgClientHello::Deserialize(ByteStreamReader& reader) {
     protocolVersion = reader.ReadU16();
     playerName = reader.ReadString();
     authToken = reader.ReadString();
+    // Security bounds check on untrusted string lengths
+    if (playerName.size() > 64 || authToken.size() > 512) {
+        return false;
+    }
     return true;
 }
 
@@ -78,6 +84,21 @@ bool MsgPlayerInput::Deserialize(ByteStreamReader& reader) {
     dirY = reader.ReadFloat();
     facingAngle = reader.ReadFloat();
     actionFlags = reader.ReadU8();
+
+    // Numerical sanity and bounds checks (reject NaN, Inf, or unnormalized directions)
+    if (!std::isfinite(dirX) || !std::isfinite(dirY) || !std::isfinite(facingAngle)) {
+        return false;
+    }
+    if (std::abs(dirX) > 1.001f || std::abs(dirY) > 1.001f) {
+        float len = std::sqrt(dirX * dirX + dirY * dirY);
+        if (len > 0.0001f) {
+            dirX /= len;
+            dirY /= len;
+        } else {
+            dirX = 0.0f;
+            dirY = 0.0f;
+        }
+    }
     return true;
 }
 
@@ -93,6 +114,10 @@ bool MsgAttackRequest::Deserialize(ByteStreamReader& reader) {
     weaponSlot = reader.ReadU8();
     aimAngle = reader.ReadFloat();
     clientTick = reader.ReadU32();
+
+    if (!std::isfinite(aimAngle)) {
+        return false;
+    }
     return true;
 }
 

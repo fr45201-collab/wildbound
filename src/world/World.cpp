@@ -149,15 +149,20 @@ void World::PopulateCollisionManager(physics::CollisionManager& colMgr) const {
 
 std::vector<const EnvironmentObject*> World::GetVisibleObjects(const Rectangle& visibleArea) const {
     std::vector<const EnvironmentObject*> visible;
-    if (!m_tilemap) return visible;
+    GetVisibleObjects(visibleArea, visible);
+    return visible;
+}
+
+void World::GetVisibleObjects(const Rectangle& visibleArea, std::vector<const EnvironmentObject*>& outObjects) const {
+    outObjects.clear();
+    if (!m_tilemap) return;
 
     for (const auto& obj : m_tilemap->GetObjects()) {
         Rectangle objBounds = obj.GetWorldRenderBounds();
         if (CheckCollisionRecs(objBounds, visibleArea)) {
-            visible.push_back(&obj);
+            outObjects.push_back(&obj);
         }
     }
-    return visible;
 }
 
 // World Items & Pickups (Phase 19)

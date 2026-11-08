@@ -179,6 +179,9 @@ private:
     std::unique_ptr<scripting::LuaManager> m_luaManager;
     std::unique_ptr<ui::DevUI> m_devUI;
     bool m_showCombatDebug = false;
+
+    // Persistent scratch vector for rendering to eliminate per-frame allocations
+    std::vector<entities::Entity*> m_cachedRenderEntities;
 };
 
 } // namespace wildbound::core

@@ -30,6 +30,8 @@
 #include "../network/NetworkManager.hpp"
 #include "../network/replication/ReplicationManager.hpp"
 #include "../scripting/LuaManager.hpp"
+#include "../security/ServerSecurityManager.hpp"
+#include "../security/SecurityTypes.hpp"
 
 #include <imgui.h>
 #include <rlImGui.h>
@@ -295,6 +297,12 @@ void DevUI::RenderDebugOverlay(
             // Tab 22: Lua & Scripting (Phase 46)
             if (ImGui::BeginTabItem("Lua & Scripting")) {
                 RenderLuaDiagnostics(luaMgr, spawner);
+                ImGui::EndTabItem();
+            }
+
+            // Tab 23: Optimization & Security (Phase 47)
+            if (ImGui::BeginTabItem("Optimization & Security")) {
+                RenderOptimizationAndSecurity(worldRenderer, netMgr);
                 ImGui::EndTabItem();
             }
 
@@ -4325,6 +4333,152 @@ void DevUI::RenderLuaDiagnostics(scripting::LuaManager* luaMgr, world::EnemySpaw
                 if (ImGui::SmallButton(btnId.c_str())) {
                     luaMgr->ReloadScript(path);
                 }
+            }
+            ImGui::EndTable();
+        }
+    }
+}
+
+void DevUI::RenderOptimizationAndSecurity(world::WorldRenderer* worldRenderer, network::NetworkManager* netMgr) {
+    ImGui::TextColored(ImVec4(0.3f, 0.9f, 0.9f, 1.0f), "Performance Optimization & Security Hardening (Phase 47)");
+    ImGui::Separator();
+
+    // Section 1: Rendering Performance & Culling
+    if (ImGui::CollapsingHeader("Rendering Performance & Culling Metrics", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::TextColored(ImVec4(0.4f, 0.8f, 1.0f, 1.0f), "Frustum Culling & Memory Allocation Status:");
+        ImGui::BulletText("Frustum Culling: ACTIVE (Entities & Environmental Animations culled outside viewport + 64px)");
+        ImGui::BulletText("Per-Frame Heap Allocations: 0 (Persistent scratch vectors reused in WorldRenderer & Game)");
+        ImGui::BulletText("Tileset Texture Caching: ENABLED (Redundant hash map texture queries eliminated)");
+        ImGui::BulletText("Particle Deletion: O(1) swap-and-pop algorithm active in StormBoundaryRenderer");
+
+        if (worldRenderer) {
+            ImGui::Spacing();
+            ImGui::Text("Active Rendering Metrics:");
+            ImGui::Text("  Visible Tiles Rendered:    %zu", worldRenderer->GetRenderedTileCount());
+            ImGui::Text("  Environment Objects Drawn: %zu", worldRenderer->GetRenderedObjectCount());
+            ImGui::Text("  Entities Rendered:         %zu", worldRenderer->GetRenderedEntityCount());
+            ImGui::Text("  Entities Culled:           %zu", worldRenderer->GetCulledEntityCount());
+            Rectangle area = worldRenderer->GetVisibleWorldArea();
+            ImGui::Text("  Visible World Area:        [%.0f, %.0f, %.0f, %.0f]", area.x, area.y, area.width, area.height);
+        }
+    }
+
+    ImGui::Spacing();
+
+    // Section 2: Anti-Cheat Foundations
+    if (ImGui::CollapsingHeader("Anti-Cheat Foundations & Trust Boundaries", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::TextColored(ImVec4(1.0f, 0.8f, 0.2f, 1.0f), "Server-Authoritative Enforcement Principles:");
+        ImGui::BulletText("Client Untrusted Principle: All movement, combat, and loot packets rigorously validated");
+        ImGui::BulletText("Speed Validation: Displacement clamped to maxSpeed * 1.35 * dt + 8px");
+        ImGui::BulletText("Teleport Anomaly: Displacement > 3.5x maxAllowed rejected and snapped back");
+        ImGui::BulletText("Non-Finite Injection: NaN / Inf vectors rejected at network deserialization boundary");
+        ImGui::BulletText("Combat Validation: Range (1.25x max + 12px) and cooldown timing strictly enforced");
+        ImGui::BulletText("Atomic Loot Resolution: Single-claim guaranteed against race conditions via server hash set");
+    }
+
+    ImGui::Spacing();
+
+    // Section 3: Rate Limiting Metrics
+    if (ImGui::CollapsingHeader("Network Rate Limiting & Token Buckets", ImGuiTreeNodeFlags_DefaultOpen)) {
+        ImGui::Text("Token Bucket Categories & Limits:");
+        ImGui::Text("  [0] General Packets: 60 tokens/sec (Max Burst: 80 tokens)");
+        ImGui::Text("  [1] Player Input:    40 tokens/sec (Max Burst: 60 tokens)");
+        ImGui::Text("  [2] Combat Actions:  15 tokens/sec (Max Burst: 25 tokens)");
+        ImGui::Text("  [3] Interactions:    10 tokens/sec (Max Burst: 20 tokens)");
+        if (netMgr) {
+            ImGui::Text("Network Transport: Active (ENet Host/Peer abstraction)");
+        }
+    }
+
+    ImGui::Spacing();
+
+    // Section 4: Live Security Audit Telemetry
+    static security::ServerSecurityManager devSecMgr;
+    static bool devSecInitialized = false;
+    if (!devSecInitialized) {
+        devSecMgr.OnClientConnected(1);
+        devSecInitialized = true;
+    }
+
+    if (ImGui::CollapsingHeader("Security Event Telemetry & Simulation", ImGuiTreeNodeFlags_DefaultOpen)) {
+        const auto& diag = devSecMgr.GetDiagnostics();
+        ImGui::Text("Security Diagnostics Summary:");
+        ImGui::Text("  Total Events Logged:    %llu", static_cast<unsigned long long>(diag.totalEventsLogged));
+        ImGui::Text("  Rejected Actions:       %llu", static_cast<unsigned long long>(diag.totalRejectedActions));
+        ImGui::Text("  Movement Violations:    %llu", static_cast<unsigned long long>(diag.movementViolations));
+        ImGui::Text("  Combat Violations:      %llu", static_cast<unsigned long long>(diag.combatViolations));
+        ImGui::Text("  Loot Race Violations:   %llu", static_cast<unsigned long long>(diag.lootViolations));
+        ImGui::Text("  Rate Limit Violations:  %llu", static_cast<unsigned long long>(diag.rateLimitViolations));
+
+        ImGui::Separator();
+        ImGui::TextColored(ImVec4(0.4f, 0.9f, 0.4f, 1.0f), "Interactive Security Violation Simulation:");
+
+        if (ImGui::Button("Simulate Speed Hack")) {
+            Vector2 cur{ 100.0f, 100.0f };
+            Vector2 req{ 150.0f, 100.0f };
+            Vector2 out = cur;
+            (void)devSecMgr.ValidateMovement(1, 1, cur, req, 1.0f / 30.0f, 160.0f, out);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Simulate Teleport Anomaly")) {
+            Vector2 cur{ 100.0f, 100.0f };
+            Vector2 req{ 900.0f, 900.0f };
+            Vector2 out = cur;
+            (void)devSecMgr.ValidateMovement(1, 1, cur, req, 1.0f / 30.0f, 160.0f, out);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Simulate Attack Range Violation")) {
+            (void)devSecMgr.ValidateAttack(1, 1, "sword_slash", { 100.0f, 100.0f }, { 300.0f, 100.0f }, 40.0f, true);
+        }
+
+        if (ImGui::Button("Simulate Duplicate Loot Race")) {
+            (void)devSecMgr.ValidateLootPickup(1, 1, 9999, { 100.0f, 100.0f }, { 105.0f, 100.0f }, 36.0f);
+            (void)devSecMgr.ValidateLootPickup(2, 2, 9999, { 100.0f, 100.0f }, { 105.0f, 100.0f }, 36.0f);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Simulate Packet Burst Flood")) {
+            for (int i = 0; i < 90; ++i) {
+                (void)devSecMgr.CheckRateLimit(1, security::RateLimitCategory::GeneralPacket, 100);
+            }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Reset Security Telemetry")) {
+            devSecMgr.Reset();
+        }
+
+        ImGui::Separator();
+        ImGui::Text("Recent Security Events Audit Log (Bounded Ring Buffer, Max 120):");
+        const auto& events = devSecMgr.GetRecentEvents();
+        if (ImGui::BeginTable("SecurityAuditTable", 5, ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_ScrollY, ImVec2(0, 180))) {
+            ImGui::TableSetupColumn("Time (ms)", ImGuiTableColumnFlags_WidthFixed, 80.0f);
+            ImGui::TableSetupColumn("Type", ImGuiTableColumnFlags_WidthFixed, 150.0f);
+            ImGui::TableSetupColumn("Severity", ImGuiTableColumnFlags_WidthFixed, 80.0f);
+            ImGui::TableSetupColumn("Client", ImGuiTableColumnFlags_WidthFixed, 50.0f);
+            ImGui::TableSetupColumn("Details", ImGuiTableColumnFlags_WidthStretch);
+            ImGui::TableHeadersRow();
+
+            for (const auto& ev : events) {
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0);
+                ImGui::Text("%llu", static_cast<unsigned long long>(ev.timestampMs));
+
+                ImGui::TableSetColumnIndex(1);
+                ImGui::Text("%s", security::ToString(ev.type));
+
+                ImGui::TableSetColumnIndex(2);
+                if (ev.severity == security::SecuritySeverity::Critical) {
+                    ImGui::TextColored(ImVec4(1.0f, 0.2f, 0.2f, 1.0f), "%s", security::ToString(ev.severity));
+                } else if (ev.severity == security::SecuritySeverity::Violation) {
+                    ImGui::TextColored(ImVec4(1.0f, 0.5f, 0.2f, 1.0f), "%s", security::ToString(ev.severity));
+                } else {
+                    ImGui::TextColored(ImVec4(0.9f, 0.9f, 0.3f, 1.0f), "%s", security::ToString(ev.severity));
+                }
+
+                ImGui::TableSetColumnIndex(3);
+                ImGui::Text("%u", ev.clientId);
+
+                ImGui::TableSetColumnIndex(4);
+                ImGui::Text("%s", ev.details.c_str());
             }
             ImGui::EndTable();
         }

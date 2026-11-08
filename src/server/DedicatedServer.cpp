@@ -32,6 +32,7 @@
 #include <nlohmann/json.hpp>
 #include <chrono>
 #include <ctime>
+#include <cmath>
 
 #include <iostream>
 #include <chrono>
@@ -205,6 +206,24 @@ bool DedicatedServer::Start() {
     m_state = ServerLifecycleState::Running;
     Logger::Info("SERVER", "Dedicated Server is now RUNNING and accepting client connections.");
 
+    // Phase 47: Register ENetServer event callback for client handling, rate-limiting & security validation
+    auto* enetServer = m_networkManager->GetServer();
+    if (enetServer) {
+        enetServer->SetEventCallback([this](const network::ConnectionEvent& ev) {
+            if (ev.type == network::ConnectionEventType::ClientConnected) {
+                m_securityManager.OnClientConnected(ev.connectionId);
+                Logger::Info("SERVER", "Client #" + std::to_string(ev.connectionId) + " connected to game server.");
+            } else if (ev.type == network::ConnectionEventType::ClientDisconnected) {
+                m_securityManager.OnClientDisconnected(ev.connectionId);
+                m_clientAppearances.erase(ev.connectionId);
+                m_clientToParticipant.erase(ev.connectionId);
+                Logger::Info("SERVER", "Client #" + std::to_string(ev.connectionId) + " disconnected from game server.");
+            } else if (ev.type == network::ConnectionEventType::PacketReceived) {
+                OnClientPacketReceived(ev.connectionId, ev.channel, ev.messageType, ev.payload.data(), ev.payload.size());
+            }
+        });
+    }
+
     if (m_config.enableCoordinator) {
         ConnectToCoordinator(m_config.coordinatorHost, m_config.coordinatorPort);
     }
@@ -285,8 +304,7 @@ void DedicatedServer::PollNetwork() {
 }
 
 void DedicatedServer::UpdateServer(float dt) {
-    OnNetworkPoll();
-    OnFixedUpdate(dt);
+    m_loop.SingleStep(dt);
 }
 
 void DedicatedServer::OnNetworkPoll() {
@@ -833,6 +851,237 @@ void DedicatedServer::SyncAllAppearancesToClient(network::ClientId newClientId) 
             packetWriter.GetData(),
             packetWriter.GetSize()
         );
+    }
+}
+
+void DedicatedServer::OnClientPacketReceived(network::ClientId clientId, network::ChannelType /*channel*/,
+                                            uint16_t messageType, const uint8_t* data, size_t size)
+{
+    // 1. Rate limiting check
+    security::RateLimitCategory category = security::RateLimitCategory::GeneralPacket;
+    if (messageType == static_cast<uint16_t>(network::MessageType::PlayerInput)) {
+        category = security::RateLimitCategory::PlayerInput;
+    } else if (messageType == static_cast<uint16_t>(network::MessageType::AttackRequest)) {
+        category = security::RateLimitCategory::CombatAction;
+    } else if (messageType == static_cast<uint16_t>(network::MessageType::PickupRequest)) {
+        category = security::RateLimitCategory::Interaction;
+    }
+
+    if (!m_securityManager.CheckRateLimit(clientId, category, messageType)) {
+        if (m_securityManager.ShouldDisconnectClient(clientId)) {
+            Logger::Warn("SERVER", "Disconnecting client #" + std::to_string(clientId) + " due to excessive rate limit violations.");
+            m_networkManager->DisconnectServerClient(clientId, 4001);
+        }
+        return;
+    }
+
+    network::ByteStreamReader reader(data, size);
+
+    switch (static_cast<network::MessageType>(messageType)) {
+        case network::MessageType::ClientHello: {
+            network::MsgClientHello hello;
+            if (!hello.Deserialize(reader)) {
+                m_securityManager.RecordEvent({
+                    .type = security::SecurityEventType::MalformedPacket,
+                    .severity = security::SecuritySeverity::Warning,
+                    .clientId = clientId,
+                    .details = "Malformed MsgClientHello packet",
+                    .actionRejected = true
+                });
+                return;
+            }
+
+            // Validate protocol version
+            if (hello.protocolVersion != network::PROTOCOL_VERSION) {
+                network::MsgConnectionRejected reject{
+                    .rejectionCode = 1,
+                    .reason = "Protocol version mismatch"
+                };
+                network::ByteStreamWriter w;
+                reject.Serialize(w);
+                network::ByteStreamWriter pw;
+                network::PacketHeader hdr{
+                    .magic = network::PROTOCOL_MAGIC,
+                    .version = network::PROTOCOL_VERSION,
+                    .messageType = static_cast<uint16_t>(network::MessageType::ConnectionRejected),
+                    .sequenceNumber = 0,
+                    .senderClientId = network::SERVER_CLIENT_ID,
+                    .payloadLength = static_cast<uint16_t>(w.GetSize())
+                };
+                network::SerializePacketHeader(pw, hdr);
+                pw.WriteBytes(w.GetData(), w.GetSize());
+                m_networkManager->GetServer()->Send(clientId, network::ChannelType::Control,
+                                                   network::DeliveryMode::ReliableOrdered, pw.GetData(), pw.GetSize());
+                m_networkManager->DisconnectServerClient(clientId, 4002);
+                return;
+            }
+
+            uint32_t participantId = static_cast<uint32_t>(clientId);
+            m_clientToParticipant[clientId] = participantId;
+            if (m_matchManager) {
+                match::MatchParticipant p;
+                p.participantId = participantId;
+                p.displayName = hello.playerName;
+                p.type = match::ParticipantType::RemoteHuman;
+                p.teamId = 0;
+                p.status = match::ParticipantStatus::Registered;
+                (void)m_matchManager->RegisterParticipant(p);
+            }
+
+            network::MsgConnectionAccepted accept{
+                .assignedClientId = clientId,
+                .assignedPlayerId = network::NetworkEntityIdentity{
+                    .id = network::NetworkEntityId{ participantId },
+                    .generation = 1
+                },
+                .matchId = m_assignedMatchId.empty() ? "wildbound_default" : m_assignedMatchId,
+                .mapName = m_config.mapName
+            };
+            network::ByteStreamWriter w;
+            accept.Serialize(w);
+            network::ByteStreamWriter pw;
+            network::PacketHeader hdr{
+                .magic = network::PROTOCOL_MAGIC,
+                .version = network::PROTOCOL_VERSION,
+                .messageType = static_cast<uint16_t>(network::MessageType::ConnectionAccepted),
+                .sequenceNumber = 0,
+                .senderClientId = network::SERVER_CLIENT_ID,
+                .payloadLength = static_cast<uint16_t>(w.GetSize())
+            };
+            network::SerializePacketHeader(pw, hdr);
+            pw.WriteBytes(w.GetData(), w.GetSize());
+            m_networkManager->GetServer()->Send(clientId, network::ChannelType::Control,
+                                               network::DeliveryMode::ReliableOrdered, pw.GetData(), pw.GetSize());
+            break;
+        }
+
+        case network::MessageType::PlayerInput: {
+            network::MsgPlayerInput input;
+            if (!input.Deserialize(reader)) {
+                m_securityManager.RecordEvent({
+                    .type = security::SecurityEventType::MalformedPacket,
+                    .severity = security::SecuritySeverity::Warning,
+                    .clientId = clientId,
+                    .details = "Malformed MsgPlayerInput packet",
+                    .actionRejected = true
+                });
+                return;
+            }
+
+            uint32_t participantId = clientId;
+            auto it = m_clientToParticipant.find(clientId);
+            if (it != m_clientToParticipant.end()) {
+                participantId = it->second;
+            }
+
+            if (m_matchManager) {
+                auto* participant = m_matchManager->GetRegistry().FindParticipant(participantId);
+                if (participant && participant->IsAlive()) {
+                    float maxSpeed = 160.0f;
+                    float dt = 1.0f / 30.0f;
+                    Vector2 currentPos = participant->spawnPosition;
+                    Vector2 requestedPos{
+                        currentPos.x + input.dirX * maxSpeed * dt,
+                        currentPos.y + input.dirY * maxSpeed * dt
+                    };
+                    Vector2 validatedPos = currentPos;
+                    (void)m_securityManager.ValidateMovement(clientId, participantId, currentPos, requestedPos, dt, maxSpeed, validatedPos);
+                    participant->spawnPosition = validatedPos;
+                }
+            }
+            break;
+        }
+
+        case network::MessageType::AttackRequest: {
+            network::MsgAttackRequest attack;
+            if (!attack.Deserialize(reader)) {
+                m_securityManager.RecordEvent({
+                    .type = security::SecurityEventType::MalformedPacket,
+                    .severity = security::SecuritySeverity::Warning,
+                    .clientId = clientId,
+                    .details = "Malformed MsgAttackRequest packet",
+                    .actionRejected = true
+                });
+                return;
+            }
+
+            uint32_t participantId = clientId;
+            auto it = m_clientToParticipant.find(clientId);
+            if (it != m_clientToParticipant.end()) {
+                participantId = it->second;
+            }
+
+            if (m_matchManager) {
+                auto* participant = m_matchManager->GetRegistry().FindParticipant(participantId);
+                if (participant && participant->IsAlive()) {
+                    Vector2 attackerPos = participant->spawnPosition;
+                    Vector2 targetPos{
+                        attackerPos.x + std::cos(attack.aimAngle) * 32.0f,
+                        attackerPos.y + std::sin(attack.aimAngle) * 32.0f
+                    };
+                    bool weaponReady = true;
+                    float weaponRange = 48.0f;
+                    if (m_securityManager.ValidateAttack(clientId, participantId, "sword_slash", attackerPos, targetPos, weaponRange, weaponReady)) {
+                        if (m_combatSystem) {
+                            auto* combatant = m_combatSystem->GetCombatant(participantId);
+                            if (combatant) {
+                                (void)m_combatSystem->ProcessAttack(combatant, "slash", graphics::animation::Direction::Down);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+
+        case network::MessageType::PickupRequest: {
+            network::MsgPickupRequest pickup;
+            if (!pickup.Deserialize(reader)) {
+                m_securityManager.RecordEvent({
+                    .type = security::SecurityEventType::MalformedPacket,
+                    .severity = security::SecuritySeverity::Warning,
+                    .clientId = clientId,
+                    .details = "Malformed MsgPickupRequest packet",
+                    .actionRejected = true
+                });
+                return;
+            }
+
+            uint32_t participantId = clientId;
+            auto it = m_clientToParticipant.find(clientId);
+            if (it != m_clientToParticipant.end()) {
+                participantId = it->second;
+            }
+
+            if (m_matchManager && m_world) {
+                auto* participant = m_matchManager->GetRegistry().FindParticipant(participantId);
+                if (participant && participant->IsAlive()) {
+                    auto* item = m_world->GetWorldItem(pickup.targetItemId.id.value);
+                    if (item && !item->IsCollected()) {
+                        if (m_securityManager.ValidateLootPickup(clientId, participantId,
+                                                              pickup.targetItemId.id.value,
+                                                              participant->spawnPosition, item->GetPosition(), 48.0f)) {
+                            item->MarkCollected();
+                            Logger::Info("SERVER", "Participant #" + std::to_string(participantId) +
+                                         " picked up WorldItem #" + std::to_string(pickup.targetItemId.id.value));
+                        }
+                    }
+                }
+            }
+            break;
+        }
+
+        case network::MessageType::PlayerAppearance: {
+            network::MsgPlayerAppearanceSync app;
+            if (app.Deserialize(reader)) {
+                m_clientAppearances[clientId] = app;
+                BroadcastPlayerAppearance(app);
+            }
+            break;
+        }
+
+        default:
+            break;
     }
 }
 

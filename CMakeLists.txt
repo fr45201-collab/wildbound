@@ -599,6 +599,13 @@ set(WILDBOUND_SOURCES
     src/network/http/HttpClient.cpp
     src/network/http/BackendClient.hpp
     src/network/http/BackendClient.cpp
+
+    # Security & Optimization (Phase 47)
+    src/security/SecurityTypes.hpp
+    src/security/RateLimiter.hpp
+    src/security/RateLimiter.cpp
+    src/security/ServerSecurityManager.hpp
+    src/security/ServerSecurityManager.cpp
 )
 
 if(WIN32)

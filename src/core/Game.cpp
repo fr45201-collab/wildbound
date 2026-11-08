@@ -870,14 +870,14 @@ void Game::Render(float dt) {
         if (m_envAnimationSystem) {
             m_envAnimationSystem->RenderWorldGround(*m_renderer, *m_camera, *m_assetManager);
         }
-        std::vector<entities::Entity*> renderEntities;
-        if (m_player) renderEntities.push_back(m_player.get());
+        m_cachedRenderEntities.clear();
+        if (m_player) m_cachedRenderEntities.push_back(m_player.get());
         if (m_enemySpawner) {
             for (const auto& e : m_enemySpawner->GetEnemies()) {
-                if (e && e->IsActive()) renderEntities.push_back(e.get());
+                if (e && e->IsActive()) m_cachedRenderEntities.push_back(e.get());
             }
         }
-        m_worldRenderer->Render(*m_renderer, *m_world, *m_camera, *m_assetManager, renderEntities);
+        m_worldRenderer->Render(*m_renderer, *m_world, *m_camera, *m_assetManager, m_cachedRenderEntities);
 
         // Render Loot Containers and World Items (Phase 19)
         m_world->RenderLootContainers(*m_renderer, *m_assetManager);

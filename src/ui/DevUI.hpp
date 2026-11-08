@@ -85,6 +85,10 @@ namespace wildbound::scripting {
     class LuaManager;
 }
 
+namespace wildbound::security {
+    class ServerSecurityManager;
+}
+
 namespace wildbound::ui {
     class UIManager;
 }
@@ -107,6 +111,10 @@ namespace wildbound::network {
 
 namespace wildbound::scripting {
     class LuaManager;
+}
+
+namespace wildbound::security {
+    class ServerSecurityManager;
 }
 
 namespace wildbound::ui {
@@ -194,6 +202,7 @@ private:
     void RenderMatchDebug(match::MatchManager* matchMgr, entities::Player* player);
     void RenderNetworkDiagnostics(network::NetworkManager* netMgr);
     void RenderLuaDiagnostics(scripting::LuaManager* luaMgr, world::EnemySpawner* spawner);
+    void RenderOptimizationAndSecurity(world::WorldRenderer* worldRenderer, network::NetworkManager* netMgr);
 
     bool m_initialized = false;
     bool m_visible = false;

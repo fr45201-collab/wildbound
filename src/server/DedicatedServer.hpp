@@ -26,6 +26,7 @@
 #include "../network/NetworkMessage.hpp"
 #include "../network/http/HttpClient.hpp"
 #include "../customization/CosmeticRegistry.hpp"
+#include "../security/ServerSecurityManager.hpp"
 
 #include <memory>
 #include <string>
@@ -113,6 +114,8 @@ public:
     [[nodiscard]] match::MatchManager* GetMatchManager() noexcept { return m_matchManager.get(); }
     [[nodiscard]] storm::StormManager* GetStormManager() noexcept { return m_stormManager.get(); }
     [[nodiscard]] world::World* GetWorld() noexcept { return m_world.get(); }
+    [[nodiscard]] security::ServerSecurityManager& GetSecurityManager() noexcept { return m_securityManager; }
+    [[nodiscard]] const security::ServerSecurityManager& GetSecurityManager() const noexcept { return m_securityManager; }
 
     /// Static singleton pointer for OS signal interception
     static DedicatedServer* s_activeInstance;
@@ -124,6 +127,7 @@ private:
     void OnReplicationUpdate();
     void OnDiagnosticsUpdate(float frameDt, float tickDurationMs, bool wasOverload);
     void OnCoordinatorPacketReceived(uint16_t messageType, const uint8_t* data, size_t size);
+    void OnClientPacketReceived(network::ClientId clientId, network::ChannelType channel, uint16_t messageType, const uint8_t* data, size_t size);
 
     std::unique_ptr<platform::IPlatform> m_platform;
     ServerConfig m_config;
@@ -160,6 +164,10 @@ private:
     network::http::HttpClient m_cosmeticHttpClient;
     std::string m_backendUrl{ "http://127.0.0.1:8080" };
     std::string m_serverSecret{ "dev_server_secret_change_in_production" };
+
+    // Phase 47: Security & Rate Limiting Subsystem
+    security::ServerSecurityManager m_securityManager;
+    std::unordered_map<network::ClientId, uint32_t> m_clientToParticipant;
 };
 
 } // namespace wildbound::server

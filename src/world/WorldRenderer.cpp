@@ -45,6 +45,9 @@ void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, con
     int endRow = std::min(tilemap->GetHeight() - 1, static_cast<int>(std::ceil((m_lastVisibleArea.y + m_lastVisibleArea.height) / th)));
 
     // 2. Render Tile Layers in order
+    const Tileset* cachedTileset = nullptr;
+    Texture2D cachedTexture{ 0 };
+
     for (const auto& layer : tilemap->GetLayers()) {
         if (!layer.IsVisible() || layer.GetOpacity() <= 0.0f) {
             continue;
@@ -65,8 +68,12 @@ void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, con
                 const Tileset* ts = tilemap->FindTilesetForGid(gid);
                 if (!ts) continue;
 
-                Texture2D tex = assetMgr.GetTexture(ts->GetTextureId());
-                if (tex.id == 0) continue;
+                // Cache tileset texture handle to avoid thousands of string hash lookups per frame
+                if (ts != cachedTileset) {
+                    cachedTileset = ts;
+                    cachedTexture = assetMgr.GetTexture(ts->GetTextureId());
+                }
+                if (cachedTexture.id == 0) continue;
 
                 Rectangle srcRect = ts->GetTileSourceRect(gid);
                 Rectangle destRect{
@@ -76,38 +83,49 @@ void WorldRenderer::Render(graphics::Renderer& renderer, const World& world, con
                     static_cast<float>(th)
                 };
 
-                renderer.DrawSprite(tex, srcRect, destRect, Vector2{ 0.0f, 0.0f }, 0.0f, layerTint);
+                renderer.DrawSprite(cachedTexture, srcRect, destRect, Vector2{ 0.0f, 0.0f }, 0.0f, layerTint);
                 m_renderedTileCount++;
             }
         }
     }
 
-    // 3. Render Environmental Objects and Entities with Combined Depth Y-Sorting
-    std::vector<const EnvironmentObject*> visibleObjs = world.GetVisibleObjects(m_lastVisibleArea);
+    // 3. Render Environmental Objects and Entities with Camera Frustum Culling & Depth Y-Sorting
+    world.GetVisibleObjects(m_lastVisibleArea, m_cachedVisibleObjs);
 
-    struct RenderItem {
-        float zOrder = 0.0f;
-        const EnvironmentObject* envObj = nullptr;
-        entities::Entity* entity = nullptr;
-    };
+    m_cachedRenderItems.clear();
+    m_cachedRenderItems.reserve(m_cachedVisibleObjs.size() + entities.size());
 
-    std::vector<RenderItem> items;
-    items.reserve(visibleObjs.size() + entities.size());
-
-    for (const auto* obj : visibleObjs) {
-        items.push_back({ obj->GetZOrder(), obj, nullptr });
+    for (const auto* obj : m_cachedVisibleObjs) {
+        m_cachedRenderItems.push_back({ obj->GetZOrder(), obj, nullptr });
     }
+
+    m_renderedEntityCount = 0;
+    m_culledEntityCount = 0;
+
+    // Safety margin (64px) for entity bounds to prevent pop-in at camera borders
+    constexpr float entityMargin = 64.0f;
+    const float minX = m_lastVisibleArea.x - entityMargin;
+    const float maxX = m_lastVisibleArea.x + m_lastVisibleArea.width + entityMargin;
+    const float minY = m_lastVisibleArea.y - entityMargin;
+    const float maxY = m_lastVisibleArea.y + m_lastVisibleArea.height + entityMargin;
+
     for (auto* ent : entities) {
-        if (ent && ent->IsActive()) {
-            items.push_back({ ent->GetPosition().y, nullptr, ent });
+        if (!ent || !ent->IsActive()) continue;
+
+        Vector2 pos = ent->GetPosition();
+        if (pos.x >= minX && pos.x <= maxX && pos.y >= minY && pos.y <= maxY) {
+            m_cachedRenderItems.push_back({ pos.y, nullptr, ent });
+            m_renderedEntityCount++;
+        } else {
+            m_culledEntityCount++;
         }
     }
 
-    std::sort(items.begin(), items.end(), [](const RenderItem& a, const RenderItem& b) {
+    std::sort(m_cachedRenderItems.begin(), m_cachedRenderItems.end(), [](const RenderItem& a, const RenderItem& b) {
         return a.zOrder < b.zOrder;
     });
 
-    for (const auto& item : items) {
+    for (const auto& item : m_cachedRenderItems) {
         if (item.entity) {
             item.entity->Render(renderer, assetMgr);
         } else if (item.envObj) {

@@ -51,9 +51,17 @@ public:
     // Metrics
     size_t GetRenderedTileCount() const { return m_renderedTileCount; }
     size_t GetRenderedObjectCount() const { return m_renderedObjectCount; }
+    size_t GetRenderedEntityCount() const { return m_renderedEntityCount; }
+    size_t GetCulledEntityCount() const { return m_culledEntityCount; }
     Rectangle GetVisibleWorldArea() const { return m_lastVisibleArea; }
 
 private:
+    struct RenderItem {
+        float zOrder = 0.0f;
+        const EnvironmentObject* envObj = nullptr;
+        entities::Entity* entity = nullptr;
+    };
+
     bool m_showGrid = false;
     bool m_showCollision = false;
     bool m_showBounds = true;
@@ -61,7 +69,13 @@ private:
 
     size_t m_renderedTileCount = 0;
     size_t m_renderedObjectCount = 0;
+    size_t m_renderedEntityCount = 0;
+    size_t m_culledEntityCount = 0;
     Rectangle m_lastVisibleArea{ 0.0f, 0.0f, 0.0f, 0.0f };
+
+    // Persistent scratch containers avoiding per-frame heap allocations
+    std::vector<const EnvironmentObject*> m_cachedVisibleObjs;
+    std::vector<RenderItem> m_cachedRenderItems;
 };
 
 } // namespace wildbound::world

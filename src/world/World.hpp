@@ -67,6 +67,7 @@ public:
 
     // Spatial object queries
     std::vector<const EnvironmentObject*> GetVisibleObjects(const Rectangle& visibleArea) const;
+    void GetVisibleObjects(const Rectangle& visibleArea, std::vector<const EnvironmentObject*>& outObjects) const;
 
     // World Items & Pickups (Phase 19)
     WorldItem* SpawnWorldItem(Vector2 position, items::ItemInstance item);
