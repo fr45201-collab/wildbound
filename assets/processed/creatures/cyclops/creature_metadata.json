@@ -1,0 +1,47 @@
+{
+  "id": "creature_cyclops_001",
+  "name": "Mountain Cyclops",
+  "category": "hostile_creature",
+  "biome": [
+    "mountain",
+    "caves"
+  ],
+  "sprite": "processed/creatures/cyclops/cyclops_spritesheet.png",
+  "spritesheet": "sheet_creature_cyclops",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 48,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32
+  },
+  "directions": [
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": "cyclops_idle_down",
+    "move": "cyclops_move_down",
+    "attack": "cyclops_attack_down",
+    "hurt": "cyclops_hurt_down",
+    "death": "cyclops_death_down"
+  },
+  "anchors": {
+    "ground": [
+      16,
+      44
+    ]
+  },
+  "collision": {
+    "width": 24.0,
+    "height": 28.0
+  },
+  "provenance": {
+    "creator": "Sparklin Labs",
+    "source": "Superpowers Asset Packs",
+    "license": "CC0 1.0 Universal",
+    "phase": 49
+  }
+}

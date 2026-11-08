@@ -1,0 +1,118 @@
+{
+  "id": "tex_biome_desert",
+  "file": "processed/biomes/desert/desert_tileset.png",
+  "tile_width": 32,
+  "tile_height": 32,
+  "columns": 8,
+  "rows": 8,
+  "total_tiles": 64,
+  "categories": {
+    "sand_plain": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "sand_dunes": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15
+    ],
+    "desert_rocks": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "desert_vegetation": [
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31
+    ],
+    "terracotta_ground": [
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39
+    ],
+    "sandstone_cliffs": [
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47
+    ],
+    "ancient_pillars": [
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55
+    ],
+    "ruin_paving": [
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63
+    ]
+  },
+  "collision_tiles": [
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    40,
+    41,
+    42,
+    43,
+    48,
+    49,
+    50,
+    51
+  ],
+  "provenance": {
+    "creator": "Kenney",
+    "source": "Kenney Roguelike/RPG Pack",
+    "license": "CC0 1.0 Universal",
+    "phase": 49
+  }
+}

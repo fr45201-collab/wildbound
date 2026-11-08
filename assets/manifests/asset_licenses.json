@@ -1,0 +1,427 @@
+{
+  "schema_version": "1.0",
+  "phase": 49,
+  "last_updated": "2026-11-08",
+  "description": "Wildbound Phase 49 External Asset Licensing Register",
+  "rules": {
+    "commercial_use_required": true,
+    "prohibited_licenses": [
+      "CC BY-NC",
+      "Personal Use Only",
+      "Proprietary Commercial"
+    ],
+    "attribution_compliance": "Must record author, license, and source URL in all manifests"
+  },
+  "assets": [
+    {
+      "id": "pilot_creature_slime_anim",
+      "category": "creature",
+      "name": "slime_animated",
+      "raw_file": "assets/external/superpowers/slime_animated_raw.png",
+      "format": "PNG",
+      "png_magic_valid": true,
+      "dimensions": {
+        "width": 705,
+        "height": 535
+      },
+      "color_mode": "RGBA",
+      "file_size_bytes": 15775,
+      "sha256": "4679b6cfeb276d828dca7f4c6e9032ed371b553af320cbeed05d639f7c90f9ee",
+      "has_alpha": true,
+      "license": "CC0 1.0 Universal",
+      "source_repo": "sparklinlabs/superpowers-asset-packs",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "pilot_creature_slime_mini",
+      "category": "creature",
+      "name": "slime_overworld",
+      "raw_file": "assets/external/superpowers/slime_raw.png",
+      "format": "PNG",
+      "png_magic_valid": true,
+      "dimensions": {
+        "width": 13,
+        "height": 6
+      },
+      "color_mode": "RGBA",
+      "file_size_bytes": 2953,
+      "sha256": "68776cd6a38b60f15c27e32fc891a701c6e0a6e6465c29e24414768ba20fc15e",
+      "has_alpha": true,
+      "license": "CC0 1.0 Universal",
+      "source_repo": "sparklinlabs/superpowers-asset-packs",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "pilot_env_desert_tilesheet",
+      "category": "environment",
+      "name": "kenney_roguelike_sheet",
+      "raw_file": "assets/external/kenney/roguelike_sheet_raw.png",
+      "format": "PNG",
+      "png_magic_valid": true,
+      "dimensions": {
+        "width": 968,
+        "height": 526
+      },
+      "color_mode": "RGBA",
+      "file_size_bytes": 94579,
+      "sha256": "808c8d734480bc949b284f3bcc252e87e1ee53b24178791a6838cce6a319c439",
+      "has_alpha": true,
+      "license": "CC0 1.0 Universal",
+      "source_repo": "KenneyNL / ETdoFresh mirror",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "pilot_ui_icon_potion",
+      "category": "ui_icons",
+      "name": "potion_ball",
+      "raw_file": "assets/external/game_icons/potion_ball_raw.png",
+      "format": "PNG",
+      "png_magic_valid": true,
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "P",
+      "file_size_bytes": 6971,
+      "sha256": "d1d0bc64dadf984f5fd5904ea0273de53b93006ba0f74e73bd5aaa41b94bad4b",
+      "has_alpha": true,
+      "license": "CC BY 3.0",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED",
+      "author": "Lorc"
+    },
+    {
+      "id": "pilot_ui_icon_heart",
+      "category": "ui_icons",
+      "name": "heart_drop",
+      "raw_file": "assets/external/game_icons/heart_drop_raw.png",
+      "format": "PNG",
+      "png_magic_valid": true,
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "P",
+      "file_size_bytes": 6388,
+      "sha256": "bc33c04b12da963ef930ae07541286092dfd8a0a6bd68ab94fa67f425ec53275",
+      "has_alpha": true,
+      "license": "CC BY 3.0",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED",
+      "author": "Lorc"
+    },
+    {
+      "id": "pilot_ui_icon_sword",
+      "category": "ui_icons",
+      "name": "broadsword",
+      "raw_file": "assets/external/game_icons/broadsword_raw.png",
+      "format": "PNG",
+      "png_magic_valid": true,
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "P",
+      "file_size_bytes": 4520,
+      "sha256": "f549bbc129ac711b3608212161f7c0a1bd9ac3d3585c111da83bf230ba351ddf",
+      "has_alpha": true,
+      "license": "CC BY 3.0",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED",
+      "author": "Lorc"
+    },
+    {
+      "id": "pilot_ui_icon_shield",
+      "category": "ui_icons",
+      "name": "shield_bash",
+      "raw_file": "assets/external/game_icons/shield_bash_raw.png",
+      "format": "PNG",
+      "png_magic_valid": true,
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "P",
+      "file_size_bytes": 7962,
+      "sha256": "c75692f371a80a4a856464f281b4cb51ffe5446ccfef93fe47ffbbf101b28e31",
+      "has_alpha": true,
+      "license": "CC BY 3.0",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED",
+      "author": "Delapouite"
+    },
+    {
+      "id": "expansion_env_snow_tilesheet",
+      "category": "environment",
+      "name": "snow_tileset",
+      "raw_file": "assets/external/kenney/roguelike_sheet_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 256,
+        "height": 256
+      },
+      "color_mode": "RGBA",
+      "license": "CC0 1.0 Universal",
+      "source_repo": "KenneyNL / ETdoFresh mirror",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_env_swamp_tilesheet",
+      "category": "environment",
+      "name": "swamp_tileset",
+      "raw_file": "assets/external/kenney/roguelike_sheet_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 256,
+        "height": 256
+      },
+      "color_mode": "RGBA",
+      "license": "CC0 1.0 Universal",
+      "source_repo": "KenneyNL / ETdoFresh mirror",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_env_mountain_tilesheet",
+      "category": "environment",
+      "name": "mountain_tileset",
+      "raw_file": "assets/external/kenney/roguelike_sheet_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 256,
+        "height": 256
+      },
+      "color_mode": "RGBA",
+      "license": "CC0 1.0 Universal",
+      "source_repo": "KenneyNL / ETdoFresh mirror",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_creature_snake",
+      "category": "creature",
+      "name": "marsh_viper",
+      "raw_file": "assets/external/superpowers/snake_animated_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 128,
+        "height": 256
+      },
+      "color_mode": "RGBA",
+      "license": "CC0 1.0 Universal",
+      "source_repo": "sparklinlabs/superpowers-asset-packs",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_creature_cyclops",
+      "category": "creature",
+      "name": "mountain_cyclops",
+      "raw_file": "assets/external/superpowers/cyclops_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 128,
+        "height": 384
+      },
+      "color_mode": "RGBA",
+      "license": "CC0 1.0 Universal",
+      "source_repo": "sparklinlabs/superpowers-asset-packs",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_prop_chest",
+      "category": "prop",
+      "name": "treasure_chest",
+      "raw_file": "assets/external/superpowers/chest_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 96,
+        "height": 32
+      },
+      "color_mode": "RGBA",
+      "license": "CC0 1.0 Universal",
+      "source_repo": "sparklinlabs/superpowers-asset-packs",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_bow",
+      "category": "ui_icons",
+      "name": "bow_arrow",
+      "raw_file": "assets/external/game_icons/bow_arrow_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Delapouite",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_axe",
+      "category": "ui_icons",
+      "name": "battle_axe",
+      "raw_file": "assets/external/game_icons/battle_axe_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Lorc",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_dagger",
+      "category": "ui_icons",
+      "name": "stiletto",
+      "raw_file": "assets/external/game_icons/stiletto_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Lorc",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_staff",
+      "category": "ui_icons",
+      "name": "wizard_staff",
+      "raw_file": "assets/external/game_icons/wizard_staff_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Lorc",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_helmet",
+      "category": "ui_icons",
+      "name": "crested_helmet",
+      "raw_file": "assets/external/game_icons/crested_helmet_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Lorc",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_armor",
+      "category": "ui_icons",
+      "name": "chest_armor",
+      "raw_file": "assets/external/game_icons/chest_armor_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Delapouite",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_gem",
+      "category": "ui_icons",
+      "name": "crystal_growth",
+      "raw_file": "assets/external/game_icons/crystal_growth_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Lorc",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_herb",
+      "category": "ui_icons",
+      "name": "sprout",
+      "raw_file": "assets/external/game_icons/sprout_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Lorc",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_coins",
+      "category": "ui_icons",
+      "name": "two_coins",
+      "raw_file": "assets/external/game_icons/two_coins_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Delapouite",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    },
+    {
+      "id": "expansion_ui_icon_rune",
+      "category": "ui_icons",
+      "name": "rune_stone",
+      "raw_file": "assets/external/game_icons/rune_stone_raw.png",
+      "format": "PNG",
+      "dimensions": {
+        "width": 512,
+        "height": 512
+      },
+      "color_mode": "RGBA",
+      "license": "CC BY 3.0",
+      "author": "Lorc",
+      "source_repo": "game-icons.net",
+      "commercial_use": true,
+      "status": "VALIDATED"
+    }
+  ]
+}

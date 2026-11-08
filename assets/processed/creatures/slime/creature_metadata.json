@@ -1,0 +1,48 @@
+{
+  "id": "creature_slime_001",
+  "name": "Marsh Slime",
+  "category": "hostile_creature",
+  "biome": [
+    "swamp",
+    "caves",
+    "forest"
+  ],
+  "sprite": "processed/creatures/slime/slime_spritesheet.png",
+  "spritesheet": "sheet_creature_slime",
+  "dimensions": {
+    "frame_width": 32,
+    "frame_height": 32,
+    "columns": 4,
+    "rows": 8,
+    "frame_count": 32
+  },
+  "directions": [
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "animations": {
+    "idle": "slime_idle_down",
+    "move": "slime_move_down",
+    "attack": "slime_attack_down",
+    "hurt": "slime_hurt_down",
+    "death": "slime_death_down"
+  },
+  "anchors": {
+    "ground": [
+      16,
+      28
+    ]
+  },
+  "collision": {
+    "width": 18.0,
+    "height": 14.0
+  },
+  "provenance": {
+    "creator": "Sparklin Labs",
+    "source": "Superpowers Asset Packs (medieval-fantasy/rpg-battle-system)",
+    "license": "CC0 1.0 Universal",
+    "phase": 49
+  }
+}

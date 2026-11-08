@@ -373,7 +373,52 @@ Explore the documentation for information about:
 
 Wildbound is an ongoing game-development project. New gameplay mechanics, environmental systems, world features, and technical improvements are continuously being developed and refined.
 
-### 🌟 Recent Engineering Updates — Phase 46: Lua Integration & Scripting Validation
+### 🌟 Recent Engineering Updates — Phase 49: Advanced Asset Acquisition, Processing & Rendering Integration
+
+Wildbound's asset ecosystem has been expanded and unified across all biomes, creatures, and UI systems:
+
+1. **Complete Biome Expansion ($32 \times 32$ World Tiles)**:
+   - **Desert Biome** ([`assets/processed/biomes/desert/desert_tileset.png`](assets/processed/biomes/desert/desert_tileset.png)): 64 tiles spanning sand plains, dunes, sandstone rocks, cacti, terracotta earth, and ancient ruins.
+   - **Snow Biome** ([`assets/processed/biomes/snow/snow_tileset.png`](assets/processed/biomes/snow/snow_tileset.png)): 64 tiles spanning plain snow, ice drifts, frozen ice sheets, snow boulders, winter foliage, and glacial spires.
+   - **Swamp Biome** ([`assets/processed/biomes/swamp/swamp_tileset.png`](assets/processed/biomes/swamp/swamp_tileset.png)): 64 tiles spanning mud earth, murky water, reeds/grass, mossy rocks, dead cypress trees, and mire banks.
+   - **Mountain Biome** ([`assets/processed/biomes/mountain/mountain_tileset.png`](assets/processed/biomes/mountain/mountain_tileset.png)): 64 tiles spanning highland gravel, rocky terrain, cliff walls, mountain boulders, and alpine flora.
+
+2. **Expanded Creature Roster & Combat Spritesheets**:
+   - **Marsh Slime (`creature_slime_001`)**: $32 \times 32$ multi-directional spritesheet with 8-directional bounce, attack, flinch, and death animations.
+   - **Marsh Viper (`creature_snake_001`)**: $32 \times 32$ fast slithering predator with strike, hurt, and death animation sets.
+   - **Mountain Cyclops (`creature_cyclops_001`)**: $32 \times 48$ heavy brute humanoid with lumbering stride and slam attack cycles.
+
+3. **Interactive Environmental Props**:
+   - **Treasure Chest (`prop_chest_001`)**: Multi-frame animated interactive loot container ($32 \times 32$ frames: Closed, Opening, Open).
+
+4. **Combat Equipment & Item Icon System**:
+   - 10 production icon pairs in dual $64 \times 64$ (Inventory/Wardrobe cards) and $32 \times 32$ (HUD quickslot) formats:
+     - **Weapons**: Hunter Bow, Berserker Greataxe, Assassin Stiletto, Arcane Wizard Staff, Broadsword.
+     - **Armor**: Knight Crested Helm, Steel Breastplate, Round Shield.
+     - **Consumables & Magic**: Potion Ball, Heart Drop, Healing Sprout, Mana Crystal Gem, Gold Sovereigns, Ancient Rune.
+
+5. **Strict Asset Integrity & Master Manifest Integration**:
+   - **Non-Negotiable Invariance**: Zero modifications or deletions of existing game assets.
+   - **100% Commercial Compliance**: All external assets verified under CC0 1.0 Universal or CC BY 3.0 in [`asset_licenses.json`](assets/manifests/asset_licenses.json).
+   - **Master Manifest Expansion**: Appended 40 new verified assets to [`asset_manifest.json`](assets/manifests/asset_manifest.json), bringing the master catalog to **701 registered assets**.
+
+---
+
+### 🛡️ Phase 48: Multiplayer Load & Stress Validation
+- Concurrent client scalability validated from 2 to 32 players.
+- Server tick stability verified under high-frequency updates, packet-loss simulation, and disconnect recovery.
+- Operational thresholds documented in [`docs/multiplayer/phase_48_operational_limits.md`](docs/multiplayer/phase_48_operational_limits.md).
+
+---
+
+### ⚡ Phase 47: Optimization, Performance Engineering & Security
+- Spatial partitioning acceleration for collision indexing and entity queries.
+- Packet verification, anti-teleport bounds, and server-authoritative combat validation.
+- Zero-cost memory allocation optimizations across dedicated server hot loops.
+
+---
+
+### 🌟 Phase 46: Lua Integration & Scripting Validation
 
 The C++20 engine and Lua 5.4 scripting system were fully integrated, hardened, and validated:
 

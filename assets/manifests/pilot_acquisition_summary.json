@@ -1,0 +1,98 @@
+{
+  "slime": {
+    "name": "slime",
+    "category": "creature",
+    "path": "assets/external/superpowers/slime_raw.png",
+    "format": "PNG",
+    "dimensions": [
+      13,
+      6
+    ],
+    "mode": "RGBA",
+    "file_size_bytes": 2953,
+    "sha256": "68776cd6a38b60f15c27e32fc891a701c6e0a6e6465c29e24414768ba20fc15e",
+    "has_alpha": true,
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  "desert_tilesheet": {
+    "name": "desert_tilesheet",
+    "category": "environment",
+    "path": "assets/external/kenney/roguelike_sheet_raw.png",
+    "format": "PNG",
+    "dimensions": [
+      968,
+      526
+    ],
+    "mode": "RGBA",
+    "file_size_bytes": 94579,
+    "sha256": "808c8d734480bc949b284f3bcc252e87e1ee53b24178791a6838cce6a319c439",
+    "has_alpha": true,
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  "potion_ball": {
+    "name": "potion_ball",
+    "category": "ui_icons",
+    "path": "assets/external/game_icons/potion_ball_raw.png",
+    "format": "PNG",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "P",
+    "file_size_bytes": 6971,
+    "sha256": "d1d0bc64dadf984f5fd5904ea0273de53b93006ba0f74e73bd5aaa41b94bad4b",
+    "has_alpha": true,
+    "alpha_extrema": null
+  },
+  "heart_drop": {
+    "name": "heart_drop",
+    "category": "ui_icons",
+    "path": "assets/external/game_icons/heart_drop_raw.png",
+    "format": "PNG",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "P",
+    "file_size_bytes": 6388,
+    "sha256": "bc33c04b12da963ef930ae07541286092dfd8a0a6bd68ab94fa67f425ec53275",
+    "has_alpha": true,
+    "alpha_extrema": null
+  },
+  "broadsword": {
+    "name": "broadsword",
+    "category": "ui_icons",
+    "path": "assets/external/game_icons/broadsword_raw.png",
+    "format": "PNG",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "P",
+    "file_size_bytes": 4520,
+    "sha256": "f549bbc129ac711b3608212161f7c0a1bd9ac3d3585c111da83bf230ba351ddf",
+    "has_alpha": true,
+    "alpha_extrema": null
+  },
+  "shield_bash": {
+    "name": "shield_bash",
+    "category": "ui_icons",
+    "path": "assets/external/game_icons/shield_bash_raw.png",
+    "format": "PNG",
+    "dimensions": [
+      512,
+      512
+    ],
+    "mode": "P",
+    "file_size_bytes": 7962,
+    "sha256": "c75692f371a80a4a856464f281b4cb51ffe5446ccfef93fe47ffbbf101b28e31",
+    "has_alpha": true,
+    "alpha_extrema": null
+  }
+}

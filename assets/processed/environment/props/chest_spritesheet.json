@@ -1,0 +1,9 @@
+{
+  "id": "sheet_prop_chest",
+  "texture": "processed/environment/props/chest_spritesheet.png",
+  "frame_width": 32,
+  "frame_height": 32,
+  "columns": 3,
+  "rows": 1,
+  "frame_count": 3
+}

@@ -1,0 +1,100 @@
+{
+  "animations": [
+    {
+      "animation": "slime_move_down",
+      "spritesheet": "sheet_creature_slime",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "animation": "slime_move_up",
+      "spritesheet": "sheet_creature_slime",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    {
+      "animation": "slime_move_left",
+      "spritesheet": "sheet_creature_slime",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        8,
+        9,
+        10,
+        11
+      ]
+    },
+    {
+      "animation": "slime_move_right",
+      "spritesheet": "sheet_creature_slime",
+      "frame_duration": 0.12,
+      "loop": true,
+      "frames": [
+        12,
+        13,
+        14,
+        15
+      ]
+    },
+    {
+      "animation": "slime_idle_down",
+      "spritesheet": "sheet_creature_slime",
+      "frame_duration": 0.15,
+      "loop": true,
+      "frames": [
+        16,
+        17,
+        18,
+        19
+      ]
+    },
+    {
+      "animation": "slime_attack_down",
+      "spritesheet": "sheet_creature_slime",
+      "frame_duration": 0.1,
+      "loop": false,
+      "frames": [
+        20,
+        21,
+        22,
+        23
+      ]
+    },
+    {
+      "animation": "slime_hurt_down",
+      "spritesheet": "sheet_creature_slime",
+      "frame_duration": 0.1,
+      "loop": false,
+      "frames": [
+        24,
+        25,
+        26,
+        27
+      ]
+    },
+    {
+      "animation": "slime_death_down",
+      "spritesheet": "sheet_creature_slime",
+      "frame_duration": 0.12,
+      "loop": false,
+      "frames": [
+        28,
+        29,
+        30,
+        31
+      ]
+    }
+  ]
+}
