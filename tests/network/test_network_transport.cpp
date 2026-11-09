@@ -18,10 +18,62 @@
 #include "network/ENetClient.hpp"
 #include "network/NetworkManager.hpp"
 
+#ifdef assert
+#undef assert
+#endif
+#define TEST_ASSERT(cond, msg) \
+    do { \
+        if (!(cond)) { \
+            std::cerr << "\n[TEST FAILED] " << msg << " (" << #cond << ") at line " << __LINE__ << std::endl; \
+            std::exit(1); \
+        } \
+    } while (0)
+#define assert(cond) TEST_ASSERT(cond, "Assertion verified")
+
 using namespace wildbound::network;
 
 // Helper: choose unique local test port to avoid collision
 static constexpr uint16_t BASE_TEST_PORT = 17777;
+
+// Helper: deadline-based network pumping with substep accumulator preserving total elapsed wall-clock time (DEF-009)
+template <typename Predicate>
+static bool PumpUntil(std::chrono::milliseconds timeout, Predicate pred,
+                      ENetClient* client = nullptr, ENetServer* server = nullptr,
+                      std::chrono::milliseconds sleepInterval = std::chrono::milliseconds(5)) {
+    const auto start = std::chrono::steady_clock::now();
+    const auto deadline = start + timeout;
+    auto lastTick = start;
+
+    while (!pred()) {
+        const auto now = std::chrono::steady_clock::now();
+        float elapsed = std::chrono::duration<float>(now - lastTick).count();
+        lastTick = now;
+
+        // Bounded substep accumulator: process simulation in at most 16ms slices
+        // while strictly preserving every microsecond of total elapsed wall-clock duration
+        constexpr float SUBSTEP_SLICE = 0.016f;
+        while (elapsed > SUBSTEP_SLICE) {
+            if (client) client->Update(SUBSTEP_SLICE);
+            if (server) server->Update(SUBSTEP_SLICE);
+            elapsed -= SUBSTEP_SLICE;
+            if (pred()) return true;
+        }
+        if (elapsed > 0.0f) {
+            if (client) client->Update(elapsed);
+            if (server) server->Update(elapsed);
+            if (pred()) return true;
+        }
+
+        if (now >= deadline) {
+            break;
+        }
+
+        if (sleepInterval.count() > 0) {
+            std::this_thread::sleep_for(sleepInterval);
+        }
+    }
+    return pred();
+}
 
 // ============================================================================
 // 1. ENet Lifecycle & Ref-Counting Test
@@ -222,22 +274,21 @@ static void TestLocalhostConnectionLifecycle() {
 
     assert(client.Connect("127.0.0.1", port, 2000));
 
-    for (int i = 0; i < 50 && (!clientConnected || !serverConnected); ++i) {
-        client.Update(0.016f);
-        server.Update(0.016f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    // Deadline-based polling respecting configured 2000ms timeout (DEF-009)
+    bool connected = PumpUntil(std::chrono::milliseconds(2000), [&]() {
+        return clientConnected && serverConnected;
+    }, &client, &server);
 
+    assert(connected);
     assert(clientConnected);
     assert(serverConnected);
     assert(client.IsConnected());
     assert(server.GetConnectedCount() == 1);
 
     client.Disconnect();
-    for (int i = 0; i < 20; ++i) {
-        server.Update(0.016f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    }
+    PumpUntil(std::chrono::milliseconds(1000), [&]() {
+        return server.GetConnectedCount() == 0;
+    }, nullptr, &server);
     server.Stop();
 
     std::cout << "  -> Localhost client connect, server accept, and clean disconnect verified." << std::endl;
@@ -290,12 +341,11 @@ static void TestReliableMessagingPingPong() {
 
     assert(client.Connect("127.0.0.1", port, 2000));
 
-    // Wait for connect
-    for (int i = 0; i < 50 && !client.IsConnected(); ++i) {
-        client.Update(0.016f);
-        server.Update(0.016f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    // Wait for connect respecting 2000ms configured timeout
+    bool connected = PumpUntil(std::chrono::milliseconds(2000), [&]() {
+        return client.IsConnected();
+    }, &client, &server);
+    assert(connected);
     assert(client.IsConnected());
 
     // Client sends "ClientPing"
@@ -317,16 +367,18 @@ static void TestReliableMessagingPingPong() {
                        pingWriter.GetData(), pingWriter.GetSize()));
 
     // Pump updates until ping-pong completes
-    for (int i = 0; i < 50 && (receivedByServer.empty() || receivedByClient.empty()); ++i) {
-        client.Update(0.016f);
-        server.Update(0.016f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    bool pingPongDone = PumpUntil(std::chrono::milliseconds(2000), [&]() {
+        return !receivedByServer.empty() && !receivedByClient.empty();
+    }, &client, &server);
+    assert(pingPongDone);
 
     assert(receivedByServer == "ClientPing");
     assert(receivedByClient == "ServerPong");
 
     client.Disconnect();
+    PumpUntil(std::chrono::milliseconds(1000), [&]() {
+        return server.GetConnectedCount() == 0;
+    }, nullptr, &server);
     server.Stop();
 
     std::cout << "  -> Client-to-server reliable send and server-to-client reply verified." << std::endl;
@@ -356,11 +408,10 @@ static void TestUnreliableSequencedMessaging() {
     ENetClient client;
     assert(client.Connect("127.0.0.1", port, 2000));
 
-    for (int i = 0; i < 50 && !client.IsConnected(); ++i) {
-        client.Update(0.016f);
-        server.Update(0.016f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    bool connected = PumpUntil(std::chrono::milliseconds(2000), [&]() {
+        return client.IsConnected();
+    }, &client, &server);
+    assert(connected);
     assert(client.IsConnected());
 
     // Send 3 sequential input packets on Channel 2 (PlayerInput)
@@ -391,15 +442,16 @@ static void TestUnreliableSequencedMessaging() {
                     writer.GetData(), writer.GetSize());
     }
 
-    for (int i = 0; i < 50 && lastReceivedSeq < 3; ++i) {
-        client.Update(0.016f);
-        server.Update(0.016f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
-
+    bool seqDone = PumpUntil(std::chrono::milliseconds(2000), [&]() {
+        return lastReceivedSeq == 3;
+    }, &client, &server);
+    assert(seqDone);
     assert(lastReceivedSeq == 3);
 
     client.Disconnect();
+    PumpUntil(std::chrono::milliseconds(1000), [&]() {
+        return server.GetConnectedCount() == 0;
+    }, nullptr, &server);
     server.Stop();
 
     std::cout << "  -> High-frequency unreliable sequenced input streaming verified." << std::endl;
@@ -424,11 +476,10 @@ static void TestMultiChannelRouting() {
 
     ENetClient client;
     assert(client.Connect("127.0.0.1", port, 2000));
-    for (int i = 0; i < 50 && !client.IsConnected(); ++i) {
-        client.Update(0.016f);
-        server.Update(0.016f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    bool connected = PumpUntil(std::chrono::milliseconds(2000), [&]() {
+        return client.IsConnected();
+    }, &client, &server);
+    assert(connected);
     assert(client.IsConnected());
 
     // Send on Channel 1, 2, 3, 4
@@ -457,11 +508,10 @@ static void TestMultiChannelRouting() {
         client.Send(ch, mode, writer.GetData(), writer.GetSize());
     }
 
-    for (int i = 0; i < 50 && receivedChannels.size() < 4; ++i) {
-        client.Update(0.016f);
-        server.Update(0.016f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-    }
+    bool channelsReceived = PumpUntil(std::chrono::milliseconds(2000), [&]() {
+        return receivedChannels.size() >= 4;
+    }, &client, &server);
+    assert(channelsReceived);
 
     assert(receivedChannels.size() == 4);
     assert(receivedChannels[0] == ChannelType::ReliableEvents);
@@ -470,6 +520,9 @@ static void TestMultiChannelRouting() {
     assert(receivedChannels[3] == ChannelType::MatchState);
 
     client.Disconnect();
+    PumpUntil(std::chrono::milliseconds(1000), [&]() {
+        return server.GetConnectedCount() == 0;
+    }, nullptr, &server);
     server.Stop();
 
     std::cout << "  -> Channel isolation and independent multi-channel routing verified." << std::endl;
@@ -479,7 +532,7 @@ static void TestMultiChannelRouting() {
 // 9. Connection Timeout Handling Test
 // ============================================================================
 static void TestConnectionTimeout() {
-    std::cout << "[TEST] 9. Connection Timeout Handling..." << std::endl;
+    std::cout << "[TEST] 9. Connection Timeout Handling (300ms)..." << std::endl;
 
     // Connect to unassigned port (e.g. 59999) with 300 ms timeout
     ENetClient client;
@@ -490,19 +543,106 @@ static void TestConnectionTimeout() {
         }
     });
 
+    const auto start = std::chrono::steady_clock::now();
     assert(client.Connect("127.0.0.1", 59999, 300));
     assert(client.GetState() == ConnectionState::Connecting);
 
-    for (int i = 0; i < 40 && !sawTimeout; ++i) {
-        client.Update(0.020f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(15));
-    }
+    bool timedOut = PumpUntil(std::chrono::milliseconds(1000), [&]() {
+        return sawTimeout;
+    }, &client, nullptr);
 
+    const auto elapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::steady_clock::now() - start).count();
+
+    assert(timedOut);
     assert(sawTimeout);
     assert(client.GetState() == ConnectionState::TimedOut);
+    assert(elapsedMs >= 270); // Timeout did not expire prematurely
     client.Disconnect();
 
-    std::cout << "  -> Inactive host timeout detection and graceful state transition verified." << std::endl;
+    std::cout << "  -> Inactive host timeout detection verified in " << elapsedMs << "ms." << std::endl;
+}
+
+// ============================================================================
+// 9B. Configured 2,000ms Timeout Wall-Clock Fidelity Test (DEF-009)
+// ============================================================================
+static void TestConfiguredTimeoutFidelity() {
+    std::cout << "[TEST] 9B. Configured 2,000ms Timeout Wall-Clock Fidelity..." << std::endl;
+
+    // Connect to unassigned port (e.g. 59998) with configured 2000 ms timeout
+    ENetClient client;
+    bool sawTimeout = false;
+    client.SetEventCallback([&](const ConnectionEvent& evt) {
+        if (evt.type == ConnectionEventType::ConnectionTimedOut) {
+            sawTimeout = true;
+        }
+    });
+
+    const auto start = std::chrono::steady_clock::now();
+    assert(client.Connect("127.0.0.1", 59998, 2000));
+    assert(client.GetState() == ConnectionState::Connecting);
+
+    // Pump using corrected real-time elapsed dt in PumpUntil
+    bool timedOut = PumpUntil(std::chrono::milliseconds(3000), [&]() {
+        return sawTimeout;
+    }, &client, nullptr);
+
+    const auto elapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::steady_clock::now() - start).count();
+
+    assert(timedOut);
+    assert(sawTimeout);
+    assert(client.GetState() == ConnectionState::TimedOut);
+
+    // Verify configured 2,000 ms timeout does not expire substantially earlier
+    // (Under old accelerated 2.67x clock, it expired at ~750ms).
+    // With real elapsed delta dt, it must endure for >= 1,900 ms of real wall-clock time!
+    assert(elapsedMs >= 1950);
+    assert(elapsedMs <= 2500);
+
+    client.Disconnect();
+    std::cout << "  -> Configured 2,000ms timeout verified to persist for " << elapsedMs
+              << "ms (fidelity preserved, zero premature expiration)." << std::endl;
+}
+
+// ============================================================================
+// 9C. Delayed Scheduling / Long Iteration Interval Timeout Test (DEF-009)
+// ============================================================================
+static void TestDelayedSchedulingTimeout() {
+    std::cout << "[TEST] 9C. Delayed Scheduling & Long Iteration Interval Fidelity..." << std::endl;
+
+    // Connect to unassigned port (e.g. 59997) with configured 500 ms timeout
+    ENetClient client;
+    bool sawTimeout = false;
+    client.SetEventCallback([&](const ConnectionEvent& evt) {
+        if (evt.type == ConnectionEventType::ConnectionTimedOut) {
+            sawTimeout = true;
+        }
+    });
+
+    const auto start = std::chrono::steady_clock::now();
+    assert(client.Connect("127.0.0.1", 59997, 500));
+    assert(client.GetState() == ConnectionState::Connecting);
+
+    // Pump with large sleepInterval (80ms per tick) simulating delayed scheduling / system hitches
+    bool timedOut = PumpUntil(std::chrono::milliseconds(1500), [&]() {
+        return sawTimeout;
+    }, &client, nullptr, std::chrono::milliseconds(80));
+
+    const auto elapsedMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::steady_clock::now() - start).count();
+
+    assert(timedOut);
+    assert(sawTimeout);
+    assert(client.GetState() == ConnectionState::TimedOut);
+
+    // Verify accumulator preserved total elapsed time: must not time out early or drop intervals
+    assert(elapsedMs >= 480);
+    assert(elapsedMs <= 800);
+
+    client.Disconnect();
+    std::cout << "  -> Delayed scheduling timeout (500ms configured with 80ms hitches) verified in "
+              << elapsedMs << "ms (total duration strictly conserved)." << std::endl;
 }
 
 // ============================================================================
@@ -526,19 +666,17 @@ static void TestRapidConnectDisconnectStress() {
 
         assert(client.Connect("127.0.0.1", port, 2000));
 
-        for (int i = 0; i < 30 && !connected; ++i) {
-            client.Update(0.016f);
-            server.Update(0.016f);
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        }
+        bool ok = PumpUntil(std::chrono::milliseconds(2000), [&]() {
+            return connected;
+        }, &client, &server);
+        assert(ok);
         assert(connected);
         assert(server.GetConnectedCount() == 1);
 
         client.Disconnect();
-        for (int i = 0; i < 20; ++i) {
-            server.Update(0.016f);
-            std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        }
+        PumpUntil(std::chrono::milliseconds(1000), [&]() {
+            return server.GetConnectedCount() == 0;
+        }, nullptr, &server);
         assert(server.GetConnectedCount() == 0);
     }
 
@@ -563,10 +701,12 @@ int main() {
     TestUnreliableSequencedMessaging();
     TestMultiChannelRouting();
     TestConnectionTimeout();
+    TestConfiguredTimeoutFidelity();
+    TestDelayedSchedulingTimeout();
     TestRapidConnectDisconnectStress();
 
     std::cout << "==========================================================" << std::endl;
-    std::cout << "ALL 10 PHASE 36 TRANSPORT TEST SUITES PASSED (100% OK)" << std::endl;
+    std::cout << "ALL 12 PHASE 36 TRANSPORT TEST SUITES PASSED (100% OK)" << std::endl;
     std::cout << "==========================================================" << std::endl;
 
     return 0;

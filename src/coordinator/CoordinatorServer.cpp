@@ -574,6 +574,10 @@ void CoordinatorServer::HandleMatchmakingQueue(network::ClientId cid, network::B
     auto* party = m_partyMgr.GetParty(pid);
     if (!party) return;
 
+    if (party->IsLeader(s->sessionId) && party->gameMode != req.gameMode) {
+        m_partyMgr.SetPartyGameMode(pid, s->sessionId, req.gameMode);
+    }
+
     if (!party->IsLeader(s->sessionId)) {
         MsgMatchmakingQueueResponse resp{ .success = false, .gameMode = req.gameMode, .errorMessage = "Only party leader can queue" };
         network::ByteStreamWriter w; resp.Serialize(w);

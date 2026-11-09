@@ -26,6 +26,7 @@ public:
     ~MatchResultsOutbox();
 
     void Initialize();
+    void Shutdown();
     void EnqueueMatchResult(const std::string& matchId, const nlohmann::json& matchPayload);
     void Update(float dt);
 

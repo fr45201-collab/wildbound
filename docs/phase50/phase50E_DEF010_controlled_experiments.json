@@ -1,0 +1,53 @@
+{
+  "phase": "Phase 50E",
+  "investigation_target": "DEF-010 MultiplayerLoadTest Controlled Experiments",
+  "timestamp": "2026-11-08T20:57:00+05:30",
+  "final_root_cause_classification": "CONFIRMED_ROOT_CAUSE",
+  "root_cause_description": "Asynchronous detached-thread use-after-free in HttpClient::SendRequestAsync triggered by MatchResultsOutbox disk recovery during rapid DedicatedServer cycling",
+  "defect_disposition": "OPEN",
+  "stage_5_blocked": true,
+  "experiments": {
+    "experiment_a_teardown_order": {
+      "hypothesis": "Client destruction preceding server shutdown causes peer flush to closed socket handles",
+      "variant_a_existing_order": "FAIL (100% crash rate when chained after DedicatedServerTest, exit 0xc0000409)",
+      "variant_b_server_first": "FAIL (100% crash rate, crashed in Section 2 with LatBot_4, exit 0xc0000409)",
+      "conclusion": "REFUTED_AS_SOLE_CAUSE"
+    },
+    "experiment_b_port_recycling": {
+      "hypothesis": "Rapid reuse of UDP port 17777 causes Winsock address binding collisions and kernel buffer leaks",
+      "baseline_reused_port_17777": "FAIL (crashed in Section 7 at Client #12)",
+      "variant_dynamic_sequential_ports": "FAIL (crashed in Section 7 at Client #12 on port 18022)",
+      "conclusion": "REFUTED_AS_SOLE_CAUSE"
+    },
+    "experiment_c_test_ordering_and_outbox_leakage": {
+      "standalone_multiplayer_load": "PASS (5/5 runs, 100% pass rate)",
+      "after_network_transport_test": "PASS (1/1 runs, 100% pass rate)",
+      "after_dedicated_server_test_with_outbox_file": "FAIL (2/2 runs, 100% crash rate with 0xc0000409)",
+      "after_dedicated_server_test_outbox_file_removed": "PASS (1/1 runs, 100% pass rate)",
+      "full_ctest_release_outbox_file_removed": "PASS (48/48 tests, 100% pass rate, 42.44s)",
+      "full_ctest_debug_outbox_file_removed": "PASS (48/48 tests, 100% pass rate, 79.33s)",
+      "conclusion": "CONFIRMED_MECHANISM"
+    }
+  },
+  "root_cause_forensics": {
+    "faulting_subsystem": "src/network/http/HttpClient.cpp",
+    "mechanism": "std::thread(...).detach() in SendRequestAsync captures 'this' without lifetime binding to HttpClient destructor",
+    "trigger_condition": "MatchResultsOutbox discovers pending JSON file written by DedicatedServerTest, repeatedly enqueuing HTTP requests on 25+ short-lived DedicatedServer instances",
+    "exception_signature": {
+      "release_code": "0xc0000409 (STATUS_STACK_BUFFER_OVERRUN via __fastfail)",
+      "debug_code": "SEGFAULT (0xc0000005 Access Violation)"
+    }
+  },
+  "recommended_production_scope": [
+    "Replace detached std::thread in HttpClient with tracked/joined thread pool or std::jthread",
+    "Implement cancellation / joining in HttpClient::~HttpClient()",
+    "Isolate outbox directory in test execution to temporary sandbox paths"
+  ],
+  "change_control": {
+    "experimental_code_reverted": true,
+    "unapproved_production_changes": false,
+    "concurrency_reduced": false,
+    "stage_5_started": false
+  }
+}
+

@@ -155,15 +155,24 @@ bool AssetRegistry::LoadManifest(const std::string& manifestPath) {
         }
 
         size_t count = 0;
+        size_t rejectedCount = 0;
         for (const auto& item : root["assets"]) {
             AssetMetadata meta = AssetMetadata::FromJson(item);
             if (RegisterAsset(meta)) {
                 count++;
+            } else {
+                rejectedCount++;
             }
         }
 
-        Logger::Info("ASSET_REGISTRY", "Loaded manifest (" + manifestPath + ") with " +
-                     std::to_string(count) + " assets registered.");
+        std::string logMsg = "Loaded manifest (" + manifestPath + ") with " +
+                             std::to_string(count) + " assets registered.";
+        if (rejectedCount > 0) {
+            logMsg += " (" + std::to_string(rejectedCount) + " rejected)";
+            Logger::Warn("ASSET_REGISTRY", logMsg);
+        } else {
+            Logger::Info("ASSET_REGISTRY", logMsg);
+        }
         return true;
     }
     catch (const std::exception& ex) {

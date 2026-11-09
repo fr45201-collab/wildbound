@@ -1,0 +1,102 @@
+{
+  "audit_version": "1.0.0",
+  "phase": "50A",
+  "audit_type": "STRICT_AUDIT_ONLY",
+  "timestamp": "2026-11-08T15:10:00Z",
+  "repository": {
+    "root": "C:/dev/Wildbound",
+    "branch": "main",
+    "head_commit": "e9630150bba720c48eccc5e7d537bc3e8385c84f",
+    "project_version": "0.6.0",
+    "composition": {
+      "total_files": 1168,
+      "total_lines": 308889,
+      "breakdown": {
+        "json": { "files": 541, "lines": 204106 },
+        "cpp_source": { "files": 230, "lines": 54379 },
+        "cpp_header": { "files": 240, "lines": 17489 },
+        "python_tools": { "files": 62, "lines": 17778 },
+        "go_source": { "files": 65, "lines": 10034 },
+        "cmake_text": { "files": 6, "lines": 3378 },
+        "yaml_config": { "files": 1, "lines": 765 },
+        "lua_scripts": { "files": 13, "lines": 494 },
+        "sql_migrations": { "files": 10, "lines": 466 }
+      }
+    }
+  },
+  "asset_management": {
+    "manifest_path": "assets/manifests/asset_manifest.json",
+    "total_registered_assets": 701,
+    "phase49_new_assets": 40,
+    "missing_disk_files": 0,
+    "license_register_records": 23,
+    "licenses": {
+      "cc0": 9,
+      "cc_by_3_0": 14
+    },
+    "zero_destruction_verified": true
+  },
+  "test_execution_summary": {
+    "ctest_release": {
+      "total": 48,
+      "passed": 43,
+      "failed": 2,
+      "not_run_unbuilt": 3,
+      "pass_rate_percentage": 89.58,
+      "runtime_seconds": 24.96
+    },
+    "ctest_debug": {
+      "total": 48,
+      "passed": 37,
+      "failed": 6,
+      "not_run_unbuilt": 5,
+      "pass_rate_percentage": 77.08,
+      "runtime_seconds": 58.22
+    },
+    "backend_go_tests": {
+      "total_suites": 6,
+      "passed": 6,
+      "failed": 0,
+      "pass_rate_percentage": 100.0,
+      "runtime_seconds": 1.35
+    }
+  },
+  "defects": [
+    { "id": "DEF-001", "severity": "HIGH", "subsystem": "Build System", "title": "Build Configuration Target Asymmetry between Debug and Release" },
+    { "id": "DEF-002", "severity": "MEDIUM", "subsystem": "Networking", "title": "Dedicated Server Loopback Port Binding Blocked in Sandbox" },
+    { "id": "DEF-003", "severity": "LOW", "subsystem": "Asset Manifest", "title": "Manifest Schema Divergence in Storm Assets (path vs file)" },
+    { "id": "DEF-004", "severity": "MEDIUM", "subsystem": "Scripting", "title": "Missing Lua Script Archetypes for Phase 49 Creatures" },
+    { "id": "DEF-005", "severity": "MEDIUM", "subsystem": "World", "title": "Biome Tileset Visual Availability vs. World Map Layer Integration" },
+    { "id": "DEF-006", "severity": "LOW", "subsystem": "Networking", "title": "EntityReplicationTest Timing Flakiness on Windows" }
+  ],
+  "performance_baseline": {
+    "client": {
+      "target_fps": 60.0,
+      "target_resolution": "640x360 scaled to 1280x720",
+      "manifest_parse_ms": 12.4,
+      "texture_decode_36_ms": 24.23,
+      "uncompressed_vram_mb": 1.723,
+      "rss_memory_mb": 85.0
+    },
+    "dedicated_server": {
+      "tick_rate_hz": 30.0,
+      "average_idle_tick_ms": 0.10,
+      "map_load_320x320_s": 0.38,
+      "spatial_index_build_s": 0.14,
+      "collision_bounds_count": 41503,
+      "lua_ai_eval_per_enemy_us": 9.77,
+      "rss_memory_mb": 42.0
+    },
+    "backend": {
+      "health_check_ms": 2.83,
+      "registration_argon2id_ms": 130.2,
+      "login_argon2id_ms": 125.8,
+      "token_verification_ms": 2.44,
+      "profile_query_ms": 0.52,
+      "cosmetics_query_ms": 9.22,
+      "loadout_equip_ms": 13.48
+    }
+  },
+  "overall_classification": "PASS_WITH_WARNINGS"
+}
+

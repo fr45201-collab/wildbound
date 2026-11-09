@@ -35,6 +35,42 @@
       "hitbox_height": 24.0,
       "forward_offset": 22.0,
       "animation_prefix": "attack"
+    },
+    {
+      "id": "slime_slam",
+      "name": "Slime Acid Slam",
+      "damage_type": "physical",
+      "base_damage": 10.0,
+      "range": 26.0,
+      "cooldown": 1.0,
+      "hitbox_width": 24.0,
+      "hitbox_height": 24.0,
+      "forward_offset": 14.0,
+      "animation_prefix": "attack"
+    },
+    {
+      "id": "viper_strike",
+      "name": "Viper Venom Strike",
+      "damage_type": "physical",
+      "base_damage": 15.0,
+      "range": 34.0,
+      "cooldown": 0.8,
+      "hitbox_width": 28.0,
+      "hitbox_height": 20.0,
+      "forward_offset": 18.0,
+      "animation_prefix": "attack"
+    },
+    {
+      "id": "cyclops_club",
+      "name": "Cyclops Sweeping Smash",
+      "damage_type": "physical",
+      "base_damage": 35.0,
+      "range": 48.0,
+      "cooldown": 1.8,
+      "hitbox_width": 44.0,
+      "hitbox_height": 36.0,
+      "forward_offset": 28.0,
+      "animation_prefix": "attack"
     }
   ]
 }

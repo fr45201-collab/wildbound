@@ -1,0 +1,60 @@
+{
+  "duration_seconds": 240,
+  "ended_at": "2026-11-08T20:03:00Z",
+  "game_mode": "squads",
+  "map_id": "maps/world/battle_royale_island.json",
+  "match_id": "match_50001",
+  "participants": [
+    {
+      "assists": 0,
+      "damage_dealt": 150.0,
+      "damage_received": 200.0,
+      "deaths": 1,
+      "eliminations": 0,
+      "participant_display_name": "Player_Alpha",
+      "placement": 2,
+      "result_status": "eliminated",
+      "survival_seconds": 240.0,
+      "team_id": 1
+    },
+    {
+      "assists": 0,
+      "damage_dealt": 150.0,
+      "damage_received": 200.0,
+      "deaths": 1,
+      "eliminations": 0,
+      "participant_display_name": "Player_Bravo",
+      "placement": 3,
+      "result_status": "eliminated",
+      "survival_seconds": 240.0,
+      "team_id": 1
+    },
+    {
+      "assists": 0,
+      "damage_dealt": 150.0,
+      "damage_received": 200.0,
+      "deaths": 1,
+      "eliminations": 0,
+      "participant_display_name": "Player_Charlie",
+      "placement": 4,
+      "result_status": "eliminated",
+      "survival_seconds": 240.0,
+      "team_id": 1
+    },
+    {
+      "assists": 0,
+      "damage_dealt": 150.0,
+      "damage_received": 200.0,
+      "deaths": 1,
+      "eliminations": 0,
+      "participant_display_name": "Player_Delta",
+      "placement": 5,
+      "result_status": "eliminated",
+      "survival_seconds": 240.0,
+      "team_id": 1
+    }
+  ],
+  "result_status": "completed",
+  "started_at": "2026-11-08T19:59:00Z",
+  "winner_display_name": "Squad_Alpha"
+}

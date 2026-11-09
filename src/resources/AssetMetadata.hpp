@@ -34,6 +34,7 @@ struct AssetMetadata {
     bool commercialUse = true;
     bool attributionRequired = false;
     std::string checksum;
+    float duration = 0.0f;
     int width = 0;
     int height = 0;
     AssetStatus status = AssetStatus::LicenseReviewRequired;

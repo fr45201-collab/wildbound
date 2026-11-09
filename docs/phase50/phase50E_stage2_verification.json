@@ -1,0 +1,117 @@
+{
+  "phase": "50E",
+  "stage": 2,
+  "timestamp": "2026-11-08T19:12:00Z",
+  "defect_resolved": {
+    "id": "DEF-004",
+    "description": "Missing Specialized Creature AI Archetypes",
+    "status": "RESOLVED_AND_CLOSED"
+  },
+  "creatures_implemented": [
+    {
+      "id": "creature_slime_001",
+      "archetype": "slime",
+      "name": "Marsh Slime",
+      "script": "scripts/gameplay/ai/slime.lua",
+      "ai_config": "data/ai/creatures/slime.json",
+      "enemy_config": "data/characters/enemies/slime.json",
+      "attack_id": "slime_slam",
+      "detection_radius": 110.0,
+      "attack_radius": 26.0,
+      "retreat_threshold": 0.25,
+      "can_retreat": true,
+      "leash_radius": 90.0
+    },
+    {
+      "id": "creature_snake_001",
+      "archetype": "snake",
+      "name": "Marsh Viper",
+      "script": "scripts/gameplay/ai/snake.lua",
+      "ai_config": "data/ai/creatures/snake.json",
+      "enemy_config": "data/characters/enemies/snake.json",
+      "attack_id": "viper_strike",
+      "detection_radius": 150.0,
+      "attack_radius": 34.0,
+      "retreat_threshold": 0.35,
+      "can_retreat": true,
+      "leash_radius": 110.0
+    },
+    {
+      "id": "creature_cyclops_001",
+      "archetype": "cyclops",
+      "name": "Mountain Cyclops",
+      "script": "scripts/gameplay/ai/cyclops.lua",
+      "ai_config": "data/ai/creatures/cyclops.json",
+      "enemy_config": "data/characters/enemies/cyclops.json",
+      "attack_id": "cyclops_club",
+      "detection_radius": 220.0,
+      "attack_radius": 48.0,
+      "retreat_threshold": 0.0,
+      "can_retreat": false,
+      "leash_radius": 140.0
+    }
+  ],
+  "cpp_modifications": [
+    "src/core/Game.cpp",
+    "src/entities/Enemy.cpp",
+    "src/world/EnemySpawner.cpp",
+    "data/combat/attacks.json",
+    "tests/scripting/test_lua.cpp"
+  ],
+  "test_execution": {
+    "test_lua": {
+      "release_groups_passed": 14,
+      "release_total_groups": 14,
+      "debug_groups_passed": 14,
+      "debug_total_groups": 14,
+      "pass_rate_percent": 100.0
+    },
+    "test_combat": {
+      "attacks_loaded": 6,
+      "tests_passed": 15,
+      "tests_total": 15,
+      "pass_rate_percent": 100.0
+    },
+    "ctest_summary": {
+      "release": {
+        "total": 48,
+        "passed": 44,
+        "failed": 4,
+        "logic_pass_rate_percent": 100.0,
+        "failures": [
+          "EntityReplicationTest",
+          "DedicatedServerTest",
+          "MatchmakingCoordinatorE2ETest",
+          "MultiplayerLoadTest"
+        ]
+      },
+      "debug": {
+        "total": 48,
+        "passed": 42,
+        "failed": 6,
+        "logic_pass_rate_percent": 95.5,
+        "failures": [
+          "MatchLifecycleTest",
+          "NetworkTransportTest",
+          "EntityReplicationTest",
+          "DedicatedServerTest",
+          "MatchmakingCoordinatorE2ETest",
+          "MultiplayerLoadTest"
+        ]
+      }
+    }
+  },
+  "open_defects": [
+    {
+      "id": "DEF-008",
+      "stage": 3,
+      "description": "Match Lifecycle Coincident Elimination Placement Race"
+    },
+    {
+      "id": "DEF-009",
+      "stage": 4,
+      "description": "Debug Network Handshake Polling Cutoff Timeout"
+    }
+  ]
+}
+

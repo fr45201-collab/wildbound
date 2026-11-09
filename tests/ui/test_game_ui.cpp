@@ -272,6 +272,16 @@ void Test_MainMenu_NavigationAndCredits() {
     MainMenuAction act = menu.Update(0.016f, { 0, 0 }, false, false, false, true);
     assert(act == MainMenuAction::CharacterSelect);
 
+    // Confirm on Account (index 4)
+    menu.SetFocusedIndex(4);
+    act = menu.Update(0.016f, { 0, 0 }, false, false, false, true);
+    assert(act == MainMenuAction::Account);
+
+    // Confirm on Multiplayer (index 5)
+    menu.SetFocusedIndex(5);
+    act = menu.Update(0.016f, { 0, 0 }, false, false, false, true);
+    assert(act == MainMenuAction::Multiplayer);
+
     // Open Credits
     menu.SetShowingCredits(true);
     assert(menu.IsShowingCredits());
@@ -352,6 +362,9 @@ void Test_UIManager_Integration() {
 
     InventoryUI& inv = ui.GetInventoryUI();
     assert(inv.GetSelectedSlot() == 0);
+
+    AuthMenu& auth = ui.GetAuthMenu();
+    assert(!auth.IsOpen());
 
     std::cout << "  -> PASSED" << std::endl;
 }

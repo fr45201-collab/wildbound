@@ -1,0 +1,102 @@
+{
+  "phase": "Phase 50",
+  "stage": "Phase 50E Stage 4 Closure Gate",
+  "timestamp": "2026-11-08T20:26:00+05:30",
+  "gate_decision": "STAGE_4_CONDITIONAL_CLOSURE",
+  "stage_5_blocked": true,
+  "classification_status": {
+    "repository_audit": "COMPLETE",
+    "def_009_timing_engine": "COMPLETE",
+    "def_009_regression_tests": "COMPLETE",
+    "def_010_forensics": "COMPLETE",
+    "defect_register_integrity": "COMPLETE",
+    "release_multiplayer_load_test": "FAILED",
+    "stage_4_overall": "PARTIAL"
+  },
+  "source_files_changed": [
+    {
+      "path": "tests/network/test_network_transport.cpp",
+      "lines_added": 98,
+      "lines_removed": 27,
+      "mechanism": "Bounded substep accumulator measuring monotonic std::chrono::steady_clock without clamping"
+    }
+  ],
+  "def_009_empirical_measurements": {
+    "test_connection_timeout_300ms": {
+      "configured_timeout_ms": 300,
+      "debug_elapsed_ms": 305,
+      "release_elapsed_ms": 301,
+      "assertion_condition": ">= 270 ms",
+      "status": "PASS"
+    },
+    "test_configured_timeout_fidelity_2000ms": {
+      "configured_timeout_ms": 2000,
+      "debug_elapsed_ms": 2002,
+      "release_elapsed_ms": 2005,
+      "assertion_window_ms": [1950, 2500],
+      "status": "PASS"
+    },
+    "test_delayed_scheduling_timeout_500ms": {
+      "configured_timeout_ms": 500,
+      "simulated_hitch_interval_ms": 80,
+      "debug_elapsed_ms": 565,
+      "release_elapsed_ms": 565,
+      "assertion_window_ms": [480, 800],
+      "status": "PASS"
+    }
+  },
+  "def_010_forensics_summary": {
+    "defect_id": "DEF-010",
+    "status": "OPEN",
+    "test_name": "MultiplayerLoadTest",
+    "source_file": "tests/load/test_multiplayer_load.cpp",
+    "windows_exception_codes": [
+      "0xc0000409 (STATUS_STACK_BUFFER_OVERRUN)",
+      "0xc0000005 (STATUS_ACCESS_VIOLATION)"
+    ],
+    "standalone_behavior": "PASS (100% across repeated Release runs, ~45s elapsed)",
+    "concurrent_ctest_behavior": "INTERMITTENT FAIL (0xc0000409 in Section 2/7, 21-37s elapsed)",
+    "investigated_causes": [
+      "Rapid re-binding of port 17777 over 25+ cycles without socket cooldown",
+      "Destroying LoadTestClient transports prior to server peer disconnection",
+      "MSVC /O2 function inlining combined with /GS security stack canary checks",
+      "Transient packet cross-talk from preceding network test suites"
+    ],
+    "test_rigor_preserved": {
+      "concurrency_reduced": false,
+      "load_sections_removed": false,
+      "gs_canary_disabled": false,
+      "assertions_weakened": false
+    }
+  },
+  "defect_register_ledger": {
+    "code_defects": {
+      "DEF-001": { "status": "CLOSED", "title": "Build Configuration Target Asymmetry between Debug and Release" },
+      "DEF-003": { "status": "CLOSED", "title": "Manifest Schema Divergence in Storm Assets ('path' vs 'file')" },
+      "DEF-004": { "status": "CLOSED", "title": "Missing Lua Script Archetypes for Phase 49 Creatures" },
+      "DEF-005": { "status": "CLOSED", "title": "Biome Tileset Visual Availability vs. Master World Map Layer Integration" },
+      "DEF-007": { "status": "CLOSED", "title": "Asset Manifest Metadata Schema Drift & Attribution Hygiene" },
+      "DEF-008": { "status": "CLOSED", "title": "Coincident Elimination Timestamp Tie-Breaker in Debug Match Lifecycle" },
+      "DEF-009": { "status": "CLOSED", "title": "Debug Network Handshake Polling Timeout in Transport Tests" },
+      "DEF-010": { "status": "OPEN", "title": "Multiplayer Load Test Memory-Safety Failure (0xc0000409 / 0xc0000005)" }
+    },
+    "environmental_restrictions": {
+      "DEF-002": { "status": "ENVIRONMENT_RESTRICTION", "title": "Dedicated Server Loopback Port Binding Blocked in Sandbox" },
+      "DEF-006": { "status": "ENVIRONMENT_RESTRICTION", "title": "Multi-Process ENet Loopback Socket Communication Failure in Container Sandbox" }
+    }
+  },
+  "regression_results": {
+    "network_transport_test": {
+      "debug_unrestricted": "PASS (12/12 suites, 2.57s)",
+      "release_unrestricted": "PASS (12/12 suites, 2.52s)",
+      "debug_sandbox": "FAIL (5/12 suites, loopback blocked)",
+      "release_sandbox": "FAIL (5/12 suites, loopback blocked)"
+    },
+    "full_ctest_unrestricted": {
+      "debug_pass_rate": "47/48 (97.9%)",
+      "release_pass_rate": "47/48 (97.9%)",
+      "failing_tests": ["Test 48: MultiplayerLoadTest"]
+    }
+  }
+}
+

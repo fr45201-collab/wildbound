@@ -22,7 +22,10 @@ void AuthMenu::Open(AuthMenuMode mode) {
 void AuthMenu::RefreshProgression() {
     if (!m_client || !m_client->IsLoggedIn()) return;
     m_isBusy = true;
-    m_client->GetProgression([this](bool success, const nlohmann::json& prog, const std::string& err) {
+    std::weak_ptr<bool> weakAlive = m_alive;
+    m_client->GetProgression([this, weakAlive](bool success, const nlohmann::json& prog, const std::string& err) {
+        auto alive = weakAlive.lock();
+        if (!alive || !*alive) return;
         m_isBusy = false;
         if (success) {
             m_accountLevel = prog.value("account_level", 1);
@@ -126,7 +129,10 @@ bool AuthMenu::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPressed) {
                     m_isBusy = true;
                     m_statusMessage = "Authenticating...";
                     m_statusColor = UITheme::TextLight;
-                    m_client->Login(m_username, m_password, [this](bool success, const std::string& err) {
+                    std::weak_ptr<bool> weakAlive = m_alive;
+                    m_client->Login(m_username, m_password, [this, weakAlive](bool success, const std::string& err) {
+                        auto alive = weakAlive.lock();
+                        if (!alive || !*alive) return;
                         m_isBusy = false;
                         if (success) {
                             m_statusMessage = "Login successful!";
@@ -167,7 +173,10 @@ bool AuthMenu::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPressed) {
                     m_isBusy = true;
                     m_statusMessage = "Creating account...";
                     m_statusColor = UITheme::TextLight;
-                    m_client->Register(m_username, m_email, m_password, m_displayName, [this](bool success, const std::string& err) {
+                    std::weak_ptr<bool> weakAlive = m_alive;
+                    m_client->Register(m_username, m_email, m_password, m_displayName, [this, weakAlive](bool success, const std::string& err) {
+                        auto alive = weakAlive.lock();
+                        if (!alive || !*alive) return;
                         m_isBusy = false;
                         if (success) {
                             m_statusMessage = "Account created & logged in!";
@@ -196,15 +205,23 @@ bool AuthMenu::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPressed) {
             if (CheckHover(refreshBtn)) {
                 RefreshProgression();
             } else if (CheckHover(logoutBtn) && m_client) {
-                m_client->Logout([this](bool, const std::string&) {
+                std::weak_ptr<bool> weakAlive = m_alive;
+                m_client->Logout([this, weakAlive](bool, const std::string&) {
+                    auto alive = weakAlive.lock();
+                    if (!alive || !*alive) return;
                     m_client->ClearSession();
+                    m_client->SaveSessionToFile();
                     m_mode = AuthMenuMode::Login;
                     m_statusMessage = "Logged out successfully.";
                     m_statusColor = UITheme::TextLight;
                 });
             } else if (CheckHover(logoutAllBtn) && m_client) {
-                m_client->LogoutAll([this](bool, const std::string&) {
+                std::weak_ptr<bool> weakAlive = m_alive;
+                m_client->LogoutAll([this, weakAlive](bool, const std::string&) {
+                    auto alive = weakAlive.lock();
+                    if (!alive || !*alive) return;
                     m_client->ClearSession();
+                    m_client->SaveSessionToFile();
                     m_mode = AuthMenuMode::Login;
                     m_statusMessage = "Logged out from all sessions.";
                     m_statusColor = UITheme::TextLight;

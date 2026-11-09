@@ -1,0 +1,55 @@
+{
+  "id": "cyclops",
+  "name": "Mountain Cyclops",
+  "type": "giant",
+  "faction": "monsters",
+  "spritesheet": "sheet_creature_cyclops",
+  "stats": {
+    "walk_speed": 45.0,
+    "run_speed": 75.0,
+    "normalize_diagonal": true
+  },
+  "health": {
+    "max_health": 120.0,
+    "initial_health": 120.0,
+    "regeneration_enabled": false,
+    "regeneration_rate": 0.0
+  },
+  "collision": {
+    "enabled": true,
+    "width": 24.0,
+    "height": 28.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "combat": {
+    "default_attack": "cyclops_club",
+    "attack_cooldown": 1.8,
+    "attack_range": 48.0
+  },
+  "ai": {
+    "behavior_script": "scripts/gameplay/ai/cyclops.lua",
+    "detection_radius": 220.0,
+    "attack_radius": 48.0,
+    "retreat_health_percent": 0.0,
+    "decision_interval": 0.3,
+    "patrol_radius": 140.0
+  },
+  "animations": {
+    "idle_down": "cyclops_idle_down",
+    "idle_up": "cyclops_idle_down",
+    "idle_left": "cyclops_idle_down",
+    "idle_right": "cyclops_idle_down",
+    "walk_down": "cyclops_move_down",
+    "walk_up": "cyclops_move_down",
+    "walk_left": "cyclops_move_down",
+    "walk_right": "cyclops_move_down",
+    "attack_down": "cyclops_attack_down",
+    "attack_up": "cyclops_attack_down",
+    "attack_left": "cyclops_attack_down",
+    "attack_right": "cyclops_attack_down",
+    "hurt": "cyclops_hurt_down",
+    "death": "cyclops_death_down"
+  }
+}
+

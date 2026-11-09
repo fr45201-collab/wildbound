@@ -1,0 +1,55 @@
+{
+  "id": "slime",
+  "name": "Marsh Slime",
+  "type": "ooze",
+  "faction": "monsters",
+  "spritesheet": "sheet_creature_slime",
+  "stats": {
+    "walk_speed": 40.0,
+    "run_speed": 60.0,
+    "normalize_diagonal": true
+  },
+  "health": {
+    "max_health": 40.0,
+    "initial_health": 40.0,
+    "regeneration_enabled": false,
+    "regeneration_rate": 0.0
+  },
+  "collision": {
+    "enabled": true,
+    "width": 18.0,
+    "height": 14.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "combat": {
+    "default_attack": "slime_slam",
+    "attack_cooldown": 1.0,
+    "attack_range": 26.0
+  },
+  "ai": {
+    "behavior_script": "scripts/gameplay/ai/slime.lua",
+    "detection_radius": 110.0,
+    "attack_radius": 26.0,
+    "retreat_health_percent": 0.25,
+    "decision_interval": 0.25,
+    "patrol_radius": 90.0
+  },
+  "animations": {
+    "idle_down": "slime_idle_down",
+    "idle_up": "slime_idle_down",
+    "idle_left": "slime_idle_down",
+    "idle_right": "slime_idle_down",
+    "walk_down": "slime_move_down",
+    "walk_up": "slime_move_up",
+    "walk_left": "slime_move_left",
+    "walk_right": "slime_move_right",
+    "attack_down": "slime_attack_down",
+    "attack_up": "slime_attack_down",
+    "attack_left": "slime_attack_down",
+    "attack_right": "slime_attack_down",
+    "hurt": "slime_hurt_down",
+    "death": "slime_death_down"
+  }
+}
+

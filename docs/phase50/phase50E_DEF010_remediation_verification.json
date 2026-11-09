@@ -1,0 +1,101 @@
+{
+  "phase": "Phase 50E",
+  "defect_id": "DEF-010",
+  "title": "MultiplayerLoadTest Memory-Safety Failure Remediation",
+  "status": "CLOSED",
+  "verification_timestamp": "2026-11-08T16:03:00Z",
+  "root_cause": {
+    "subsystem": "HttpClient",
+    "mechanism": "Detached asynchronous threads in HttpClient::SendRequestAsync outlived short-lived DedicatedServer instances during durable outbox recovery of user_data/outbox/match_match_50001.json, writing completed HTTP responses into deallocated m_queueMutex and m_completedCallbacks heap memory, triggering 0xc0000409 stack cookie check failure in Release and 0xc0000005 in Debug.",
+    "file": "src/network/http/HttpClient.cpp",
+    "trigger_test": "test_multiplayer_load.exe"
+  },
+  "remediation": {
+    "pattern": "Owned, joinable, thread-reaped worker lifecycle with idempotent shutdown and callback dispatch outside internal mutexes",
+    "files_modified": [
+      "src/network/http/HttpClient.hpp",
+      "src/network/http/HttpClient.cpp",
+      "src/server/MatchResultsOutbox.hpp",
+      "src/server/MatchResultsOutbox.cpp",
+      "src/server/DedicatedServer.cpp",
+      "tests/server/test_dedicated_server.cpp"
+    ]
+  },
+  "durable_outbox_state": {
+    "file_path": "user_data/outbox/match_match_50001.json",
+    "exists": true,
+    "size_bytes": 1566,
+    "status": "PRESERVED"
+  },
+  "regression_tests": {
+    "suite": "Test11_HttpClientLifecycleAndShutdown",
+    "location": "tests/server/test_dedicated_server.cpp",
+    "vectors": [
+      {
+        "id": "11A",
+        "description": "Async failed connection callback handling on unmapped port",
+        "result": "PASSED"
+      },
+      {
+        "id": "11B",
+        "description": "Destruction while 8 requests actively in flight (memory safety)",
+        "result": "PASSED"
+      },
+      {
+        "id": "11C",
+        "description": "SendRequestAsync post-shutdown immediate error rejection",
+        "result": "PASSED"
+      },
+      {
+        "id": "11D",
+        "description": "Repeated Shutdown() calls idempotency",
+        "result": "PASSED"
+      },
+      {
+        "id": "11E",
+        "description": "Multiple concurrent requests orderly joined on shutdown",
+        "result": "PASSED"
+      }
+    ]
+  },
+  "test_execution_results": {
+    "direct_chained_release": {
+      "command": "cmd /c \"build\\tests\\Release\\test_dedicated_server.exe & build\\tests\\Release\\test_multiplayer_load.exe\"",
+      "exit_code": 0,
+      "dedicated_server_tests_passed": "11/11",
+      "multiplayer_load_sections_passed": "4/4",
+      "crashes": 0
+    },
+    "direct_chained_debug": {
+      "command": "cmd /c \"build\\tests\\Debug\\test_dedicated_server.exe & build\\tests\\Debug\\test_multiplayer_load.exe\"",
+      "exit_code": 0,
+      "dedicated_server_tests_passed": "11/11",
+      "multiplayer_load_sections_passed": "4/4",
+      "crashes": 0
+    },
+    "ctest_release": {
+      "command": "ctest --test-dir build -C Release --output-on-failure",
+      "total_tests": 48,
+      "passed_tests": 48,
+      "failed_tests": 0,
+      "pass_rate_pct": 100.0,
+      "total_real_seconds": 91.48
+    },
+    "ctest_debug": {
+      "command": "ctest --test-dir build -C Debug --output-on-failure",
+      "total_tests": 48,
+      "passed_tests": 48,
+      "failed_tests": 0,
+      "pass_rate_pct": 100.0,
+      "total_real_seconds": 148.23
+    }
+  },
+  "constraints_verification": {
+    "outbox_preserved": true,
+    "max_client_concurrency_preserved": true,
+    "security_gs_preserved": true,
+    "no_test_bypassed": true,
+    "stage_5_blocked": true
+  }
+}
+

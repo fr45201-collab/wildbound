@@ -1,0 +1,138 @@
+{
+  "phase": "50B",
+  "project": "Wildbound",
+  "timestamp": "2026-11-08T17:52:00+05:30",
+  "status": "PASS",
+  "reconciliation_version": "1.1",
+  "environment": {
+    "os": "Windows 11 (Build 26200)",
+    "compiler": "MSVC 19.51.36248.0 (Visual Studio 2026)",
+    "cmake_version": "4.3.0",
+    "git_commit": "5ec8ec01665e4fe478e26a7c0ec0fbca21e04428",
+    "branch": "main"
+  },
+  "targets": {
+    "total_build_targets": 50,
+    "compiled_test_executables": 47,
+    "compiled_production_executables": 3,
+    "debug_test_targets_present": 47,
+    "release_test_targets_present": 47,
+    "debug_main_targets_present": 3,
+    "release_main_targets_present": 3,
+    "harmonization_pct": 100.0,
+    "asymmetry_count": 0
+  },
+  "ctest_matrix": {
+    "total_registered_tests": 48,
+    "compiled_test_executables": 47,
+    "main_executable_smoke_tests": 1,
+    "skipped_tests": 0,
+    "debug": {
+      "total_executed": 48,
+      "passed": 42,
+      "failed": 6,
+      "environment_blocked_failures": 4,
+      "subsystem_logic_failures": 1,
+      "runtime_timeout_failures": 1,
+      "raw_pass_rate_pct": 87.50,
+      "unrestricted_denominator": 44,
+      "unrestricted_pass_rate_pct": 95.45,
+      "pure_logic_pass_rate_pct": 97.73,
+      "execution_duration_seconds": 59.77
+    },
+    "release": {
+      "total_executed": 48,
+      "passed": 44,
+      "failed": 4,
+      "environment_blocked_failures": 4,
+      "subsystem_logic_failures": 0,
+      "runtime_timeout_failures": 0,
+      "raw_pass_rate_pct": 91.67,
+      "unrestricted_denominator": 44,
+      "unrestricted_pass_rate_pct": 100.00,
+      "execution_duration_seconds": 31.09
+    }
+  },
+  "environment_blocked_tests": [
+    {
+      "number": 38,
+      "name": "EntityReplicationTest",
+      "executable": "test_entity_replication.exe",
+      "in_memory_subtests_passed": "9/9 (100%)",
+      "failure_location": "tests/network/test_entity_replication.cpp:413",
+      "reason": "Host sandbox container blocks UDP 3-way handshake over 127.0.0.1"
+    },
+    {
+      "number": 39,
+      "name": "DedicatedServerTest",
+      "executable": "test_dedicated_server.exe",
+      "in_memory_subtests_passed": "6/6 (100%)",
+      "failure_location": "tests/server/test_dedicated_server.cpp:299",
+      "reason": "Host sandbox container blocks loopback client connect to port 19992"
+    },
+    {
+      "number": 46,
+      "name": "MatchmakingCoordinatorE2ETest",
+      "executable": "test_matchmaking_coordinator_e2e.exe",
+      "failure_location": "tests/matchmaking/test_coordinator_e2e.cpp:170",
+      "reason": "Dedicated server cannot reach coordinator socket 127.0.0.1:17780 over UDP loopback"
+    },
+    {
+      "number": 48,
+      "name": "MultiplayerLoadTest",
+      "executable": "test_multiplayer_load.exe",
+      "failure_location": "tests/load/test_multiplayer_load.cpp:50",
+      "reason": "Synthetic client sockets cannot connect to 0.0.0.0:17777 over UDP loopback"
+    }
+  ],
+  "headless_server": {
+    "target": "WildboundServer",
+    "pe_dependencies": [
+      "WS2_32.dll",
+      "WINMM.dll",
+      "KERNEL32.dll",
+      "USER32.dll",
+      "GDI32.dll",
+      "SHELL32.dll",
+      "MSVCP140.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll"
+    ],
+    "opengl_dependencies": false,
+    "glfw_dependencies": false,
+    "direct3d_dependencies": false,
+    "vulkan_dependencies": false,
+    "audio_hardware_dependencies": false,
+    "headless_status": "VERIFIED_ISOLATED"
+  },
+  "defect_register": {
+    "resolved": [
+      {
+        "id": "DEF-001",
+        "description": "Test target asymmetry and unresolved BackendClient linker errors in 5 test targets",
+        "resolution": "Added BACKEND_HTTP_SOURCES and winhttp linkage to tests/CMakeLists.txt; rebuilt both configurations"
+      }
+    ],
+    "cataloged_for_phase50c": [
+      {
+        "id": "DEF-008",
+        "severity": "LOW",
+        "subsystem": "test_match_lifecycle",
+        "description": "Assertion failure on coincident elimination timestamps in Debug",
+        "recommended_fix": "Insert mgr.Update(10.0f) between eliminations in test_match_lifecycle.cpp"
+      },
+      {
+        "id": "DEF-009",
+        "severity": "LOW",
+        "subsystem": "test_network_transport",
+        "description": "Handshake loop iteration timeout under unoptimized Debug runtime",
+        "recommended_fix": "Increase poll iteration count under _DEBUG in test_network_transport.cpp"
+      }
+    ]
+  },
+  "validation_tools": [
+    "tools/build_validation/validate_targets.py",
+    "tools/build_validation/validate_ctest.py",
+    "tools/build_validation/compare_configurations.py"
+  ]
+}

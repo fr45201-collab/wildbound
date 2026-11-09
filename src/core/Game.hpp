@@ -69,6 +69,14 @@ namespace wildbound::network {
     class NetworkManager;
 }
 
+namespace wildbound::network::http {
+    class BackendClient;
+}
+
+namespace wildbound::network::matchmaking {
+    class MatchmakingConnector;
+}
+
 namespace wildbound::core {
 
 class Game {
@@ -131,6 +139,10 @@ public:
     const gamemodes::GameModeManager& GetGameModeManager() const { return *m_gameModeManager; }
     network::NetworkManager* GetNetworkManager() noexcept { return m_networkManager.get(); }
     const network::NetworkManager* GetNetworkManager() const noexcept { return m_networkManager.get(); }
+    network::http::BackendClient* GetBackendClient() noexcept { return m_backendClient.get(); }
+    const network::http::BackendClient* GetBackendClient() const noexcept { return m_backendClient.get(); }
+    network::matchmaking::MatchmakingConnector* GetMatchmakingConnector() noexcept { return m_matchmakingConnector.get(); }
+    const network::matchmaking::MatchmakingConnector* GetMatchmakingConnector() const noexcept { return m_matchmakingConnector.get(); }
 
     void StartSelectedGameMode();
 
@@ -174,6 +186,8 @@ private:
     std::unique_ptr<match::MatchManager> m_matchManager;
     std::unique_ptr<gamemodes::GameModeManager> m_gameModeManager;
     std::unique_ptr<network::NetworkManager> m_networkManager;
+    std::unique_ptr<network::http::BackendClient> m_backendClient;
+    std::unique_ptr<network::matchmaking::MatchmakingConnector> m_matchmakingConnector;
     std::unique_ptr<customization::CharacterCustomizationManager> m_customizationManager;
     std::unique_ptr<cosmetics::CosmeticsStoreManager> m_cosmeticsStoreManager;
     std::unique_ptr<scripting::LuaManager> m_luaManager;

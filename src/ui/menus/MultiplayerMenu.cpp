@@ -1,9 +1,27 @@
 #include "MultiplayerMenu.hpp"
+#include "../../network/matchmaking/MatchmakingConnector.hpp"
 #include <string>
 
 namespace wildbound::ui {
 
 MultiplayerMenu::MultiplayerMenu() = default;
+
+void MultiplayerMenu::SyncFromConnector(const network::matchmaking::MatchmakingConnector& connector) {
+    m_isConnected = connector.IsConnected();
+    m_sessionId = connector.GetSessionId();
+    m_displayName = connector.GetDisplayName();
+    m_hasParty = connector.HasParty();
+    if (m_hasParty) {
+        m_partyState = connector.GetPartyState();
+    }
+    m_matchState = connector.GetState();
+    m_isQueued = connector.IsQueued();
+    m_queuedMode = connector.GetQueuedMode();
+    m_queuePosition = connector.GetQueuePosition();
+    m_queueTimer = connector.GetQueueTime();
+    m_assignment = connector.GetMatchAssignment();
+    m_errorMessage = connector.GetLastErrorMessage();
+}
 
 bool MultiplayerMenu::CheckHover(Rectangle r) const {
     return CheckCollisionPointRec(m_mousePos, r);
@@ -33,8 +51,8 @@ MultiplayerMenuAction MultiplayerMenu::Update(float dt, Vector2 mouseVirtual, bo
 
     // Modal invite check
     if (m_hasPendingInvite) {
-        Rectangle acceptBtn{ 240.0f, 200.0f, 70.0f, 22.0f };
-        Rectangle declineBtn{ 330.0f, 200.0f, 70.0f, 22.0f };
+        Rectangle acceptBtn{ 220.0f, 195.0f, 90.0f, 24.0f };
+        Rectangle declineBtn{ 330.0f, 195.0f, 90.0f, 24.0f };
 
         if (m_mousePressed) {
             if (CheckHover(acceptBtn)) {
@@ -50,36 +68,42 @@ MultiplayerMenuAction MultiplayerMenu::Update(float dt, Vector2 mouseVirtual, bo
     }
 
     // Mode Buttons
-    Rectangle soloBtn{ 220.0f, 60.0f, 60.0f, 22.0f };
-    Rectangle duosBtn{ 290.0f, 60.0f, 60.0f, 22.0f };
-    Rectangle squadsBtn{ 360.0f, 60.0f, 60.0f, 22.0f };
+    Rectangle soloBtn{ 220.0f, 80.0f, 80.0f, 24.0f };
+    Rectangle duosBtn{ 310.0f, 80.0f, 80.0f, 24.0f };
+    Rectangle squadsBtn{ 400.0f, 80.0f, 80.0f, 24.0f };
 
-    if (m_mousePressed && !m_isQueued) {
+    if (m_mousePressed && !m_isQueued && m_matchState != network::matchmaking::MatchmakingState::RequestingMatch) {
         if (CheckHover(soloBtn)) m_selectedMode = "solo";
         else if (CheckHover(duosBtn)) m_selectedMode = "duos";
         else if (CheckHover(squadsBtn)) m_selectedMode = "squads";
     }
 
     // Ready Button
-    Rectangle readyBtn{ 40.0f, 280.0f, 80.0f, 26.0f };
+    Rectangle readyBtn{ 20.0f, 280.0f, 80.0f, 26.0f };
     if (m_mousePressed && CheckHover(readyBtn)) {
         return MultiplayerMenuAction::ToggleReady;
     }
 
     // Queue / Cancel Button
-    Rectangle queueBtn{ 220.0f, 280.0f, 130.0f, 26.0f };
+    Rectangle queueBtn{ 210.0f, 280.0f, 150.0f, 26.0f };
     if (m_mousePressed && CheckHover(queueBtn)) {
-        return m_isQueued ? MultiplayerMenuAction::CancelQueue : MultiplayerMenuAction::StartQueue;
+        if (m_isQueued || m_matchState == network::matchmaking::MatchmakingState::RequestingMatch) {
+            return MultiplayerMenuAction::CancelQueue;
+        } else {
+            return MultiplayerMenuAction::StartQueue;
+        }
     }
 
     // Leave Party Button
-    Rectangle leaveBtn{ 130.0f, 280.0f, 80.0f, 26.0f };
-    if (m_mousePressed && CheckHover(leaveBtn) && m_hasParty) {
-        return MultiplayerMenuAction::LeaveParty;
+    if (m_hasParty) {
+        Rectangle leaveBtn{ 110.0f, 280.0f, 90.0f, 26.0f };
+        if (m_mousePressed && CheckHover(leaveBtn)) {
+            return MultiplayerMenuAction::LeaveParty;
+        }
     }
 
     // Back Button
-    Rectangle backBtn{ 520.0f, 280.0f, 80.0f, 26.0f };
+    Rectangle backBtn{ 520.0f, 280.0f, 100.0f, 26.0f };
     if (m_mousePressed && CheckHover(backBtn)) {
         return MultiplayerMenuAction::BackToMain;
     }
@@ -98,7 +122,7 @@ void MultiplayerMenu::Render() {
 
     std::string statusText = m_isConnected ? "ONLINE (COORDINATOR)" : "OFFLINE";
     Color statusCol = m_isConnected ? UITheme::TextSuccess : UITheme::TextDanger;
-    DrawText(statusText.c_str(), static_cast<int>(UITheme::CanvasWidth) - 150, 13, 10, statusCol);
+    DrawText(statusText.c_str(), static_cast<int>(UITheme::CanvasWidth) - 170, 13, 10, statusCol);
 
     // Left Panel: Party Members
     Rectangle partyBox{ 20.0f, 50.0f, 180.0f, 215.0f };
@@ -135,21 +159,70 @@ void MultiplayerMenu::Render() {
     DrawButton(Rectangle{ 400.0f, 80.0f, 80.0f, 24.0f }, "SQUADS", CheckHover(Rectangle{ 400.0f, 80.0f, 80.0f, 24.0f }), m_selectedMode == "squads");
 
     // Queue / Match Info Display
-    DrawLine(220, 120, 610, 120, UITheme::BorderNormal);
-    if (m_isQueued) {
-        DrawText("MATCHMAKING IN PROGRESS...", 220, 135, 12, UITheme::Gold);
-        std::string modeLine = "Mode: " + m_queuedMode;
-        DrawText(modeLine.c_str(), 220, 155, 10, UITheme::TextLight);
+    DrawLine(220, 115, 610, 115, UITheme::BorderNormal);
 
-        std::string timerLine = "Time in Queue: " + std::to_string(static_cast<int>(m_queueTimer)) + "s";
-        DrawText(timerLine.c_str(), 220, 175, 10, UITheme::TextMuted);
+    switch (m_matchState) {
+        case network::matchmaking::MatchmakingState::RequestingMatch: {
+            DrawText("REQUESTING MATCH...", 220, 130, 12, UITheme::Gold);
+            std::string line = "Mode: " + m_selectedMode + " — Contacting Coordinator...";
+            DrawText(line.c_str(), 220, 150, 10, UITheme::TextLight);
+            break;
+        }
 
-        std::string queuePos = "Queue position: " + std::to_string(m_queuePosition + 1);
-        DrawText(queuePos.c_str(), 220, 195, 10, UITheme::TextInfo);
-    } else {
-        DrawText("STATUS: IN LOBBY", 220, 135, 12, UITheme::TextLight);
-        DrawText("Select game mode and ensure all party members are READY.", 220, 155, 9, UITheme::TextMuted);
-        DrawText("Party leader can queue for dedicated server match.", 220, 175, 9, UITheme::TextMuted);
+        case network::matchmaking::MatchmakingState::Queued: {
+            DrawText("MATCHMAKING IN PROGRESS...", 220, 130, 12, UITheme::Gold);
+            std::string modeLine = "Mode: " + m_queuedMode;
+            DrawText(modeLine.c_str(), 220, 150, 10, UITheme::TextLight);
+
+            std::string timerLine = "Time in Queue: " + std::to_string(static_cast<int>(m_queueTimer)) + "s";
+            DrawText(timerLine.c_str(), 220, 170, 10, UITheme::TextMuted);
+
+            std::string queuePos = "Queue position: " + std::to_string(m_queuePosition + 1);
+            DrawText(queuePos.c_str(), 220, 190, 10, UITheme::TextInfo);
+            break;
+        }
+
+        case network::matchmaking::MatchmakingState::Cancelling: {
+            DrawText("CANCELLING QUEUE...", 220, 130, 12, UITheme::Gold);
+            DrawText("Notifying Coordinator...", 220, 150, 10, UITheme::TextMuted);
+            break;
+        }
+
+        case network::matchmaking::MatchmakingState::Cancelled: {
+            DrawText("STATUS: QUEUE CANCELLED", 220, 130, 12, UITheme::TextLight);
+            DrawText("Matchmaking was cancelled. Ready to queue again.", 220, 150, 10, UITheme::TextMuted);
+            break;
+        }
+
+        case network::matchmaking::MatchmakingState::MatchFound: {
+            DrawText("MATCH ASSIGNED!", 220, 125, 12, UITheme::Gold);
+            std::string mLine = "Match ID: " + m_assignment.matchId;
+            DrawText(mLine.c_str(), 220, 145, 10, UITheme::TextSuccess);
+
+            std::string sLine = "Dedicated Server: " + m_assignment.serverHost + ":" + std::to_string(m_assignment.serverPort);
+            DrawText(sLine.c_str(), 220, 165, 10, UITheme::TextLight);
+
+            std::string dLine = "Mode: " + m_assignment.gameMode + " | Map: " + m_assignment.mapName;
+            DrawText(dLine.c_str(), 220, 185, 9, UITheme::TextMuted);
+
+            DrawText("Awaiting Stage 6C gameplay connection...", 220, 205, 9, UITheme::TextDim);
+            break;
+        }
+
+        case network::matchmaking::MatchmakingState::Failed: {
+            DrawText("STATUS: ERROR", 220, 130, 12, UITheme::TextDanger);
+            std::string err = m_errorMessage.empty() ? "Coordinator communication error." : m_errorMessage;
+            DrawText(err.c_str(), 220, 150, 9, UITheme::TextMuted);
+            DrawText("Click FIND MATCH to retry.", 220, 175, 9, UITheme::TextLight);
+            break;
+        }
+
+        default: {
+            DrawText("STATUS: IN LOBBY", 220, 130, 12, UITheme::TextLight);
+            DrawText("Select game mode and click FIND MATCH.", 220, 150, 9, UITheme::TextMuted);
+            DrawText("Party leader can queue for dedicated server match.", 220, 170, 9, UITheme::TextMuted);
+            break;
+        }
     }
 
     // Bottom Action Buttons
@@ -162,7 +235,7 @@ void MultiplayerMenu::Render() {
     }
 
     Rectangle queueBtn{ 210.0f, 280.0f, 150.0f, 26.0f };
-    std::string qText = m_isQueued ? "CANCEL QUEUE" : "FIND MATCH";
+    std::string qText = (m_isQueued || m_matchState == network::matchmaking::MatchmakingState::RequestingMatch) ? "CANCEL QUEUE" : "FIND MATCH";
     DrawButton(queueBtn, qText, CheckHover(queueBtn), m_isQueued);
 
     Rectangle backBtn{ 520.0f, 280.0f, 100.0f, 26.0f };
@@ -185,4 +258,3 @@ void MultiplayerMenu::Render() {
 }
 
 } // namespace wildbound::ui
-

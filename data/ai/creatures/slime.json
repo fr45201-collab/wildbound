@@ -1,0 +1,21 @@
+{
+  "archetype": "slime",
+  "detection_radius": 110.0,
+  "field_of_view": 360.0,
+  "attack_radius": 26.0,
+  "preferred_distance": 20.0,
+  "retreat_health_percent": 0.25,
+  "decision_interval": 0.25,
+  "pathfinding_interval": 0.5,
+  "pursuit_duration": 4.0,
+  "investigate_duration": 2.5,
+  "aggression_level": 0.8,
+  "can_retreat": true,
+  "omnidirectional_when_alert": true,
+  "patrol": {
+    "id": "slime_ooze",
+    "is_loop": true,
+    "points": []
+  }
+}
+

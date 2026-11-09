@@ -13,7 +13,13 @@
 #include "menus/PauseMenu.hpp"
 #include "menus/MainMenu.hpp"
 #include "menus/ModeSelectMenu.hpp"
+#include "menus/AuthMenu.hpp"
+#include "menus/MultiplayerMenu.hpp"
 #include "inventory/InventoryUI.hpp"
+
+namespace wildbound::network::matchmaking {
+    class MatchmakingConnector;
+}
 
 namespace wildbound::gamemodes {
     class GameModeManager;
@@ -76,7 +82,9 @@ enum class UIScreen {
     Settings,
     PauseMenu,
     MatchResults,
-    GameOver
+    GameOver,
+    Auth,
+    Multiplayer
 };
 
 struct UIButton {
@@ -138,6 +146,15 @@ public:
     [[nodiscard]] const InventoryUI& GetInventoryUI() const { return m_inventoryUI; }
     [[nodiscard]] ModeSelectMenu& GetModeSelectMenu() { return m_modeSelectMenu; }
     [[nodiscard]] const ModeSelectMenu& GetModeSelectMenu() const { return m_modeSelectMenu; }
+    [[nodiscard]] AuthMenu& GetAuthMenu() { return m_authMenu; }
+    [[nodiscard]] const AuthMenu& GetAuthMenu() const { return m_authMenu; }
+    [[nodiscard]] MultiplayerMenu& GetMultiplayerMenu() noexcept { return m_multiplayerMenu; }
+    [[nodiscard]] const MultiplayerMenu& GetMultiplayerMenu() const noexcept { return m_multiplayerMenu; }
+
+    void SetBackendClient(network::http::BackendClient* client);
+    void OpenAuthMenu(AuthMenuMode mode = AuthMenuMode::Login);
+    void SetMatchmakingConnector(network::matchmaking::MatchmakingConnector* connector);
+    void OpenMultiplayerMenu();
 
     void SetGameModeManager(gamemodes::GameModeManager* modeMgr) noexcept { m_gameModeManager = modeMgr; }
     [[nodiscard]] gamemodes::GameModeManager* GetGameModeManager() const noexcept { return m_gameModeManager; }
@@ -185,7 +202,11 @@ private:
     PauseMenu m_pauseMenu;
     MainMenu m_mainMenu;
     ModeSelectMenu m_modeSelectMenu;
+    AuthMenu m_authMenu;
+    MultiplayerMenu m_multiplayerMenu;
     InventoryUI m_inventoryUI;
+
+    network::matchmaking::MatchmakingConnector* m_matchmakingConnector{ nullptr };
 
     // Submenu state
     int m_wardrobeCategoryTab = 0; // 0=Hair, 1=Headwear, 2=Helmet, 3=Face, 4=Chest, 5=Legs, 6=Feet, 7=Back, 8=Skin, 9=Loadouts

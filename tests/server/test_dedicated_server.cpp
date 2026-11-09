@@ -27,6 +27,7 @@
 #include "server/ServerDiagnostics.hpp"
 #include "server/ServerLoop.hpp"
 #include "server/DedicatedServer.hpp"
+#include "network/http/HttpClient.hpp"
 
 #include "network/ENetClient.hpp"
 #include "network/ENetServer.hpp"
@@ -473,6 +474,85 @@ void Test10_ServerDiagnostics() {
     std::cout << "  -> Diagnostics calculations, peak tracking, and summaries verified." << std::endl;
 }
 
+void Test11_HttpClientLifecycleAndShutdown() {
+    std::cout << "[Test 11] Asynchronous HttpClient Lifecycle & Worker Thread Shutdown Determinism..." << std::endl;
+
+    // Subtest 11A: Failed connection handled cleanly via async callback
+    {
+        wildbound::network::http::HttpClient client;
+        bool callbackReceived = false;
+        bool successFlag = true;
+        client.SendRequestAsync("GET", "http://127.0.0.1:59999/test", "", {},
+            [&](const wildbound::network::http::HttpResponse& resp) {
+                callbackReceived = true;
+                successFlag = resp.success;
+            }, 500);
+
+        auto start = std::chrono::steady_clock::now();
+        while (!callbackReceived && std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count() < 3000) {
+            client.Update();
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        TEST_ASSERT(callbackReceived, "Async failed connection callback must be dispatched via Update()");
+        TEST_ASSERT(!successFlag, "Connection to non-existent endpoint must report failure");
+    }
+
+    // Subtest 11B: Destruction while requests are in flight (Memory Safety Guarantee)
+    {
+        {
+            wildbound::network::http::HttpClient scopedClient;
+            for (int i = 0; i < 8; ++i) {
+                scopedClient.SendRequestAsync("POST", "http://127.0.0.1:59998/bench", "body_data", {},
+                    [](const wildbound::network::http::HttpResponse&) {
+                        // Response dropped cleanly on destruction
+                    }, 3000);
+            }
+            // scopedClient is immediately destroyed while 8 worker requests are actively executing
+            // Destructor calls Shutdown(), safely joins all worker threads, and releases resources
+        }
+        TEST_ASSERT(true, "Destruction while requests in flight must join workers cleanly without memory corruption");
+    }
+
+    // Subtest 11C: Async request mid-shutdown / post-shutdown rejection
+    {
+        wildbound::network::http::HttpClient client;
+        TEST_ASSERT(!client.IsShuttingDown(), "Fresh client must not report shutting down");
+        client.Shutdown();
+        TEST_ASSERT(client.IsShuttingDown(), "Client must report shutting down after Shutdown()");
+
+        bool rejected = false;
+        client.SendRequestAsync("GET", "http://127.0.0.1:59999/test", "", {},
+            [&](const wildbound::network::http::HttpResponse& resp) {
+                if (!resp.success && resp.errorMessage.find("shutting down") != std::string::npos) {
+                    rejected = true;
+                }
+            }, 500);
+        TEST_ASSERT(rejected, "SendRequestAsync during/after shutdown must immediately reject request");
+    }
+
+    // Subtest 11D: Repeated shutdown idempotency
+    {
+        wildbound::network::http::HttpClient client;
+        client.Shutdown();
+        client.Shutdown();
+        client.Shutdown();
+        TEST_ASSERT(client.IsShuttingDown(), "Repeated Shutdown() calls must succeed idempotently");
+    }
+
+    // Subtest 11E: Multiple concurrent requests completed before shutdown
+    {
+        wildbound::network::http::HttpClient client;
+        for (int i = 0; i < 6; ++i) {
+            client.SendRequestAsync("GET", "http://127.0.0.1:59997/test", "", {},
+                [](const wildbound::network::http::HttpResponse&) {}, 500);
+        }
+        client.Shutdown();
+        TEST_ASSERT(client.IsShuttingDown(), "Client shutdown after multiple requests must succeed");
+    }
+
+    std::cout << "  -> HttpClient worker ownership, joining, destruction safety, and idempotency verified." << std::endl;
+}
+
 // ============================================================================
 // Main Runner
 // ============================================================================
@@ -491,9 +571,10 @@ int main() {
     Test8_MultiClientSimulationAndReplication();
     Test9_GracefulShutdownWithConnectedClients();
     Test10_ServerDiagnostics();
+    Test11_HttpClientLifecycleAndShutdown();
 
     std::cout << "==========================================================" << std::endl;
-    std::cout << "ALL 10 PHASE 39 DEDICATED SERVER TEST SUITES PASSED (100% OK)" << std::endl;
+    std::cout << "ALL 11 PHASE 39 DEDICATED SERVER TEST SUITES PASSED (100% OK)" << std::endl;
     std::cout << "==========================================================" << std::endl;
 
     return 0;

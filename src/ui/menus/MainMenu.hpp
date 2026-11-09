@@ -13,6 +13,8 @@ enum class MainMenuAction {
     CharacterSelect,
     Wardrobe,
     CosmeticsStore,
+    Account,
+    Multiplayer,
     Settings,
     Credits,
     ExitGame
@@ -47,7 +49,7 @@ private:
     bool m_mousePressed = false;
     bool m_showCredits = false;
 
-    static constexpr int ItemCount = 7;
+    static constexpr int ItemCount = 9;
 };
 
 } // namespace wildbound::ui

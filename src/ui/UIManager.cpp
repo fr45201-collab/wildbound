@@ -18,6 +18,7 @@
 #include "../results/MatchResultModel.hpp"
 #include "../results/ResultCalculator.hpp"
 #include "../gamemodes/GameModeManager.hpp"
+#include "../network/matchmaking/MatchmakingConnector.hpp"
 #include "../core/Logger.hpp"
 #include <algorithm>
 
@@ -56,6 +57,10 @@ void UIManager::SetScreen(UIScreen screen) {
         m_previousScreen = m_currentScreen;
         m_currentScreen = screen;
 
+        if (screen == UIScreen::Auth && !m_authMenu.IsOpen()) {
+            m_authMenu.Open();
+        }
+
         if (m_audioSystem) {
             if (screen == UIScreen::MainMenu) {
                 m_audioSystem->PlayMusic("mus_main_menu", true, 0.8f);
@@ -64,6 +69,23 @@ void UIManager::SetScreen(UIScreen screen) {
             }
         }
     }
+}
+
+void UIManager::SetBackendClient(network::http::BackendClient* client) {
+    m_authMenu.SetBackendClient(client);
+}
+
+void UIManager::OpenAuthMenu(AuthMenuMode mode) {
+    SetScreen(UIScreen::Auth);
+    m_authMenu.Open(mode);
+}
+
+void UIManager::SetMatchmakingConnector(network::matchmaking::MatchmakingConnector* connector) {
+    m_matchmakingConnector = connector;
+}
+
+void UIManager::OpenMultiplayerMenu() {
+    SetScreen(UIScreen::Multiplayer);
 }
 
 bool UIManager::CheckHover(Rectangle r) const {
@@ -111,6 +133,13 @@ void UIManager::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPressed, bo
         } else if (act == MainMenuAction::CosmeticsStore) {
             SetScreen(UIScreen::Store);
             if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
+        } else if (act == MainMenuAction::Account) {
+            SetScreen(UIScreen::Auth);
+            m_authMenu.Open();
+            if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
+        } else if (act == MainMenuAction::Multiplayer) {
+            SetScreen(UIScreen::Multiplayer);
+            if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
         } else if (act == MainMenuAction::Settings) {
             SetScreen(UIScreen::Settings);
             if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
@@ -139,6 +168,41 @@ void UIManager::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPressed, bo
                 m_matchStartCallback();
             }
             SetScreen(UIScreen::None);
+        }
+        return;
+    }
+
+    if (m_currentScreen == UIScreen::Auth) {
+        m_authMenu.Update(dt, mouseVirtual, mouseLeftPressed);
+        if (!m_authMenu.IsOpen() || navCancel) {
+            m_authMenu.Close();
+            SetScreen(m_previousScreen != UIScreen::Auth ? m_previousScreen : UIScreen::MainMenu);
+            if (m_audioSystem) m_audioSystem->DispatchEvent("UI.Back");
+        }
+        return;
+    }
+
+    if (m_currentScreen == UIScreen::Multiplayer) {
+        if (m_matchmakingConnector) {
+            m_multiplayerMenu.SyncFromConnector(*m_matchmakingConnector);
+        }
+
+        MultiplayerMenuAction act = m_multiplayerMenu.Update(dt, mouseVirtual, mouseLeftPressed);
+        if (act == MultiplayerMenuAction::BackToMain || navCancel) {
+            SetScreen(UIScreen::MainMenu);
+            if (m_audioSystem) m_audioSystem->DispatchEvent("UI.Back");
+        } else if (act == MultiplayerMenuAction::StartQueue) {
+            if (m_matchmakingConnector) {
+                m_matchmakingConnector->RequestMatchmaking(m_multiplayerMenu.GetSelectedGameMode());
+            }
+            if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
+        } else if (act == MultiplayerMenuAction::CancelQueue) {
+            if (m_matchmakingConnector) {
+                m_matchmakingConnector->CancelMatchmaking();
+            }
+            if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
+        } else if (act == MultiplayerMenuAction::ToggleReady) {
+            if (m_audioSystem) m_audioSystem->DispatchEvent("UI.ButtonClick");
         }
         return;
     }
@@ -383,6 +447,13 @@ void UIManager::Render(graphics::Renderer& renderer,
             break;
         case UIScreen::GameOver:
             RenderGameOver(renderer, assetMgr);
+            break;
+        case UIScreen::Auth:
+            RenderMainMenu(renderer, assetMgr);
+            m_authMenu.Render();
+            break;
+        case UIScreen::Multiplayer:
+            m_multiplayerMenu.Render();
             break;
     }
 }

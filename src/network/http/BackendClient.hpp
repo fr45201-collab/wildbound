@@ -26,6 +26,7 @@ public:
     ~BackendClient();
 
     void Update();
+    void Shutdown() { m_httpClient.Shutdown(); }
 
     [[nodiscard]] const AuthSession& GetSession() const noexcept { return m_session; }
     [[nodiscard]] bool IsLoggedIn() const noexcept { return m_session.IsLoggedIn(); }

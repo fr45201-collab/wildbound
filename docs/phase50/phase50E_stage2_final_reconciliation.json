@@ -1,0 +1,138 @@
+{
+  "phase": "50E",
+  "stage": "2_reconciliation",
+  "audit_timestamp": "2026-11-08T19:16:30Z",
+  "audit_mode": "STRICT_AUDIT_ONLY",
+  "defect_audited": {
+    "id": "DEF-004",
+    "name": "Missing Specialized Creature Lua AI Archetypes",
+    "status": "CONFIRMED_RESOLVED_AND_CLOSED"
+  },
+  "attack_definitions_audit": {
+    "file": "data/combat/attacks.json",
+    "added_entries": [
+      {
+        "id": "slime_slam",
+        "pre_existing_identifier": false,
+        "cpp_implementation": "Generic data-driven AttackSystem",
+        "only_config_data": true,
+        "new_mechanics": false,
+        "damage_type": "physical",
+        "base_damage": 10.0,
+        "range": 26.0,
+        "cooldown": 1.0,
+        "hitbox": "24x24",
+        "forward_offset": 14.0,
+        "animation_prefix": "attack",
+        "animation_clip_valid": true,
+        "sound_routing_valid": true,
+        "unsupported_entity_rejection": true
+      },
+      {
+        "id": "viper_strike",
+        "pre_existing_identifier": false,
+        "cpp_implementation": "Generic data-driven AttackSystem",
+        "only_config_data": true,
+        "new_mechanics": false,
+        "damage_type": "physical",
+        "base_damage": 15.0,
+        "range": 34.0,
+        "cooldown": 0.8,
+        "hitbox": "28x20",
+        "forward_offset": 18.0,
+        "animation_prefix": "attack",
+        "animation_clip_valid": true,
+        "sound_routing_valid": true,
+        "unsupported_entity_rejection": true
+      },
+      {
+        "id": "cyclops_club",
+        "pre_existing_identifier": false,
+        "cpp_implementation": "Generic data-driven AttackSystem",
+        "only_config_data": true,
+        "new_mechanics": false,
+        "damage_type": "physical",
+        "base_damage": 35.0,
+        "range": 48.0,
+        "cooldown": 1.8,
+        "hitbox": "44x36",
+        "forward_offset": 28.0,
+        "animation_prefix": "attack",
+        "animation_clip_valid": true,
+        "sound_routing_valid": true,
+        "unsupported_entity_rejection": true
+      }
+    ]
+  },
+  "creature_behavior_audit": {
+    "slime_splitting": "Descriptive comment only; no entity duplication or splitting mechanics in code",
+    "viper_movement": "Passed strictly through C++ finite check, normalization, stats speed scaling, and CollisionManager",
+    "cyclops_no_retreat": "AI tactical decision; does not bypass C++ damage, health, or death handlers",
+    "lua_state_isolation": "Plain table passing (ctx -> result); zero mutation of engine memory or simulation state",
+    "malformed_output_rejection": "C++ checks isfinite(move), checks attack distance <= attackRadius * 1.5, checks CanAttack(atkId)"
+  },
+  "assertion_framework_audit": {
+    "custom_test_assert": {
+      "framework": "TEST_ASSERT macro with std::exit(1)",
+      "used_in": ["test_lua.cpp", "test_combat.cpp", "test_ai.cpp"],
+      "release_behavior": "ACTIVE (Not compiled out by NDEBUG)",
+      "release_validity": "100% genuine validation"
+    },
+    "standard_cassert": {
+      "framework": "assert() from <cassert>",
+      "used_in": ["test_match_lifecycle.cpp", "test_creatures.cpp", "test_network_transport.cpp"],
+      "release_behavior": "DISABLED (Compiled out by -DNDEBUG)",
+      "consequence": "Explains why DEF-008 fails in Debug but passes silently in Release"
+    }
+  },
+  "runtime_integration_evidence": {
+    "automated_unit_tests": {
+      "test_lua": "14/14 test groups passed (100%)",
+      "test_combat": "15/15 tests passed (100%)",
+      "test_creatures": "All creature integrity tests passed",
+      "test_ai": "10/10 test groups passed (100%)",
+      "test_gameplay_integration": "7/7 tests passed (100%)"
+    },
+    "runtime_limitations": {
+      "headful_visual_rendering": "Not executed in headless CI",
+      "overworld_auto_spawning": "Slime, viper, cyclops not yet in enemy_spawning.json timer table"
+    }
+  },
+  "scope_compliance_classification": {
+    "authorized_files": [
+      "scripts/gameplay/ai/slime.lua",
+      "scripts/gameplay/ai/snake.lua",
+      "scripts/gameplay/ai/cyclops.lua",
+      "data/ai/creatures/slime.json",
+      "data/ai/creatures/snake.json",
+      "data/ai/creatures/cyclops.json",
+      "src/core/Game.cpp",
+      "tests/scripting/test_lua.cpp",
+      "docs/phase50/*"
+    ],
+    "justified_files": [
+      {
+        "file": "src/entities/Enemy.cpp",
+        "reason": "6-line router needed to dispatch Enemy instances to slime_update, snake_update, and cyclops_update instead of generic fallback"
+      },
+      {
+        "file": "src/world/EnemySpawner.cpp",
+        "reason": "Descriptive name assignment in SpawnEnemy so instances do not default to Forest Goblin"
+      },
+      {
+        "file": "data/characters/enemies/*.json",
+        "reason": "EnemyConfig data files required for EnemySpawner and C++ stats initialization"
+      },
+      {
+        "file": "data/combat/attacks.json",
+        "reason": "Required data entries for generic AttackSystem to validate attack IDs and hitboxes"
+      }
+    ],
+    "out_of_scope_files": []
+  },
+  "open_defects": [
+    { "id": "DEF-008", "target_stage": 3, "description": "Match Lifecycle Coincident Elimination Placement Race" },
+    { "id": "DEF-009", "target_stage": 4, "description": "Debug Network Handshake Polling Cutoff Timeout" }
+  ]
+}
+

@@ -1,0 +1,21 @@
+{
+  "archetype": "cyclops",
+  "detection_radius": 220.0,
+  "field_of_view": 140.0,
+  "attack_radius": 48.0,
+  "preferred_distance": 40.0,
+  "retreat_health_percent": 0.0,
+  "decision_interval": 0.3,
+  "pathfinding_interval": 0.5,
+  "pursuit_duration": 10.0,
+  "investigate_duration": 5.0,
+  "aggression_level": 1.5,
+  "can_retreat": false,
+  "omnidirectional_when_alert": true,
+  "patrol": {
+    "id": "cyclops_stomp",
+    "is_loop": true,
+    "points": []
+  }
+}
+

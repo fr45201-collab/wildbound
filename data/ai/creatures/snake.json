@@ -1,0 +1,21 @@
+{
+  "archetype": "snake",
+  "detection_radius": 150.0,
+  "field_of_view": 180.0,
+  "attack_radius": 34.0,
+  "preferred_distance": 28.0,
+  "retreat_health_percent": 0.35,
+  "decision_interval": 0.15,
+  "pathfinding_interval": 0.3,
+  "pursuit_duration": 6.0,
+  "investigate_duration": 3.0,
+  "aggression_level": 1.1,
+  "can_retreat": true,
+  "omnidirectional_when_alert": true,
+  "patrol": {
+    "id": "snake_slither",
+    "is_loop": true,
+    "points": []
+  }
+}
+

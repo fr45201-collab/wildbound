@@ -294,6 +294,12 @@ void DedicatedServer::Shutdown() {
         m_luaManager->Shutdown();
     }
 
+    // Explicitly shut down asynchronous HTTP services and flush/join workers
+    m_cosmeticHttpClient.Shutdown();
+    if (m_matchOutbox) {
+        m_matchOutbox->Shutdown();
+    }
+
     m_state = ServerLifecycleState::Stopped;
     Logger::Info("SERVER", "Dedicated Server shutdown completed cleanly.");
     Logger::Info("SERVER", m_diagnostics.FormatSummary());

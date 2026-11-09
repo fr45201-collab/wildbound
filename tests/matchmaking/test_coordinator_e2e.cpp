@@ -26,11 +26,14 @@
 #include "network/ENetClient.hpp"
 #include "network/NetworkProtocol.hpp"
 #include "network/NetworkManager.hpp"
+#include "network/matchmaking/MatchmakingConnector.hpp"
+#include "network/matchmaking/MatchmakingTypes.hpp"
 #include "core/Logger.hpp"
 
 using namespace wildbound::coordinator;
 using namespace wildbound::server;
 using namespace wildbound::network;
+using namespace wildbound::network::matchmaking;
 using namespace wildbound::core;
 
 #define TEST_ASSERT(cond, msg) \
@@ -362,6 +365,312 @@ int main() {
     for (auto& c : clients) c.client.Disconnect();
     server.Shutdown();
     coordinator.Stop();
+
+    // ------------------------------------------------------------------------
+    // STAGE 6B: Client Matchmaking Connector Verification
+    // ------------------------------------------------------------------------
+
+    // STEP 13: State Machine Validation
+    std::cout << "[STEP 13] Client Matchmaking Connector — State Machine Validation..." << std::endl;
+    {
+        MatchmakingConnector testConn;
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Idle, "Initial state must be IDLE");
+
+        // Invalid transitions from IDLE
+        TEST_ASSERT(!testConn.TransitionTo(MatchmakingState::MatchFound), "IDLE -> MATCH_FOUND must be rejected");
+        TEST_ASSERT(!testConn.TransitionTo(MatchmakingState::Cancelling), "IDLE -> CANCELLING must be rejected");
+        TEST_ASSERT(!testConn.TransitionTo(MatchmakingState::Queued), "IDLE -> QUEUED must be rejected");
+
+        // Valid forward path: IDLE -> IN_LOBBY -> REQUESTING_MATCH -> QUEUED -> MATCH_FOUND
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "IDLE -> IN_LOBBY must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "IN_LOBBY -> REQUESTING_MATCH must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "REQUESTING_MATCH -> QUEUED must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::MatchFound), "QUEUED -> MATCH_FOUND must succeed");
+
+        // Reset back to IN_LOBBY
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "MATCH_FOUND -> IN_LOBBY must succeed");
+
+        // Cancellation path: IN_LOBBY -> REQUESTING_MATCH -> QUEUED -> CANCELLING -> CANCELLED
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "IN_LOBBY -> REQUESTING_MATCH must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "REQUESTING_MATCH -> QUEUED must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Cancelling), "QUEUED -> CANCELLING must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Cancelled), "CANCELLING -> CANCELLED must succeed");
+        TEST_ASSERT(!testConn.TransitionTo(MatchmakingState::MatchFound), "CANCELLED -> MATCH_FOUND must be rejected");
+
+        // Failure path: CANCELLED -> IN_LOBBY -> REQUESTING_MATCH -> FAILED -> IN_LOBBY
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "CANCELLED -> IN_LOBBY must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "IN_LOBBY -> REQUESTING_MATCH must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Failed), "REQUESTING_MATCH -> FAILED must succeed");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "FAILED -> IN_LOBBY must succeed");
+
+        // Duplicate submission prevention
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "Must transition to REQUESTING_MATCH");
+        TEST_ASSERT(!testConn.RequestMatchmaking("solo"), "Duplicate request while REQUESTING_MATCH must be rejected");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "Must transition to QUEUED");
+        TEST_ASSERT(!testConn.RequestMatchmaking("solo"), "Duplicate request while QUEUED must be rejected");
+
+        // Cancellation bounds
+        testConn.Shutdown();
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Idle, "Shutdown resets to IDLE");
+        TEST_ASSERT(!testConn.CancelMatchmaking(), "Cancel while IDLE must be rejected");
+
+        // Timeout handling in REQUESTING_MATCH
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "IDLE -> IN_LOBBY");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "IN_LOBBY -> REQUESTING_MATCH");
+        testConn.Update(11.0f); // Advance past 10s request timeout
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Failed, "Timeout in REQUESTING_MATCH must force FAILED");
+        TEST_ASSERT(!testConn.GetLastErrorMessage().empty(), "Timeout must populate error message");
+
+        // Timeout handling in CANCELLING
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "FAILED -> IN_LOBBY");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "IN_LOBBY -> REQUESTING_MATCH");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "REQUESTING_MATCH -> QUEUED");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Cancelling), "QUEUED -> CANCELLING");
+        testConn.Update(11.0f); // Advance past timeout
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Cancelled, "Timeout in CANCELLING must force CANCELLED");
+    }
+    std::cout << "  -> State machine transitions, duplicate rejection & timeouts validated." << std::endl;
+
+    // STEP 14: Assignment Validation & Malformed Payload Handling
+    std::cout << "[STEP 14] Client Matchmaking Connector — Assignment Validation..." << std::endl;
+    {
+        MatchmakingConnector testConn;
+        bool matchFoundCallbackFired = false;
+        testConn.SetMatchFoundCallback([&](const MatchAssignmentInfo& info) {
+            matchFoundCallbackFired = true;
+            TEST_ASSERT(info.IsValid(), "Callback assignment must be valid");
+        });
+
+        // Advance to QUEUED state
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "Init to InLobby");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "To Requesting");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "To Queued");
+
+        // 1. Valid Assignment Injection
+        MsgMatchRedirectNotification validNotif{
+            .matchId = "match_s6b_alpha",
+            .serverHost = "127.0.0.1",
+            .serverPort = 17777,
+            .playerAuthToken = "auth_tok_valid_123",
+            .gameMode = "solo",
+            .mapName = "maps/world/battle_royale_island.json"
+        };
+        ByteStreamWriter vw;
+        validNotif.Serialize(vw);
+        testConn.InjectPacket(static_cast<uint16_t>(CoordinatorMsgType::MatchRedirectNotification), vw.GetData(), vw.GetSize());
+
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::MatchFound, "Valid assignment must transition to MATCH_FOUND");
+        TEST_ASSERT(matchFoundCallbackFired, "Match found callback must fire");
+        TEST_ASSERT(testConn.GetMatchAssignment().IsValid(), "Retained assignment must be valid");
+        TEST_ASSERT(testConn.GetMatchAssignment().matchId == "match_s6b_alpha", "Match ID must match");
+        TEST_ASSERT(testConn.GetMatchAssignment().serverPort == 17777, "Port must match");
+
+        // 2. Reject empty matchId
+        testConn.Reset();
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "Reset to InLobby");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "To Requesting");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "To Queued");
+        MsgMatchRedirectNotification badMatchId = validNotif;
+        badMatchId.matchId = "";
+        ByteStreamWriter bw1; badMatchId.Serialize(bw1);
+        testConn.InjectPacket(static_cast<uint16_t>(CoordinatorMsgType::MatchRedirectNotification), bw1.GetData(), bw1.GetSize());
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Failed, "Empty matchId must fail validation");
+
+        // 3. Reject empty serverHost
+        testConn.Reset();
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "Reset to InLobby");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "To Requesting");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "To Queued");
+        MsgMatchRedirectNotification badHost = validNotif;
+        badHost.serverHost = "";
+        ByteStreamWriter bw2; badHost.Serialize(bw2);
+        testConn.InjectPacket(static_cast<uint16_t>(CoordinatorMsgType::MatchRedirectNotification), bw2.GetData(), bw2.GetSize());
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Failed, "Empty serverHost must fail validation");
+
+        // 4. Reject invalid port (0)
+        testConn.Reset();
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "Reset to InLobby");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "To Requesting");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "To Queued");
+        MsgMatchRedirectNotification badPort = validNotif;
+        badPort.serverPort = 0;
+        ByteStreamWriter bw3; badPort.Serialize(bw3);
+        testConn.InjectPacket(static_cast<uint16_t>(CoordinatorMsgType::MatchRedirectNotification), bw3.GetData(), bw3.GetSize());
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Failed, "Port 0 must fail validation");
+
+        // 5. Reject empty playerAuthToken
+        testConn.Reset();
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "Reset to InLobby");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "To Requesting");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "To Queued");
+        MsgMatchRedirectNotification badToken = validNotif;
+        badToken.playerAuthToken = "";
+        ByteStreamWriter bw4; badToken.Serialize(bw4);
+        testConn.InjectPacket(static_cast<uint16_t>(CoordinatorMsgType::MatchRedirectNotification), bw4.GetData(), bw4.GetSize());
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Failed, "Empty token must fail validation");
+
+        // 6. Reject invalid game mode
+        testConn.Reset();
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "Reset to InLobby");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "To Requesting");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "To Queued");
+        MsgMatchRedirectNotification badMode = validNotif;
+        badMode.gameMode = "invalid_battle_mode";
+        ByteStreamWriter bw5; badMode.Serialize(bw5);
+        testConn.InjectPacket(static_cast<uint16_t>(CoordinatorMsgType::MatchRedirectNotification), bw5.GetData(), bw5.GetSize());
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Failed, "Invalid gameMode must fail validation");
+
+        // 7. Malformed / corrupted packet
+        testConn.Reset();
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::InLobby), "Reset to InLobby");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::RequestingMatch), "To Requesting");
+        TEST_ASSERT(testConn.TransitionTo(MatchmakingState::Queued), "To Queued");
+        uint8_t garbage[5] = { 0xFF, 0x00, 0xAA, 0xBB, 0xCC };
+        testConn.InjectPacket(static_cast<uint16_t>(CoordinatorMsgType::MatchRedirectNotification), garbage, sizeof(garbage));
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Failed, "Malformed payload must fail gracefully to FAILED");
+    }
+    std::cout << "  -> Assignment validation (valid, missing fields, corrupted packets) verified." << std::endl;
+
+    // STEP 15: Lifecycle & Safety Verification
+    std::cout << "[STEP 15] Client Matchmaking Connector — Lifecycle & Memory Safety..." << std::endl;
+    {
+        // Safe destruction with pending callback registration
+        {
+            auto scopedConn = std::make_unique<MatchmakingConnector>();
+            scopedConn->SetStateChangedCallback([](MatchmakingState, MatchmakingState) {});
+            scopedConn->SetMatchFoundCallback([](const MatchAssignmentInfo&) {});
+            scopedConn->SetErrorCallback([](const std::string&) {});
+            scopedConn->Connect("127.0.0.1", 19999, "Temp", "tok");
+            scopedConn.reset(); // Destroy with connection pending
+        }
+
+        // Idempotent repeated shutdown
+        MatchmakingConnector testConn;
+        testConn.Shutdown();
+        testConn.Shutdown();
+        testConn.Shutdown();
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Idle, "Repeated shutdown must be idempotent");
+
+        // Repeated reset
+        testConn.Reset();
+        testConn.Reset();
+        TEST_ASSERT(testConn.GetState() == MatchmakingState::Idle, "Repeated reset must be idempotent");
+    }
+    std::cout << "  -> Lifecycle safety & shutdown idempotence verified." << std::endl;
+
+    // STEP 16: Live Coordinator Integration Workflow
+    std::cout << "[STEP 16] Live Matchmaking Connector E2E Workflow with CoordinatorServer..." << std::endl;
+    {
+        // Restart Coordinator & DedicatedServer on fresh ports
+        static constexpr uint16_t LIVE_COORD_PORT = 17781;
+        static constexpr uint16_t LIVE_SERVER_PORT = 17778;
+
+        CoordinatorServer coord;
+        CoordinatorConfig cfg = CoordinatorConfig::GetDefault();
+        cfg.port = LIVE_COORD_PORT;
+        cfg.soloMinParticipants = 1; // Solo match forms with 1 player
+        TEST_ASSERT(coord.Initialize(cfg), "Live Coordinator init must succeed");
+        TEST_ASSERT(coord.Start(), "Live Coordinator start must succeed");
+
+        DedicatedServer srv;
+        char a0[] = "WildboundServer";
+        char a1[] = "--port";
+        char a2[] = "17778";
+        char a3[] = "--coordinator";
+        char a4[] = "127.0.0.1:17781";
+        char a5[] = "--mode";
+        char a6[] = "solo";
+        char* av[] = { a0, a1, a2, a3, a4, a5, a6 };
+        TEST_ASSERT(srv.Initialize(7, av), "Dedicated server init must succeed");
+        TEST_ASSERT(srv.Start(), "Dedicated server start must succeed");
+
+        // Pump until server registers
+        for (int i = 0; i < 100 && coord.GetServerRegistry().GetServerCount() == 0; ++i) {
+            srv.UpdateServer(0.016f);
+            coord.Update(0.016f);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        TEST_ASSERT(coord.GetServerRegistry().GetServerCount() == 1, "Coordinator must have registered server");
+
+        // Instantiate live client connector
+        MatchmakingConnector liveConn;
+        TEST_ASSERT(liveConn.Connect("127.0.0.1", LIVE_COORD_PORT, "Explorer_Live", "jwt_auth_session_valid"), "Connect must succeed");
+
+        // Pump until connected and session registered
+        for (int i = 0; i < 100 && liveConn.GetState() != MatchmakingState::InLobby; ++i) {
+            coord.Update(0.016f);
+            liveConn.Update(0.016f);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+
+        TEST_ASSERT(liveConn.IsConnected(), "Live connector must be connected to Coordinator");
+        TEST_ASSERT(liveConn.IsRegistered(), "Live connector must have registered session");
+        TEST_ASSERT(liveConn.GetState() == MatchmakingState::InLobby, "Live connector state must be IN_LOBBY");
+        std::cout << "  -> Live connector connected and session registered: SessionId=" << liveConn.GetSessionId() << std::endl;
+
+        // Test Queue & Cancel workflow live
+        std::cout << "  -> Testing live queue and cancel..." << std::endl;
+        // Squads requires 4 players, so single player will remain queued
+        TEST_ASSERT(liveConn.RequestMatchmaking("squads"), "Request matchmaking for squads must succeed");
+
+        for (int i = 0; i < 50 && liveConn.GetState() != MatchmakingState::Queued; ++i) {
+            coord.Update(0.016f);
+            liveConn.Update(0.016f);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+
+        TEST_ASSERT(liveConn.IsQueued(), "Live connector must be QUEUED");
+        TEST_ASSERT(liveConn.GetQueuedMode() == "squads", "Queued mode must be squads");
+        std::cout << "  -> Connector is actively queued for squads." << std::endl;
+
+        // Cancel queue
+        TEST_ASSERT(liveConn.CancelMatchmaking(), "Cancel matchmaking must succeed");
+        for (int i = 0; i < 50 && liveConn.GetState() != MatchmakingState::Cancelled; ++i) {
+            coord.Update(0.016f);
+            liveConn.Update(0.016f);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+        TEST_ASSERT(liveConn.GetState() == MatchmakingState::Cancelled, "Live connector must be CANCELLED");
+        std::cout << "  -> Live queue cancellation verified." << std::endl;
+
+        // Reset and re-queue for solo match formation (soloMinParticipants = 1)
+        liveConn.Reset();
+        TEST_ASSERT(liveConn.GetState() == MatchmakingState::InLobby, "Reset must restore IN_LOBBY");
+
+        std::cout << "  -> Re-queuing for solo match formation & dedicated server assignment..." << std::endl;
+        TEST_ASSERT(liveConn.RequestMatchmaking("solo"), "Re-queue for solo must succeed");
+
+        for (int i = 0; i < 100 && liveConn.GetState() != MatchmakingState::MatchFound; ++i) {
+            coord.Update(0.016f);
+            srv.UpdateServer(0.016f);
+            liveConn.Update(0.016f);
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+        }
+
+        TEST_ASSERT(liveConn.GetState() == MatchmakingState::MatchFound, "Live connector must transition to MATCH_FOUND");
+        const auto& assignment = liveConn.GetMatchAssignment();
+        TEST_ASSERT(assignment.IsValid(), "Live assignment must be valid");
+        TEST_ASSERT(assignment.serverPort == LIVE_SERVER_PORT, "Assignment port must match dedicated server");
+        TEST_ASSERT(!assignment.matchId.empty(), "Assignment matchId must be non-empty");
+        TEST_ASSERT(!assignment.playerAuthToken.empty(), "Assignment playerAuthToken must be non-empty");
+
+        // Verify Dedicated Server holds reservation for assigned token
+        TEST_ASSERT(srv.HasReservedParticipant(assignment.playerAuthToken), "Dedicated server must hold participant reservation");
+        std::string validatedName;
+        uint32_t validatedTeam = 0;
+        TEST_ASSERT(srv.ValidateClientAuthToken(assignment.playerAuthToken, validatedName, validatedTeam), "Token validation must succeed");
+        TEST_ASSERT(validatedName == "Explorer_Live", "Validated participant name must match");
+
+        std::cout << "  -> Live match assignment validated: MatchId=" << assignment.matchId
+                  << " Endpoint=" << assignment.serverHost << ":" << assignment.serverPort
+                  << " Token=" << assignment.playerAuthToken << std::endl;
+
+        // Orderly teardown
+        liveConn.Shutdown();
+        srv.Shutdown();
+        coord.Stop();
+    }
+    std::cout << "  -> Live Coordinator integration workflow passed." << std::endl;
 
     std::cout << "\n========================================================\n"
               << "[SUCCESS] Coordinator E2E Integration Suite PASSED!\n"

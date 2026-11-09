@@ -4,9 +4,9 @@
 #include <vector>
 #include <functional>
 #include <mutex>
-#include <queue>
 #include <memory>
-#include <future>
+#include <atomic>
+#include <thread>
 
 namespace wildbound::network::http {
 
@@ -29,6 +29,11 @@ public:
     HttpClient();
     ~HttpClient();
 
+    HttpClient(const HttpClient&) = delete;
+    HttpClient& operator=(const HttpClient&) = delete;
+    HttpClient(HttpClient&&) noexcept = delete;
+    HttpClient& operator=(HttpClient&&) noexcept = delete;
+
     // Synchronous request
     HttpResponse SendRequest(
         const std::string& method,
@@ -48,6 +53,11 @@ public:
         int timeoutMs = 5000
     );
 
+    // Explicit shutdown to cancel and join/wait for all in-flight workers
+    void Shutdown();
+
+    [[nodiscard]] bool IsShuttingDown() const noexcept;
+
     // Call on main loop to dispatch completed async responses
     void Update();
 
@@ -57,8 +67,20 @@ private:
         HttpResponse response;
     };
 
-    std::mutex m_queueMutex;
+    struct WorkerTask {
+        std::thread thread;
+        std::atomic<bool> completed{ false };
+    };
+
+    void ReapCompletedWorkers();
+
+    std::atomic<bool> m_isShuttingDown{ false };
+
+    mutable std::mutex m_queueMutex;
     std::vector<PendingCallback> m_completedCallbacks;
+
+    mutable std::mutex m_workersMutex;
+    std::vector<std::unique_ptr<WorkerTask>> m_workers;
 };
 
 } // namespace wildbound::network::http

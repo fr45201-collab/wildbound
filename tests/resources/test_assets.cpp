@@ -33,11 +33,16 @@ int main() {
         AssetRegistry registry;
         bool loaded = registry.LoadManifest("assets/manifests/asset_manifest.json");
         TEST_ASSERT(loaded, "Failed loading master asset manifest");
-        TEST_ASSERT(registry.GetAssetCount() >= 5, "Manifest must contain at least 5 registered assets");
+        TEST_ASSERT(registry.GetAssetCount() == 701, "Manifest must contain exactly 701 registered assets");
         TEST_ASSERT(registry.HasAsset("tex_player"), "Manifest must register 'tex_player'");
         TEST_ASSERT(registry.HasAsset("sheet_player"), "Manifest must register 'sheet_player'");
         TEST_ASSERT(registry.HasAsset("tex_oak_tree"), "Manifest must register 'tex_oak_tree'");
-        std::cout << "  -> PASSED" << std::endl;
+        // Verify storm assets that previously failed registration due to legacy 'path' key (DEF-003)
+        TEST_ASSERT(registry.HasAsset("tex_storm_overlay"), "Manifest must register 'tex_storm_overlay'");
+        TEST_ASSERT(registry.HasAsset("tex_boundary_ring"), "Manifest must register 'tex_boundary_ring'");
+        TEST_ASSERT(registry.HasAsset("sfx_storm_damage"), "Manifest must register 'sfx_storm_damage'");
+        TEST_ASSERT(registry.HasAsset("amb_storm_rumble"), "Manifest must register 'amb_storm_rumble'");
+        std::cout << "  -> PASSED (701/701 assets registered)" << std::endl;
     }
 
     // Test 2: Asset Registration & Category Queries
@@ -213,6 +218,71 @@ int main() {
         TEST_ASSERT(deserialized.type == meta->type, "Deserialized type must match");
         TEST_ASSERT(deserialized.license == meta->license, "Deserialized license must match");
         TEST_ASSERT(deserialized.commercialUse == meta->commercialUse, "Deserialized commercialUse must match");
+        std::cout << "  -> PASSED" << std::endl;
+    }
+
+    // Test 11: Manifest Parser Hardening & Backward Compatibility (DEF-003 / DEF-007)
+    {
+        std::cout << "[TEST] 11. Manifest parser hardening & backward compatibility..." << std::endl;
+
+        // Subtest 11.1: Legacy 'path' key fallback
+        nlohmann::json jPath = {
+            {"id", "test_legacy_path"},
+            {"path", "environment/trees/oak_tree.png"},
+            {"type", "texture"},
+            {"category", "test"}
+        };
+        AssetMetadata metaPath = AssetMetadata::FromJson(jPath);
+        TEST_ASSERT(metaPath.IsValid(), "Asset with 'path' key must be valid");
+        TEST_ASSERT(metaPath.file == "environment/trees/oak_tree.png", "Legacy 'path' must map to 'file'");
+
+        // Subtest 11.2: Conflicting 'file' and 'path' keys (file should take precedence)
+        nlohmann::json jConflict = {
+            {"id", "test_conflict"},
+            {"file", "canonical/path.png"},
+            {"path", "legacy/path.png"},
+            {"type", "texture"}
+        };
+        AssetMetadata metaConflict = AssetMetadata::FromJson(jConflict);
+        TEST_ASSERT(metaConflict.file == "canonical/path.png", "Canonical 'file' must take precedence over 'path'");
+
+        // Subtest 11.3: camelCase licensing keys
+        nlohmann::json jCamel = {
+            {"id", "test_camel"},
+            {"file", "test.png"},
+            {"type", "texture"},
+            {"commercialUse", false},
+            {"attributionRequired", true}
+        };
+        AssetMetadata metaCamel = AssetMetadata::FromJson(jCamel);
+        TEST_ASSERT(!metaCamel.commercialUse, "camelCase commercialUse must be correctly parsed");
+        TEST_ASSERT(metaCamel.attributionRequired, "camelCase attributionRequired must be correctly parsed");
+
+        // Subtest 11.4: Nested metadata dimensions
+        nlohmann::json jNested = {
+            {"id", "test_nested"},
+            {"file", "test.png"},
+            {"type", "texture"},
+            {"metadata", {
+                {"width", 256},
+                {"height", 128}
+            }}
+        };
+        AssetMetadata metaNested = AssetMetadata::FromJson(jNested);
+        TEST_ASSERT(metaNested.width == 256, "Nested metadata.width must be extracted");
+        TEST_ASSERT(metaNested.height == 128, "Nested metadata.height must be extracted");
+
+        // Subtest 11.5: Legacy 'audio' type mapping and duration
+        nlohmann::json jAudio = {
+            {"id", "test_audio_type"},
+            {"file", "audio/sfx/test.wav"},
+            {"type", "audio"},
+            {"duration", 3.14f}
+        };
+        AssetMetadata metaAudio = AssetMetadata::FromJson(jAudio);
+        TEST_ASSERT(metaAudio.type == AssetType::Sound, "Type 'audio' must map to AssetType::Sound");
+        TEST_ASSERT(ApproxEqual(metaAudio.duration, 3.14f), "Duration must be preserved");
+
         std::cout << "  -> PASSED" << std::endl;
     }
 

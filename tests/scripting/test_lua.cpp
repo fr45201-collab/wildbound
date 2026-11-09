@@ -400,6 +400,353 @@ void TestSkeletonAIBehavior() {
     std::cout << "  -> PASSED" << std::endl;
 }
 
+// 6B. Slime AI Script Behaviors (DEF-004)
+void TestSlimeAIBehavior() {
+    std::cout << "[TEST] 6B. Marsh Slime AI Script Verification (Viscous Swamper, Low HP Retreat)..." << std::endl;
+
+    LuaManager luaMgr;
+    luaMgr.Initialize();
+
+    bool loaded = luaMgr.LoadScript("scripts/gameplay/ai/slime.lua");
+    TEST_ASSERT(loaded, "slime.lua must load cleanly");
+
+    {
+        sol::state& lua = luaMgr.GetState();
+        sol::protected_function updateSlime = lua["wildbound"]["ai"]["slime_update"];
+        TEST_ASSERT(updateSlime.valid(), "wildbound.ai.slime_update must be bound");
+
+        // 6B.1 Idle & Leash Return
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 100.0f;
+            ctx["y"] = 100.0f;
+            ctx["spawn_x"] = 100.0f;
+            ctx["spawn_y"] = 100.0f;
+            ctx["hp_percent"] = 1.0f;
+            ctx["has_target"] = false;
+            ctx["patrol_radius"] = 90.0f;
+
+            sol::table res = updateSlime(ctx);
+            std::string nextState = res["next_state"];
+            TEST_ASSERT(nextState == "IDLE", "Slime should be IDLE at spawn point");
+
+            // Leash return test (beyond patrol_radius 90)
+            ctx["x"] = 250.0f;
+            ctx["y"] = 100.0f;
+            res = updateSlime(ctx);
+            nextState = res["next_state"];
+            float moveX = res["move_x"];
+            TEST_ASSERT(nextState == "RETURN", "Slime beyond patrol radius must RETURN to spawn");
+            TEST_ASSERT(moveX < 0.0f, "Return vector must point back toward spawn (move_x < 0)");
+        }
+
+        // 6B.2 Detection and Chase (target within 110 radius)
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 100.0f;
+            ctx["y"] = 100.0f;
+            ctx["hp_percent"] = 1.0f;
+            ctx["has_target"] = true;
+            ctx["target_x"] = 160.0f;
+            ctx["target_y"] = 100.0f;
+            ctx["target_dist"] = 60.0f;
+            ctx["detection_radius"] = 110.0f;
+            ctx["attack_radius"] = 26.0f;
+            ctx["state"] = "IDLE";
+
+            sol::table res = updateSlime(ctx);
+            std::string nextState = res["next_state"];
+            float moveX = res["move_x"];
+            TEST_ASSERT(nextState == "CHASE", "Slime should CHASE target within detection radius");
+            TEST_ASSERT(moveX > 0.0f, "Chase vector must head towards target");
+        }
+
+        // 6B.3 Attack test: target within melee reach (<= 26 units)
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 100.0f;
+            ctx["y"] = 100.0f;
+            ctx["hp_percent"] = 1.0f;
+            ctx["has_target"] = true;
+            ctx["target_x"] = 120.0f;
+            ctx["target_y"] = 100.0f;
+            ctx["target_dist"] = 20.0f;
+            ctx["detection_radius"] = 110.0f;
+            ctx["attack_radius"] = 26.0f;
+            ctx["state"] = "CHASE";
+
+            sol::table res = updateSlime(ctx);
+            std::string nextState = res["next_state"];
+            bool wantAttack = res["request_attack"];
+            std::string attackId = res["attack_id"];
+
+            TEST_ASSERT(nextState == "ATTACK", "Slime should ATTACK when target within 26 units");
+            TEST_ASSERT(wantAttack == true, "Slime should request attack");
+            TEST_ASSERT(attackId == "slime_slam", "Slime attack ID must be slime_slam");
+        }
+
+        // 6B.4 Retreat test: Low HP (20% <= 25% retreat threshold)
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 100.0f;
+            ctx["y"] = 100.0f;
+            ctx["target_x"] = 120.0f;
+            ctx["target_y"] = 100.0f;
+            ctx["target_dist"] = 20.0f;
+            ctx["hp_percent"] = 0.20f;
+            ctx["retreat_hp"] = 0.25f;
+            ctx["can_retreat"] = true;
+            ctx["has_target"] = true;
+            ctx["state"] = "ATTACK";
+
+            sol::table res = updateSlime(ctx);
+            std::string nextState = res["next_state"];
+            float moveX = res["move_x"];
+
+            TEST_ASSERT(nextState == "RETREAT", "Slime with low HP (<= 25%) MUST RETREAT");
+            TEST_ASSERT(moveX < 0.0f, "Retreat vector must flee away from target (move_x < 0)");
+        }
+    }
+
+    luaMgr.Shutdown();
+    std::cout << "  -> PASSED" << std::endl;
+}
+
+// 6C. Snake / Marsh Viper AI Script Behaviors (DEF-004)
+void TestSnakeAIBehavior() {
+    std::cout << "[TEST] 6C. Marsh Viper AI Script Verification (Ambush Predator, Fast Strikes)..." << std::endl;
+
+    LuaManager luaMgr;
+    luaMgr.Initialize();
+
+    bool loaded = luaMgr.LoadScript("scripts/gameplay/ai/snake.lua");
+    TEST_ASSERT(loaded, "snake.lua must load cleanly");
+
+    {
+        sol::state& lua = luaMgr.GetState();
+        sol::protected_function updateSnake = lua["wildbound"]["ai"]["snake_update"];
+        sol::protected_function updateViper = lua["wildbound"]["ai"]["viper_update"];
+        TEST_ASSERT(updateSnake.valid(), "wildbound.ai.snake_update must be bound");
+        TEST_ASSERT(updateViper.valid(), "wildbound.ai.viper_update alias must be bound");
+
+        // 6C.1 Ambush posture at spawn
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 50.0f;
+            ctx["y"] = 50.0f;
+            ctx["spawn_x"] = 50.0f;
+            ctx["spawn_y"] = 50.0f;
+            ctx["hp_percent"] = 1.0f;
+            ctx["has_target"] = false;
+
+            sol::table res = updateSnake(ctx);
+            std::string nextState = res["next_state"];
+            TEST_ASSERT(nextState == "IDLE", "Viper should remain coiled in IDLE ambush state at spawn");
+        }
+
+        // 6C.2 Chase within detection radius (150 units)
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 50.0f;
+            ctx["y"] = 50.0f;
+            ctx["hp_percent"] = 1.0f;
+            ctx["has_target"] = true;
+            ctx["target_x"] = 150.0f;
+            ctx["target_y"] = 50.0f;
+            ctx["target_dist"] = 100.0f;
+            ctx["detection_radius"] = 150.0f;
+            ctx["attack_radius"] = 34.0f;
+            ctx["state"] = "IDLE";
+
+            sol::table res = updateSnake(ctx);
+            std::string nextState = res["next_state"];
+            float moveX = res["move_x"];
+            TEST_ASSERT(nextState == "CHASE", "Viper should CHASE target within 150 units");
+            TEST_ASSERT(moveX > 0.0f, "Chase vector should slither toward target");
+        }
+
+        // 6C.3 Attack test: target within strike radius (<= 34 units)
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 50.0f;
+            ctx["y"] = 50.0f;
+            ctx["hp_percent"] = 1.0f;
+            ctx["has_target"] = true;
+            ctx["target_x"] = 80.0f;
+            ctx["target_y"] = 50.0f;
+            ctx["target_dist"] = 30.0f;
+            ctx["detection_radius"] = 150.0f;
+            ctx["attack_radius"] = 34.0f;
+            ctx["state"] = "CHASE";
+
+            sol::table res = updateViper(ctx); // Test via alias
+            std::string nextState = res["next_state"];
+            bool wantAttack = res["request_attack"];
+            std::string attackId = res["attack_id"];
+
+            TEST_ASSERT(nextState == "ATTACK", "Viper should ATTACK when target within 34 units");
+            TEST_ASSERT(wantAttack == true, "Viper should request attack");
+            TEST_ASSERT(attackId == "viper_strike", "Viper attack ID must be viper_strike");
+        }
+
+        // 6C.4 Evasive Retreat: Low HP (30% <= 35% threshold)
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 50.0f;
+            ctx["y"] = 50.0f;
+            ctx["target_x"] = 80.0f;
+            ctx["target_y"] = 50.0f;
+            ctx["target_dist"] = 30.0f;
+            ctx["hp_percent"] = 0.30f;
+            ctx["retreat_hp"] = 0.35f;
+            ctx["can_retreat"] = true;
+            ctx["has_target"] = true;
+            ctx["state"] = "ATTACK";
+
+            sol::table res = updateSnake(ctx);
+            std::string nextState = res["next_state"];
+            float moveX = res["move_x"];
+
+            TEST_ASSERT(nextState == "RETREAT", "Viper with low HP (<= 35%) MUST RETREAT");
+            TEST_ASSERT(moveX < 0.0f, "Retreat vector must flee away from target (move_x < 0)");
+        }
+    }
+
+    luaMgr.Shutdown();
+    std::cout << "  -> PASSED" << std::endl;
+}
+
+// 6D. Cyclops AI Script Behaviors (DEF-004)
+void TestCyclopsAIBehavior() {
+    std::cout << "[TEST] 6D. Mountain Cyclops AI Script Verification (Undaunted Brute, Never Retreats)..." << std::endl;
+
+    LuaManager luaMgr;
+    luaMgr.Initialize();
+
+    bool loaded = luaMgr.LoadScript("scripts/gameplay/ai/cyclops.lua");
+    TEST_ASSERT(loaded, "cyclops.lua must load cleanly");
+
+    {
+        sol::state& lua = luaMgr.GetState();
+        sol::protected_function updateCyclops = lua["wildbound"]["ai"]["cyclops_update"];
+        TEST_ASSERT(updateCyclops.valid(), "wildbound.ai.cyclops_update must be bound");
+
+        // 6D.1 Long-range sightlines and chase (detection_radius 220)
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 0.0f;
+            ctx["y"] = 0.0f;
+            ctx["hp_percent"] = 1.0f;
+            ctx["has_target"] = true;
+            ctx["target_x"] = 200.0f;
+            ctx["target_y"] = 0.0f;
+            ctx["target_dist"] = 200.0f;
+            ctx["detection_radius"] = 220.0f;
+            ctx["attack_radius"] = 48.0f;
+            ctx["state"] = "IDLE";
+
+            sol::table res = updateCyclops(ctx);
+            std::string nextState = res["next_state"];
+            float moveX = res["move_x"];
+            TEST_ASSERT(nextState == "CHASE", "Cyclops should spot and CHASE target at 200 units");
+            TEST_ASSERT(moveX > 0.0f, "Chase vector should move towards target");
+        }
+
+        // 6D.2 Massive sweeping club attack (attack_radius 48)
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 0.0f;
+            ctx["y"] = 0.0f;
+            ctx["hp_percent"] = 1.0f;
+            ctx["has_target"] = true;
+            ctx["target_x"] = 40.0f;
+            ctx["target_y"] = 0.0f;
+            ctx["target_dist"] = 40.0f;
+            ctx["detection_radius"] = 220.0f;
+            ctx["attack_radius"] = 48.0f;
+            ctx["state"] = "CHASE";
+
+            sol::table res = updateCyclops(ctx);
+            std::string nextState = res["next_state"];
+            bool wantAttack = res["request_attack"];
+            std::string attackId = res["attack_id"];
+
+            TEST_ASSERT(nextState == "ATTACK", "Cyclops should ATTACK within 48 units reach");
+            TEST_ASSERT(wantAttack == true, "Cyclops should request attack");
+            TEST_ASSERT(attackId == "cyclops_club", "Cyclops attack ID must be cyclops_club");
+        }
+
+        // 6D.3 Fearless Undaunted Brute: 5% HP -> NEVER RETREATS
+        {
+            sol::table ctx = lua.create_table();
+            ctx["x"] = 0.0f;
+            ctx["y"] = 0.0f;
+            ctx["target_x"] = 40.0f;
+            ctx["target_y"] = 0.0f;
+            ctx["target_dist"] = 40.0f;
+            ctx["hp_percent"] = 0.05f; // Critical 5% HP!
+            ctx["retreat_hp"] = 0.30f;
+            ctx["can_retreat"] = false;
+            ctx["has_target"] = true;
+            ctx["detection_radius"] = 220.0f;
+            ctx["attack_radius"] = 48.0f;
+            ctx["state"] = "CHASE";
+
+            sol::table res = updateCyclops(ctx);
+            std::string nextState = res["next_state"];
+            bool wantAttack = res["request_attack"];
+
+            TEST_ASSERT(nextState != "RETREAT", "Cyclops MUST NEVER RETREAT even at 5% HP");
+            TEST_ASSERT(nextState == "ATTACK", "Cyclops must stay in ATTACK state");
+            TEST_ASSERT(wantAttack == true, "Cyclops continues relentless attack");
+        }
+    }
+
+    luaMgr.Shutdown();
+    std::cout << "  -> PASSED" << std::endl;
+}
+
+// 6E. Malformed AI Context & Error Handling (DEF-004)
+void TestMalformedAIContextAndErrorHandling() {
+    std::cout << "[TEST] 6E. Malformed AI Context Robustness & Default Fallback..." << std::endl;
+
+    LuaManager luaMgr;
+    luaMgr.Initialize();
+
+    luaMgr.LoadScript("scripts/gameplay/ai/slime.lua");
+    luaMgr.LoadScript("scripts/gameplay/ai/snake.lua");
+    luaMgr.LoadScript("scripts/gameplay/ai/cyclops.lua");
+
+    {
+        sol::state& lua = luaMgr.GetState();
+        sol::protected_function scripts[] = {
+            lua["wildbound"]["ai"]["slime_update"],
+            lua["wildbound"]["ai"]["snake_update"],
+            lua["wildbound"]["ai"]["cyclops_update"]
+        };
+
+        for (auto& fn : scripts) {
+            TEST_ASSERT(fn.valid(), "AI script function must be valid");
+
+            // Empty context table
+            sol::table emptyCtx = lua.create_table();
+            sol::table res = fn(emptyCtx);
+            std::string state = res["next_state"];
+            TEST_ASSERT(state == "IDLE", "Empty context should fall back gracefully to IDLE");
+
+            // Dead state
+            sol::table deadCtx = lua.create_table();
+            deadCtx["hp_percent"] = 0.0f;
+            res = fn(deadCtx);
+            state = res["next_state"];
+            TEST_ASSERT(state == "DEAD", "hp_percent <= 0 must yield DEAD state");
+        }
+    }
+
+    luaMgr.Shutdown();
+    std::cout << "  -> PASSED" << std::endl;
+}
+
 // 7. Multiple Enemies Independence & No Cross-Contamination
 void TestMultipleEnemiesIndependence() {
     std::cout << "[TEST] 7. Multiple Enemies AI Independence (10 Goblins + 10 Skeletons)..." << std::endl;
@@ -476,6 +823,102 @@ void TestMultipleEnemiesIndependence() {
 
     luaMgr.Shutdown();
     std::cout << "  -> PASSED (20 distinct enemies simulated with zero state pollution)" << std::endl;
+}
+
+// 7B. Expanded 5-Archetype Independence (DEF-004)
+void TestExpandedEnemiesIndependence() {
+    std::cout << "[TEST] 7B. Expanded 5-Archetype AI Independence (25 Enemies: Goblin, Skeleton, Slime, Snake, Cyclops)..." << std::endl;
+
+    LuaManager luaMgr;
+    luaMgr.Initialize();
+
+    luaMgr.LoadScript("scripts/gameplay/ai/goblin.lua");
+    luaMgr.LoadScript("scripts/gameplay/ai/skeleton.lua");
+    luaMgr.LoadScript("scripts/gameplay/ai/slime.lua");
+    luaMgr.LoadScript("scripts/gameplay/ai/snake.lua");
+    luaMgr.LoadScript("scripts/gameplay/ai/cyclops.lua");
+
+    {
+        sol::state& lua = luaMgr.GetState();
+        sol::protected_function updateGoblin = lua["wildbound"]["ai"]["goblin_update"];
+        sol::protected_function updateSkeleton = lua["wildbound"]["ai"]["skeleton_update"];
+        sol::protected_function updateSlime = lua["wildbound"]["ai"]["slime_update"];
+        sol::protected_function updateSnake = lua["wildbound"]["ai"]["snake_update"];
+        sol::protected_function updateCyclops = lua["wildbound"]["ai"]["cyclops_update"];
+
+        struct EnemySim {
+            uint32_t id;
+            std::string type;
+            float x, y;
+            float hpPercent;
+            float targetDist;
+            float attackRadius;
+            float detectionRadius;
+            float retreatHp;
+            bool canRetreat;
+            std::string expectedState;
+        };
+
+        std::vector<EnemySim> enemies;
+        // 5 Goblins
+        for (uint32_t i = 1; i <= 5; ++i) {
+            bool low = (i % 2 == 0);
+            enemies.push_back({ i, "goblin", 100.0f + i * 10, 100.0f, low ? 0.15f : 1.0f, low ? 20.0f : 80.0f, 32.0f, 140.0f, 0.20f, true, low ? "RETREAT" : "CHASE" });
+        }
+        // 5 Skeletons (never retreat)
+        for (uint32_t i = 6; i <= 10; ++i) {
+            bool low = (i % 2 == 0);
+            enemies.push_back({ i, "skeleton", 200.0f + i * 10, 200.0f, low ? 0.05f : 1.0f, 25.0f, 36.0f, 160.0f, 0.20f, false, "ATTACK" });
+        }
+        // 5 Slimes (retreat <= 25% HP)
+        for (uint32_t i = 11; i <= 15; ++i) {
+            bool low = (i % 2 == 0);
+            enemies.push_back({ i, "slime", 300.0f + i * 10, 300.0f, low ? 0.20f : 1.0f, low ? 20.0f : 70.0f, 26.0f, 110.0f, 0.25f, true, low ? "RETREAT" : "CHASE" });
+        }
+        // 5 Snakes (retreat <= 35% HP)
+        for (uint32_t i = 16; i <= 20; ++i) {
+            bool low = (i % 2 == 0);
+            enemies.push_back({ i, "snake", 400.0f + i * 10, 400.0f, low ? 0.30f : 1.0f, low ? 20.0f : 90.0f, 34.0f, 150.0f, 0.35f, true, low ? "RETREAT" : "CHASE" });
+        }
+        // 5 Cyclops (never retreat)
+        for (uint32_t i = 21; i <= 25; ++i) {
+            bool low = (i % 2 == 0);
+            enemies.push_back({ i, "cyclops", 500.0f + i * 10, 500.0f, low ? 0.05f : 1.0f, 35.0f, 48.0f, 220.0f, 0.0f, false, "ATTACK" });
+        }
+
+        for (int tick = 0; tick < 5; ++tick) {
+            for (const auto& e : enemies) {
+                sol::table ctx = lua.create_table();
+                ctx["enemy_id"] = e.id;
+                ctx["enemy_type"] = e.type;
+                ctx["x"] = e.x;
+                ctx["y"] = e.y;
+                ctx["target_x"] = e.x + e.targetDist;
+                ctx["target_y"] = e.y;
+                ctx["target_dist"] = e.targetDist;
+                ctx["hp_percent"] = e.hpPercent;
+                ctx["has_target"] = true;
+                ctx["detection_radius"] = e.detectionRadius;
+                ctx["attack_radius"] = e.attackRadius;
+                ctx["retreat_hp"] = e.retreatHp;
+                ctx["can_retreat"] = e.canRetreat;
+
+                sol::table res;
+                if (e.type == "goblin") res = updateGoblin(ctx);
+                else if (e.type == "skeleton") res = updateSkeleton(ctx);
+                else if (e.type == "slime") res = updateSlime(ctx);
+                else if (e.type == "snake") res = updateSnake(ctx);
+                else if (e.type == "cyclops") res = updateCyclops(ctx);
+
+                std::string state = res["next_state"];
+                TEST_ASSERT(state == e.expectedState,
+                    ("Expanded Enemy " + std::to_string(e.id) + " (" + e.type + ") expected state " + e.expectedState + " but got " + state).c_str());
+            }
+        }
+    }
+
+    luaMgr.Shutdown();
+    std::cout << "  -> PASSED (25 distinct enemies simulated with zero cross-contamination)" << std::endl;
 }
 
 // 8. C++ Decision Validation Rules
@@ -560,7 +1003,7 @@ void TestPerformanceBenchmarks() {
 int main() {
     Logger::Init();
     std::cout << "==========================================================" << std::endl;
-    std::cout << "WILDBOUND PHASE 46: LUA SCRIPTING VALIDATION TEST SUITE" << std::endl;
+    std::cout << "WILDBOUND PHASE 46 & PHASE 50E: LUA SCRIPTING TEST SUITE" << std::endl;
     std::cout << "==========================================================" << std::endl;
 
     TestRuntimeLifecycleAndErrors();
@@ -569,12 +1012,17 @@ int main() {
     TestScriptSafetyAndExecutionBudget();
     TestGoblinAIBehavior();
     TestSkeletonAIBehavior();
+    TestSlimeAIBehavior();
+    TestSnakeAIBehavior();
+    TestCyclopsAIBehavior();
+    TestMalformedAIContextAndErrorHandling();
     TestMultipleEnemiesIndependence();
+    TestExpandedEnemiesIndependence();
     TestDecisionValidationRules();
     TestPerformanceBenchmarks();
 
     std::cout << "==========================================================" << std::endl;
-    std::cout << "ALL 9 LUA INTEGRATION TEST GROUPS PASSED (100% OK)" << std::endl;
+    std::cout << "ALL 14 LUA INTEGRATION TEST GROUPS PASSED (100% OK)" << std::endl;
     std::cout << "==========================================================" << std::endl;
 
     Logger::Shutdown();

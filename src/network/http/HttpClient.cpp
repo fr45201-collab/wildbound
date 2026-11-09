@@ -17,7 +17,66 @@
 namespace wildbound::network::http {
 
 HttpClient::HttpClient() = default;
-HttpClient::~HttpClient() = default;
+
+HttpClient::~HttpClient() {
+    Shutdown();
+}
+
+bool HttpClient::IsShuttingDown() const noexcept {
+    return m_isShuttingDown.load(std::memory_order_acquire);
+}
+
+void HttpClient::ReapCompletedWorkers() {
+    auto it = m_workers.begin();
+    while (it != m_workers.end()) {
+        if ((*it)->completed.load(std::memory_order_acquire)) {
+            if ((*it)->thread.joinable()) {
+                (*it)->thread.join();
+            }
+            it = m_workers.erase(it);
+        } else {
+            ++it;
+        }
+    }
+}
+
+void HttpClient::Shutdown() {
+    bool expected = false;
+    if (!m_isShuttingDown.compare_exchange_strong(expected, true)) {
+        // Already shutting down or shut down. Ensure any remaining workers are joined if called repeatedly.
+        std::vector<std::unique_ptr<WorkerTask>> remaining;
+        {
+            std::lock_guard<std::mutex> lock(m_workersMutex);
+            remaining = std::move(m_workers);
+            m_workers.clear();
+        }
+        for (auto& task : remaining) {
+            if (task && task->thread.joinable()) {
+                task->thread.join();
+            }
+        }
+        return;
+    }
+
+    std::vector<std::unique_ptr<WorkerTask>> workersToJoin;
+    {
+        std::lock_guard<std::mutex> lock(m_workersMutex);
+        workersToJoin = std::move(m_workers);
+        m_workers.clear();
+    }
+
+    for (auto& task : workersToJoin) {
+        if (task && task->thread.joinable()) {
+            task->thread.join();
+        }
+    }
+    workersToJoin.clear();
+
+    {
+        std::lock_guard<std::mutex> qLock(m_queueMutex);
+        m_completedCallbacks.clear();
+    }
+}
 
 #ifdef _WIN32
 
@@ -267,17 +326,59 @@ void HttpClient::SendRequestAsync(
     HttpResponseCallback callback,
     int timeoutMs
 ) {
-    std::thread([this, method, url, body, headers, callback, timeoutMs]() {
-        HttpResponse resp = SendRequest(method, url, body, headers, timeoutMs);
-        std::lock_guard<std::mutex> lock(m_queueMutex);
-        m_completedCallbacks.push_back({ std::move(callback), std::move(resp) });
-    }).detach();
+    bool rejected = false;
+    {
+        std::lock_guard<std::mutex> lock(m_workersMutex);
+        ReapCompletedWorkers();
+
+        if (m_isShuttingDown.load(std::memory_order_relaxed)) {
+            rejected = true;
+        } else {
+            auto task = std::make_unique<WorkerTask>();
+            WorkerTask* pTask = task.get();
+            task->thread = std::thread([this, pTask, method, url, body, headers, callback = std::move(callback), timeoutMs]() {
+                HttpResponse resp;
+                try {
+                    resp = SendRequest(method, url, body, headers, timeoutMs);
+                } catch (const std::exception& ex) {
+                    resp.success = false;
+                    resp.errorMessage = std::string("Exception: ") + ex.what();
+                } catch (...) {
+                    resp.success = false;
+                    resp.errorMessage = "Unknown exception in SendRequest";
+                }
+
+                {
+                    std::lock_guard<std::mutex> qLock(m_queueMutex);
+                    if (!m_isShuttingDown.load(std::memory_order_relaxed)) {
+                        m_completedCallbacks.push_back({ std::move(callback), std::move(resp) });
+                    }
+                }
+
+                pTask->completed.store(true, std::memory_order_release);
+            });
+            m_workers.push_back(std::move(task));
+        }
+    }
+
+    if (rejected && callback) {
+        HttpResponse rej;
+        rej.statusCode = 0;
+        rej.success = false;
+        rej.errorMessage = "HttpClient is shutting down";
+        callback(rej);
+    }
 }
 
 void HttpClient::Update() {
+    {
+        std::lock_guard<std::mutex> wLock(m_workersMutex);
+        ReapCompletedWorkers();
+    }
+
     std::vector<PendingCallback> toDispatch;
     {
-        std::lock_guard<std::mutex> lock(m_queueMutex);
+        std::lock_guard<std::mutex> qLock(m_queueMutex);
         if (m_completedCallbacks.empty()) {
             return;
         }

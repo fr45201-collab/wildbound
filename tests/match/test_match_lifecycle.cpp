@@ -3,6 +3,7 @@
 #include <vector>
 #include <cmath>
 #include <string>
+#include <cstdlib>
 
 #include "match/MatchState.hpp"
 #include "match/MatchConfiguration.hpp"
@@ -18,6 +19,18 @@
 #include "combat/CombatEvents.hpp"
 #include "world/WorldManager.hpp"
 #include "storm/StormManager.hpp"
+
+#ifdef assert
+#undef assert
+#endif
+#define TEST_ASSERT(cond, msg) \
+    do { \
+        if (!(cond)) { \
+            std::cerr << "\n[TEST FAILED] " << msg << " (" << #cond << ") at line " << __LINE__ << std::endl; \
+            std::exit(1); \
+        } \
+    } while (0)
+#define assert(cond) TEST_ASSERT(cond, "Assertion verified")
 
 using namespace wildbound;
 using namespace wildbound::match;
@@ -318,12 +331,14 @@ void TestWinnerDetermination() {
     assert(mgr.GetState() == MatchState::Active);
     assert(mgr.GetRegistry().GetAliveCount() == 3);
 
-    // Eliminate P3 at t = 10s
+    // Advance match clock to t = 10s and eliminate P3
+    mgr.Update(9.9f); // m_matchTime = 10.0s
     mgr.ProcessElimination(3, EliminationCause::Combat, 1);
     assert(mgr.GetState() == MatchState::Active);
     assert(mgr.GetRegistry().GetAliveCount() == 2);
 
-    // Eliminate P2 at t = 20s
+    // Advance match clock to t = 20s and eliminate P2
+    mgr.Update(10.0f); // m_matchTime = 20.0s
     mgr.ProcessElimination(2, EliminationCause::CorruptionStorm, 0);
 
     // Exactly 1 alive participant left (P1) -> victory!
@@ -341,10 +356,221 @@ void TestWinnerDetermination() {
     const auto* p3Final = mgr.GetRegistry().FindParticipant(3);
 
     assert(p1Final->placement == 1);
-    assert(p2Final->placement == 2); // Eliminated later
-    assert(p3Final->placement == 3); // Eliminated earlier
+    assert(p2Final->placement == 2); // Eliminated later (t = 20s)
+    assert(p3Final->placement == 3); // Eliminated earlier (t = 10s)
 
     std::cout << "  -> Single survivor victory and chronological placements verified." << std::endl;
+}
+
+// ----------------------------------------------------------------------------
+// TEST 6B: Genuinely Simultaneous Eliminations (2 Participants Tied)
+// ----------------------------------------------------------------------------
+void TestSimultaneousTwoParticipantElimination() {
+    std::cout << "[TEST] 6B. Genuinely Simultaneous Eliminations (2 Participants Tied at Same Timestamp)..." << std::endl;
+
+    MatchManager mgr;
+    MatchConfiguration cfg = MatchConfiguration::CreateDefault();
+    cfg.minimumParticipants = 2;
+    cfg.countdownSeconds = 0.0f;
+    mgr.Initialize(cfg);
+    mgr.GetSpawner().AddCustomSpawnPoint(Vector2{ 2000.0f, 2000.0f }, "Default_South");
+
+    MatchParticipant p1; p1.participantId = 1; p1.displayName = "P1"; p1.status = ParticipantStatus::Registered;
+    MatchParticipant p2; p2.participantId = 2; p2.displayName = "P2"; p2.status = ParticipantStatus::Registered;
+    MatchParticipant p3; p3.participantId = 3; p3.displayName = "P3"; p3.status = ParticipantStatus::Registered;
+    mgr.RegisterParticipant(p1);
+    mgr.RegisterParticipant(p2);
+    mgr.RegisterParticipant(p3);
+
+    mgr.StartCountdown();
+    mgr.Update(0.1f); // Active
+    assert(mgr.GetState() == MatchState::Active);
+    assert(mgr.GetRegistry().GetAliveCount() == 3);
+
+    // Advance to t = 10s
+    mgr.Update(9.9f);
+
+    // Both P2 and P3 eliminated at the exact same timestamp (m_matchTime = 10.0s)
+    mgr.ProcessElimination(2, EliminationCause::CorruptionStorm, 0);
+    mgr.ProcessElimination(3, EliminationCause::Combat, 1);
+
+    // Remaining survivor P1 wins
+    mgr.Update(0.1f);
+    assert(mgr.GetState() == MatchState::Completed);
+
+    const auto* p1Final = mgr.GetRegistry().FindParticipant(1);
+    const auto* p2Final = mgr.GetRegistry().FindParticipant(2);
+    const auto* p3Final = mgr.GetRegistry().FindParticipant(3);
+
+    // Winner gets Rank 1
+    assert(p1Final->placement == 1);
+    assert(p1Final->isWinner);
+
+    // Both simultaneous eliminations at t = 10s receive shared Rank 2 under tournament competition ranking
+    assert(p2Final->placement == 2);
+    assert(p3Final->placement == 2);
+
+    std::cout << "  -> Simultaneous 2-participant elimination and shared Rank 2 verified." << std::endl;
+}
+
+// ----------------------------------------------------------------------------
+// TEST 6C: Simultaneous Eliminations (3 Participants Tied)
+// ----------------------------------------------------------------------------
+void TestSimultaneousThreeParticipantElimination() {
+    std::cout << "[TEST] 6C. Simultaneous Eliminations (3 Participants Tied at Same Timestamp)..." << std::endl;
+
+    MatchManager mgr;
+    MatchConfiguration cfg = MatchConfiguration::CreateDefault();
+    cfg.minimumParticipants = 2;
+    cfg.countdownSeconds = 0.0f;
+    mgr.Initialize(cfg);
+    mgr.GetSpawner().AddCustomSpawnPoint(Vector2{ 2000.0f, 2000.0f }, "Default_South");
+
+    MatchParticipant p1; p1.participantId = 1; p1.displayName = "P1"; p1.status = ParticipantStatus::Registered;
+    MatchParticipant p2; p2.participantId = 2; p2.displayName = "P2"; p2.status = ParticipantStatus::Registered;
+    MatchParticipant p3; p3.participantId = 3; p3.displayName = "P3"; p3.status = ParticipantStatus::Registered;
+    MatchParticipant p4; p4.participantId = 4; p4.displayName = "P4"; p4.status = ParticipantStatus::Registered;
+    MatchParticipant p5; p5.participantId = 5; p5.displayName = "P5"; p5.status = ParticipantStatus::Registered;
+    mgr.RegisterParticipant(p1);
+    mgr.RegisterParticipant(p2);
+    mgr.RegisterParticipant(p3);
+    mgr.RegisterParticipant(p4);
+    mgr.RegisterParticipant(p5);
+
+    mgr.StartCountdown();
+    mgr.Update(0.1f); // Active
+    assert(mgr.GetState() == MatchState::Active);
+    assert(mgr.GetRegistry().GetAliveCount() == 5);
+
+    // Advance to t = 5s: P3, P4, P5 all wiped out in storm at exact same tick
+    mgr.Update(4.9f);
+    mgr.ProcessElimination(3, EliminationCause::CorruptionStorm, 0);
+    mgr.ProcessElimination(4, EliminationCause::CorruptionStorm, 0);
+    mgr.ProcessElimination(5, EliminationCause::CorruptionStorm, 0);
+
+    // Advance to t = 15s: P2 eliminated by P1
+    mgr.Update(10.0f);
+    mgr.ProcessElimination(2, EliminationCause::Combat, 1);
+
+    // P1 wins
+    mgr.Update(0.1f);
+    assert(mgr.GetState() == MatchState::Completed);
+
+    const auto* p1Final = mgr.GetRegistry().FindParticipant(1);
+    const auto* p2Final = mgr.GetRegistry().FindParticipant(2);
+    const auto* p3Final = mgr.GetRegistry().FindParticipant(3);
+    const auto* p4Final = mgr.GetRegistry().FindParticipant(4);
+    const auto* p5Final = mgr.GetRegistry().FindParticipant(5);
+
+    assert(p1Final->placement == 1);
+    assert(p2Final->placement == 2);
+    // P3, P4, P5 eliminated simultaneously at t = 5s -> all tied for Rank 3!
+    assert(p3Final->placement == 3);
+    assert(p4Final->placement == 3);
+    assert(p5Final->placement == 3);
+
+    std::cout << "  -> Simultaneous 3-participant elimination and tied Rank 3 verified." << std::endl;
+}
+
+// ----------------------------------------------------------------------------
+// TEST 6D: Simultaneous Elimination Event Arrival Order Invariance
+// ----------------------------------------------------------------------------
+void TestSimultaneousEventArrivalOrderInvariance() {
+    std::cout << "[TEST] 6D. Simultaneous Elimination Event Arrival Order Invariance..." << std::endl;
+
+    // Run Scenario A: P2 processed before P3
+    uint32_t aRank2 = 0, aRank3 = 0;
+    {
+        MatchManager mgrA;
+        MatchConfiguration cfg = MatchConfiguration::CreateDefault();
+        cfg.minimumParticipants = 2;
+        cfg.countdownSeconds = 0.0f;
+        mgrA.Initialize(cfg);
+
+        MatchParticipant p1; p1.participantId = 1; p1.displayName = "P1"; p1.status = ParticipantStatus::Registered;
+        MatchParticipant p2; p2.participantId = 2; p2.displayName = "P2"; p2.status = ParticipantStatus::Registered;
+        MatchParticipant p3; p3.participantId = 3; p3.displayName = "P3"; p3.status = ParticipantStatus::Registered;
+        mgrA.RegisterParticipant(p1);
+        mgrA.RegisterParticipant(p2);
+        mgrA.RegisterParticipant(p3);
+        mgrA.StartCountdown();
+        mgrA.Update(10.0f);
+
+        mgrA.ProcessElimination(2, EliminationCause::Combat, 1); // P2 first
+        mgrA.ProcessElimination(3, EliminationCause::Combat, 1); // P3 second
+        mgrA.Update(0.1f);
+
+        aRank2 = mgrA.GetRegistry().FindParticipant(2)->placement;
+        aRank3 = mgrA.GetRegistry().FindParticipant(3)->placement;
+    }
+
+    // Run Scenario B: P3 processed before P2
+    uint32_t bRank2 = 0, bRank3 = 0;
+    {
+        MatchManager mgrB;
+        MatchConfiguration cfg = MatchConfiguration::CreateDefault();
+        cfg.minimumParticipants = 2;
+        cfg.countdownSeconds = 0.0f;
+        mgrB.Initialize(cfg);
+
+        MatchParticipant p1; p1.participantId = 1; p1.displayName = "P1"; p1.status = ParticipantStatus::Registered;
+        MatchParticipant p2; p2.participantId = 2; p2.displayName = "P2"; p2.status = ParticipantStatus::Registered;
+        MatchParticipant p3; p3.participantId = 3; p3.displayName = "P3"; p3.status = ParticipantStatus::Registered;
+        mgrB.RegisterParticipant(p1);
+        mgrB.RegisterParticipant(p2);
+        mgrB.RegisterParticipant(p3);
+        mgrB.StartCountdown();
+        mgrB.Update(10.0f);
+
+        mgrB.ProcessElimination(3, EliminationCause::Combat, 1); // P3 first
+        mgrB.ProcessElimination(2, EliminationCause::Combat, 1); // P2 second
+        mgrB.Update(0.1f);
+
+        bRank2 = mgrB.GetRegistry().FindParticipant(2)->placement;
+        bRank3 = mgrB.GetRegistry().FindParticipant(3)->placement;
+    }
+
+    assert(aRank2 == bRank2 && aRank2 == 2);
+    assert(aRank3 == bRank3 && aRank3 == 2);
+    std::cout << "  -> Order invariance verified: both orders yield identical shared Rank 2." << std::endl;
+}
+
+// ----------------------------------------------------------------------------
+// TEST 6E: Repeated Deterministic Placements
+// ----------------------------------------------------------------------------
+void TestRepeatedDeterministicPlacements() {
+    std::cout << "[TEST] 6E. Repeated Deterministic Execution (20 Consecutive Runs)..." << std::endl;
+
+    for (int run = 0; run < 20; ++run) {
+        MatchManager mgr;
+        MatchConfiguration cfg = MatchConfiguration::CreateDefault();
+        cfg.minimumParticipants = 2;
+        cfg.countdownSeconds = 0.0f;
+        mgr.Initialize(cfg);
+
+        MatchParticipant p1; p1.participantId = 1; p1.displayName = "P1"; p1.status = ParticipantStatus::Registered;
+        MatchParticipant p2; p2.participantId = 2; p2.displayName = "P2"; p2.status = ParticipantStatus::Registered;
+        MatchParticipant p3; p3.participantId = 3; p3.displayName = "P3"; p3.status = ParticipantStatus::Registered;
+        mgr.RegisterParticipant(p1);
+        mgr.RegisterParticipant(p2);
+        mgr.RegisterParticipant(p3);
+        mgr.StartCountdown();
+        mgr.Update(0.1f);
+
+        mgr.Update(9.9f); // t = 10s
+        mgr.ProcessElimination(3, EliminationCause::Combat, 1);
+
+        mgr.Update(10.0f); // t = 20s
+        mgr.ProcessElimination(2, EliminationCause::CorruptionStorm, 0);
+
+        mgr.Update(0.1f);
+        assert(mgr.GetState() == MatchState::Completed);
+
+        assert(mgr.GetRegistry().FindParticipant(1)->placement == 1);
+        assert(mgr.GetRegistry().FindParticipant(2)->placement == 2);
+        assert(mgr.GetRegistry().FindParticipant(3)->placement == 3);
+    }
+    std::cout << "  -> 20 repeated runs verified 100% deterministic placements." << std::endl;
 }
 
 // ----------------------------------------------------------------------------
@@ -358,6 +584,7 @@ void TestDrawResolution() {
     cfg.minimumParticipants = 2;
     cfg.countdownSeconds = 0.0f;
     mgr.Initialize(cfg);
+    mgr.GetSpawner().AddCustomSpawnPoint(Vector2{ 2000.0f, 2000.0f }, "Default_South");
 
     MatchParticipant p1; p1.participantId = 1; p1.displayName = "P1"; p1.status = ParticipantStatus::Registered;
     MatchParticipant p2; p2.participantId = 2; p2.displayName = "P2"; p2.status = ParticipantStatus::Registered;
@@ -547,13 +774,17 @@ int main() {
     TestMatchCountdown();
     TestEliminationSystem();
     TestWinnerDetermination();
+    TestSimultaneousTwoParticipantElimination();
+    TestSimultaneousThreeParticipantElimination();
+    TestSimultaneousEventArrivalOrderInvariance();
+    TestRepeatedDeterministicPlacements();
     TestDrawResolution();
     TestMinimumParticipantsRequirement();
     TestStormLifecycleIntegration();
     TestCompleteLifecycleRepeated();
 
     std::cout << "==========================================================" << std::endl;
-    std::cout << "ALL 10 MATCH LIFECYCLE TEST SUITES PASSED (100% OK)" << std::endl;
+    std::cout << "ALL 14 MATCH LIFECYCLE TEST SUITES PASSED (100% OK)" << std::endl;
     std::cout << "==========================================================" << std::endl;
     return 0;
 }

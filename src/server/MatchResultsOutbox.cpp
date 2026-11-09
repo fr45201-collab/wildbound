@@ -17,7 +17,13 @@ MatchResultsOutbox::MatchResultsOutbox(
       m_outboxDir(std::move(outboxDir)) {
 }
 
-MatchResultsOutbox::~MatchResultsOutbox() = default;
+MatchResultsOutbox::~MatchResultsOutbox() {
+    Shutdown();
+}
+
+void MatchResultsOutbox::Shutdown() {
+    m_httpClient.Shutdown();
+}
 
 void MatchResultsOutbox::Initialize() {
     std::error_code ec;

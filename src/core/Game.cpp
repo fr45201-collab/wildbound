@@ -15,6 +15,8 @@
 #include "../match/MatchManager.hpp"
 #include "../gamemodes/GameModeManager.hpp"
 #include "../network/NetworkManager.hpp"
+#include "../network/http/BackendClient.hpp"
+#include "../network/matchmaking/MatchmakingConnector.hpp"
 
 #include <raylib.h>
 #include <algorithm>
@@ -51,6 +53,8 @@ Game::Game(const EngineConfig& initialConfig)
     , m_matchManager(std::make_unique<match::MatchManager>())
     , m_gameModeManager(std::make_unique<gamemodes::GameModeManager>())
     , m_networkManager(std::make_unique<network::NetworkManager>())
+    , m_backendClient(std::make_unique<network::http::BackendClient>("http://127.0.0.1:8080"))
+    , m_matchmakingConnector(std::make_unique<network::matchmaking::MatchmakingConnector>())
     , m_luaManager(std::make_unique<scripting::LuaManager>())
     , m_devUI(std::make_unique<ui::DevUI>())
 {
@@ -224,6 +228,9 @@ bool Game::Initialize() {
     m_luaManager->LoadScript("scripts/gameplay/ai/enemy_base.lua");
     m_luaManager->LoadScript("scripts/gameplay/ai/goblin.lua");
     m_luaManager->LoadScript("scripts/gameplay/ai/skeleton.lua");
+    m_luaManager->LoadScript("scripts/gameplay/ai/slime.lua");
+    m_luaManager->LoadScript("scripts/gameplay/ai/snake.lua");
+    m_luaManager->LoadScript("scripts/gameplay/ai/cyclops.lua");
 
     // 7. Initialize Player Entity & Spawn (Phase 4 & Phase 7)
     auto playerCfg = entities::CharacterConfig::LoadFromFile("data/characters/player.json");
@@ -272,6 +279,29 @@ bool Game::Initialize() {
     // Phase 26: Initialize Cosmetics Store & Wardrobe System
     if (m_cosmeticsStoreManager && m_customizationManager) {
         m_cosmeticsStoreManager->Initialize(*m_customizationManager, m_audioSystem.get());
+    }
+
+    // Phase 50E Stage 6A: Initialize Backend HTTP Authentication Client
+    if (m_backendClient) {
+        Logger::Info("ENGINE", "Initializing Backend Client (http://127.0.0.1:8080)...");
+        m_backendClient->LoadSessionFromFile();
+        if (m_uiManager) {
+            m_uiManager->SetBackendClient(m_backendClient.get());
+        }
+        if (m_cosmeticsStoreManager) {
+            m_cosmeticsStoreManager->SetBackendClient(m_backendClient.get());
+        }
+    }
+
+    // Phase 50E Stage 6B: Initialize Matchmaking Connector & UI Integration
+    if (m_matchmakingConnector) {
+        if (m_uiManager) {
+            m_uiManager->SetMatchmakingConnector(m_matchmakingConnector.get());
+        }
+        if (m_backendClient && m_backendClient->IsLoggedIn()) {
+            const auto& session = m_backendClient->GetSession();
+            m_matchmakingConnector->SetCredentials(session.displayName, session.accessToken);
+        }
     }
 
     // Phase 19: Spawn Starter World Pickups & Loot Container in Forest
@@ -830,6 +860,16 @@ void Game::Update(float dt) {
         m_networkManager->Update(dt);
     }
 
+    // Phase 50E Stage 6A: Dispatch asynchronous HTTP backend callbacks
+    if (m_backendClient) {
+        m_backendClient->Update();
+    }
+
+    // Phase 50E Stage 6B: Update Client Matchmaking Connector
+    if (m_matchmakingConnector) {
+        m_matchmakingConnector->Update(dt);
+    }
+
     // Phase 34: Bot Storm Damage & HUD Sync
     if (m_stormManager && m_stormManager->GetState() != storm::StormState::Idle && m_enemySpawner && m_matchManager && m_matchManager->IsActive()) {
         const auto& safeZone = m_stormManager->GetCurrentSafeZone();
@@ -1120,6 +1160,14 @@ void Game::Shutdown() {
 
     if (m_networkManager) {
         m_networkManager->Shutdown();
+    }
+
+    if (m_matchmakingConnector) {
+        m_matchmakingConnector->Shutdown();
+    }
+
+    if (m_backendClient) {
+        m_backendClient->Shutdown();
     }
 
     if (m_uiManager) {

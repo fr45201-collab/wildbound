@@ -34,8 +34,8 @@ MainMenuAction MainMenu::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPr
     const float btnW = 160.0f;
     const float btnH = 22.0f;
     const float startX = 60.0f;
-    const float startY = 130.0f;
-    const float spacing = 28.0f;
+    const float startY = 112.0f;
+    const float spacing = 24.0f;
 
     for (int i = 0; i < ItemCount; ++i) {
         Rectangle btnRect{ startX, startY + i * spacing, btnW, btnH };
@@ -47,9 +47,11 @@ MainMenuAction MainMenu::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPr
                     case 1: return MainMenuAction::CharacterSelect;
                     case 2: return MainMenuAction::Wardrobe;
                     case 3: return MainMenuAction::CosmeticsStore;
-                    case 4: return MainMenuAction::Settings;
-                    case 5: m_showCredits = true; return MainMenuAction::None;
-                    case 6: return MainMenuAction::ExitGame;
+                    case 4: return MainMenuAction::Account;
+                    case 5: return MainMenuAction::Multiplayer;
+                    case 6: return MainMenuAction::Settings;
+                    case 7: m_showCredits = true; return MainMenuAction::None;
+                    case 8: return MainMenuAction::ExitGame;
                 }
             }
         }
@@ -61,9 +63,11 @@ MainMenuAction MainMenu::Update(float dt, Vector2 mouseVirtual, bool mouseLeftPr
             case 1: return MainMenuAction::CharacterSelect;
             case 2: return MainMenuAction::Wardrobe;
             case 3: return MainMenuAction::CosmeticsStore;
-            case 4: return MainMenuAction::Settings;
-            case 5: m_showCredits = true; return MainMenuAction::None;
-            case 6: return MainMenuAction::ExitGame;
+            case 4: return MainMenuAction::Account;
+            case 5: return MainMenuAction::Multiplayer;
+            case 6: return MainMenuAction::Settings;
+            case 7: m_showCredits = true; return MainMenuAction::None;
+            case 8: return MainMenuAction::ExitGame;
         }
     }
 
@@ -91,6 +95,8 @@ void MainMenu::Render() {
         "CHARACTER SELECT",
         "WARDROBE",
         "COSMETICS STORE",
+        "ACCOUNT / LOGIN",
+        "ONLINE MULTIPLAYER",
         "SETTINGS",
         "CREDITS",
         "EXIT GAME"
@@ -99,8 +105,8 @@ void MainMenu::Render() {
     const float btnW = 160.0f;
     const float btnH = 22.0f;
     const float startX = 60.0f;
-    const float startY = 130.0f;
-    const float spacing = 28.0f;
+    const float startY = 112.0f;
+    const float spacing = 24.0f;
 
     for (int i = 0; i < ItemCount; ++i) {
         Rectangle r{ startX, startY + i * spacing, btnW, btnH };

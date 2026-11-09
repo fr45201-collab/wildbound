@@ -108,6 +108,22 @@ set(GAMEPLAY_INTEGRATION_SOURCES
     ${CMAKE_SOURCE_DIR}/src/scripting/LuaManager.cpp
 )
 
+set(BACKEND_HTTP_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/network/http/HttpClient.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/http/BackendClient.cpp
+)
+
+set(MATCHMAKING_CONNECTOR_SOURCES
+    ${CMAKE_SOURCE_DIR}/src/ui/menus/MultiplayerMenu.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/matchmaking/MatchmakingConnector.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetClient.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/ENetTransport.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkProtocol.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/PacketValidator.cpp
+    ${CMAKE_SOURCE_DIR}/src/network/NetworkStatistics.cpp
+    ${CMAKE_SOURCE_DIR}/src/coordinator/CoordinatorProtocol.cpp
+)
+
 # 1. Core Configuration Test
 add_executable(test_config
     core/test_config.cpp
@@ -827,6 +843,7 @@ add_executable(test_ui
     ${CMAKE_SOURCE_DIR}/src/ui/menus/SettingsMenu.cpp
     ${CMAKE_SOURCE_DIR}/src/ui/menus/PauseMenu.cpp
     ${CMAKE_SOURCE_DIR}/src/ui/menus/MainMenu.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/menus/AuthMenu.cpp
     ${CMAKE_SOURCE_DIR}/src/ui/inventory/InventoryUI.cpp
     ${CMAKE_SOURCE_DIR}/src/customization/CosmeticDefinition.cpp
     ${CMAKE_SOURCE_DIR}/src/customization/CosmeticRegistry.cpp
@@ -907,13 +924,19 @@ add_executable(test_ui
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsOwnershipManager.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsSearchFilter.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsStoreManager.cpp
+    ${BACKEND_HTTP_SOURCES}
+    ${MATCHMAKING_CONNECTOR_SOURCES}
     ${MATCH_RESULTS_STORM_SOURCES}
 )
 target_include_directories(test_ui PRIVATE
     ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
 )
 target_compile_features(test_ui PRIVATE cxx_std_20)
-target_link_libraries(test_ui PRIVATE raylib nlohmann_json::nlohmann_json)
+target_link_libraries(test_ui PRIVATE raylib nlohmann_json::nlohmann_json enet)
+if(WIN32)
+    target_link_libraries(test_ui PRIVATE winhttp)
+endif()
 
 add_test(NAME UISystemTest COMMAND test_ui)
 set_tests_properties(UISystemTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
@@ -1029,6 +1052,7 @@ add_executable(test_gameplay_integration
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsOwnershipManager.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsSearchFilter.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsStoreManager.cpp
+    ${BACKEND_HTTP_SOURCES}
     ${MATCH_RESULTS_STORM_SOURCES}
 )
 target_include_directories(test_gameplay_integration PRIVATE
@@ -1036,6 +1060,9 @@ target_include_directories(test_gameplay_integration PRIVATE
 )
 target_compile_features(test_gameplay_integration PRIVATE cxx_std_20)
 target_link_libraries(test_gameplay_integration PRIVATE raylib nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_gameplay_integration PRIVATE winhttp)
+endif()
 
 add_test(NAME GameplayIntegrationTest COMMAND test_gameplay_integration)
 set_tests_properties(GameplayIntegrationTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
@@ -1347,6 +1374,7 @@ add_executable(test_customization
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsOwnershipManager.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsSearchFilter.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsStoreManager.cpp
+    ${BACKEND_HTTP_SOURCES}
     ${GAMEPLAY_INTEGRATION_SOURCES}
     ${CMAKE_SOURCE_DIR}/src/world/Tileset.cpp
     ${CMAKE_SOURCE_DIR}/src/world/TileLayer.cpp
@@ -1409,6 +1437,9 @@ target_include_directories(test_customization PRIVATE
 )
 target_compile_features(test_customization PRIVATE cxx_std_20)
 target_link_libraries(test_customization PRIVATE raylib nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_customization PRIVATE winhttp)
+endif()
 
 add_test(NAME CharacterCustomizationTest COMMAND test_customization)
 set_tests_properties(CharacterCustomizationTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
@@ -1419,6 +1450,7 @@ add_executable(test_cosmetics_store
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsOwnershipManager.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsSearchFilter.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsStoreManager.cpp
+    ${BACKEND_HTTP_SOURCES}
     ${CMAKE_SOURCE_DIR}/src/customization/CosmeticDefinition.cpp
     ${CMAKE_SOURCE_DIR}/src/customization/CosmeticRegistry.cpp
     ${CMAKE_SOURCE_DIR}/src/customization/CharacterAppearance.cpp
@@ -1487,6 +1519,9 @@ target_include_directories(test_cosmetics_store PRIVATE
 )
 target_compile_features(test_cosmetics_store PRIVATE cxx_std_20)
 target_link_libraries(test_cosmetics_store PRIVATE raylib nlohmann_json::nlohmann_json)
+if(WIN32)
+    target_link_libraries(test_cosmetics_store PRIVATE winhttp)
+endif()
 
 add_test(NAME CosmeticsStoreTest COMMAND test_cosmetics_store)
 set_tests_properties(CosmeticsStoreTest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
@@ -1500,6 +1535,7 @@ add_executable(test_game_ui
     ${CMAKE_SOURCE_DIR}/src/ui/menus/SettingsMenu.cpp
     ${CMAKE_SOURCE_DIR}/src/ui/menus/PauseMenu.cpp
     ${CMAKE_SOURCE_DIR}/src/ui/menus/MainMenu.cpp
+    ${CMAKE_SOURCE_DIR}/src/ui/menus/AuthMenu.cpp
     ${CMAKE_SOURCE_DIR}/src/ui/inventory/InventoryUI.cpp
     ${CMAKE_SOURCE_DIR}/src/customization/CosmeticDefinition.cpp
     ${CMAKE_SOURCE_DIR}/src/customization/CosmeticRegistry.cpp
@@ -1510,6 +1546,7 @@ add_executable(test_game_ui
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsOwnershipManager.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsSearchFilter.cpp
     ${CMAKE_SOURCE_DIR}/src/cosmetics/CosmeticsStoreManager.cpp
+    ${BACKEND_HTTP_SOURCES}
     ${CMAKE_SOURCE_DIR}/src/audio/AudioSystem.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ItemManager.cpp
     ${CMAKE_SOURCE_DIR}/src/items/ConsumableSystem.cpp
@@ -1574,13 +1611,18 @@ add_executable(test_game_ui
     ${CMAKE_SOURCE_DIR}/src/input/InputSettings.cpp
     ${CMAKE_SOURCE_DIR}/src/input/InputManager.cpp
     ${CMAKE_SOURCE_DIR}/src/world/BuildingManager.cpp
+    ${MATCHMAKING_CONNECTOR_SOURCES}
     ${MATCH_RESULTS_STORM_SOURCES}
 )
 target_include_directories(test_game_ui PRIVATE
     ${CMAKE_SOURCE_DIR}/src
+    ${enet_SOURCE_DIR}/include
 )
 target_compile_features(test_game_ui PRIVATE cxx_std_20)
-target_link_libraries(test_game_ui PRIVATE raylib nlohmann_json::nlohmann_json)
+target_link_libraries(test_game_ui PRIVATE raylib nlohmann_json::nlohmann_json enet)
+if(WIN32)
+    target_link_libraries(test_game_ui PRIVATE winhttp)
+endif()
 
 add_test(NAME GameUITest COMMAND test_game_ui)
 set_tests_properties(GameUITest PROPERTIES WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

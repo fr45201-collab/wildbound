@@ -204,6 +204,12 @@ void Enemy::ExecuteAIDecision(combat::CombatSystem& combatSys, scripting::LuaMan
                 updateAi = lua["wildbound"]["ai"]["goblin_update"];
             } else if (m_config.id == "skeleton" && lua["wildbound"]["ai"]["skeleton_update"].valid()) {
                 updateAi = lua["wildbound"]["ai"]["skeleton_update"];
+            } else if (m_config.id == "slime" && lua["wildbound"]["ai"]["slime_update"].valid()) {
+                updateAi = lua["wildbound"]["ai"]["slime_update"];
+            } else if ((m_config.id == "snake" || m_config.id == "viper") && lua["wildbound"]["ai"]["snake_update"].valid()) {
+                updateAi = lua["wildbound"]["ai"]["snake_update"];
+            } else if (m_config.id == "cyclops" && lua["wildbound"]["ai"]["cyclops_update"].valid()) {
+                updateAi = lua["wildbound"]["ai"]["cyclops_update"];
             } else {
                 // Ensure script is loaded in registry
                 if (!luaMgr->IsScriptLoaded(scriptPath)) {

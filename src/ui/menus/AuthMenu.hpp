@@ -5,6 +5,7 @@
 #include <raylib.h>
 #include <string>
 #include <functional>
+#include <memory>
 
 namespace wildbound::ui {
 
@@ -17,7 +18,11 @@ enum class AuthMenuMode {
 class AuthMenu {
 public:
     explicit AuthMenu(network::http::BackendClient* backendClient = nullptr);
-    ~AuthMenu() = default;
+    ~AuthMenu() {
+        if (m_alive) {
+            *m_alive = false;
+        }
+    }
 
     void SetBackendClient(network::http::BackendClient* client) noexcept { m_client = client; }
 
@@ -31,6 +36,7 @@ public:
     void RefreshProgression();
 
 private:
+    std::shared_ptr<bool> m_alive{ std::make_shared<bool>(true) };
     network::http::BackendClient* m_client{ nullptr };
     bool m_isOpen{ false };
     AuthMenuMode m_mode{ AuthMenuMode::Login };

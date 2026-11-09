@@ -1,0 +1,85 @@
+{
+  "phase": "Phase 50E",
+  "investigation_target": "DEF-010 MultiplayerLoadTest Concurrent Memory-Safety Failure",
+  "timestamp": "2026-11-08T20:38:00+05:30",
+  "final_root_cause_classification": "MULTIPLE CONTRIBUTING FACTORS",
+  "defect_disposition": "OPEN",
+  "stage_5_blocked": true,
+  "reproducibility_matrix": {
+    "standalone_executions": {
+      "total_runs": 5,
+      "passed_runs": 5,
+      "failed_runs": 0,
+      "pass_rate_percent": 100.0,
+      "details": [
+        { "run": 1, "config": "Release", "exit_code": 0, "duration_s": 42.40, "result": "PASS" },
+        { "run": 2, "config": "Release", "exit_code": 0, "duration_s": 45.20, "result": "PASS" },
+        { "run": 3, "config": "Release", "exit_code": 0, "duration_s": 46.10, "result": "PASS" },
+        { "run": 4, "config": "Debug", "exit_code": 0, "duration_s": 80.64, "result": "PASS" },
+        { "run": 5, "config": "Debug", "exit_code": 0, "duration_s": 81.30, "result": "PASS" }
+      ]
+    },
+    "concurrent_ctest_executions": {
+      "total_runs": 6,
+      "passed_runs": 3,
+      "failed_runs": 3,
+      "pass_rate_percent": 50.0,
+      "details": [
+        { "run": 1, "config": "Release", "exit_code": "0xc0000409", "duration_s": 21.95, "result": "FAIL", "section": "Section 2 (Latency, LatBot_4)" },
+        { "run": 2, "config": "Release", "exit_code": "0xc0000409", "duration_s": 37.46, "result": "FAIL", "section": "Section 7 (Long Duration, Client #12)" },
+        { "run": 3, "config": "Debug", "exit_code": "SEGFAULT", "duration_s": 74.70, "result": "FAIL", "section": "Section 2 (Latency, 250ms tier)" },
+        { "run": 4, "config": "Release", "exit_code": 0, "duration_s": 42.26, "result": "PASS", "section": "All 48 CTest passed" },
+        { "run": 5, "config": "Release", "exit_code": 0, "duration_s": 42.13, "result": "PASS", "section": "All 48 CTest passed" },
+        { "run": 6, "config": "Debug", "exit_code": 0, "duration_s": 79.00, "result": "PASS", "section": "All 48 CTest passed" }
+      ]
+    }
+  },
+  "hypotheses_evaluation": [
+    {
+      "id": "H-1",
+      "factor": "Winsock UDP Port 17777 Rapid Reuse Collision",
+      "supporting_evidence": "Over 25 start/stop cycles of port 17777 within ~30s; failure occurs immediately upon new client admission in recycled server.",
+      "contradicting_evidence": "Bind calls succeed without WSAEADDRINUSE.",
+      "confidence": "HIGH (90%)",
+      "status": "ACCEPTED_CONTRIBUTOR"
+    },
+    {
+      "id": "H-2",
+      "factor": "Teardown Sequence Inversion",
+      "supporting_evidence": "m_clients.clear() destroys client sockets before m_server->Shutdown() attempts peer disconnect flush.",
+      "contradicting_evidence": "Tolerated in standalone runs when timing is relaxed.",
+      "confidence": "HIGH (85%)",
+      "status": "ACCEPTED_CONTRIBUTOR"
+    },
+    {
+      "id": "H-3",
+      "factor": "MSVC Release Stack Canary Sensitivity (/GS + /O2)",
+      "supporting_evidence": "Exception code 0xc0000409 (__fastfail FAST_FAIL_STACK_COOKIE) in Release; pointer violation (SEGFAULT) in Debug.",
+      "contradicting_evidence": "Compiler defense mechanism, not root vulnerability.",
+      "confidence": "VERY HIGH (95%)",
+      "status": "ACCEPTED_CONTRIBUTOR"
+    },
+    {
+      "id": "H-4",
+      "factor": "Multi-Threaded Data Race",
+      "supporting_evidence": "None.",
+      "contradicting_evidence": "Harness executes strictly on a single main thread via sequential Pump() calls.",
+      "confidence": "REFUTED (0%)",
+      "status": "REFUTED"
+    }
+  ],
+  "test_rigor_preservation": {
+    "concurrency_reduced": false,
+    "max_client_count": 64,
+    "sections_removed": false,
+    "gs_canary_disabled": false,
+    "assertions_weakened": false,
+    "speculative_fixes_applied": false
+  },
+  "recommended_corrective_scope": [
+    "Dynamic port allocation per load test section to avoid port 17777 reuse collision",
+    "Invert StopServer() teardown: server peer disconnect flush first, then client destruction",
+    "Unregister DedicatedServer network callbacks before resetting gameplay subsystems"
+  ]
+}
+

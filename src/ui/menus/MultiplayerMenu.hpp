@@ -2,9 +2,14 @@
 
 #include "../UITheme.hpp"
 #include "../../coordinator/CoordinatorProtocol.hpp"
+#include "../../network/matchmaking/MatchmakingTypes.hpp"
 #include <raylib.h>
 #include <string>
 #include <vector>
+
+namespace wildbound::network::matchmaking {
+    class MatchmakingConnector;
+}
 
 namespace wildbound::ui {
 
@@ -23,7 +28,7 @@ enum class MultiplayerMenuAction {
 /**
  * Player-Facing Multiplayer & Matchmaking Menu.
  * Provides party management, mode selection, matchmaking queue monitoring,
- * invitation handling, and connection to the Wildbound Coordinator.
+ * invitation handling, match assignment display, and coordinator integration.
  */
 class MultiplayerMenu {
 public:
@@ -33,7 +38,10 @@ public:
     MultiplayerMenuAction Update(float dt, Vector2 mouseVirtual, bool mouseLeftPressed);
     void Render();
 
-    // State setters (updated by coordinator client callbacks)
+    // Synchronization from Client Matchmaking Connector
+    void SyncFromConnector(const network::matchmaking::MatchmakingConnector& connector);
+
+    // State setters (updated by coordinator client callbacks or direct testing)
     void SetConnected(bool connected) noexcept { m_isConnected = connected; }
     [[nodiscard]] bool IsConnected() const noexcept { return m_isConnected; }
 
@@ -41,6 +49,8 @@ public:
         m_sessionId = sid;
         m_displayName = name;
     }
+    [[nodiscard]] coordinator::SessionId GetSessionId() const noexcept { return m_sessionId; }
+    [[nodiscard]] const std::string& GetDisplayName() const noexcept { return m_displayName; }
 
     void SetPartyState(const coordinator::MsgPartyStateNotification& partyState) {
         m_hasParty = true;
@@ -52,12 +62,28 @@ public:
         m_partyState = coordinator::MsgPartyStateNotification{};
     }
 
+    void SetMatchmakingState(network::matchmaking::MatchmakingState state) {
+        m_matchState = state;
+        m_isQueued = (state == network::matchmaking::MatchmakingState::Queued);
+    }
+    [[nodiscard]] network::matchmaking::MatchmakingState GetMatchmakingState() const noexcept { return m_matchState; }
+
     void SetQueueStatus(bool queued, const std::string& mode = "solo", uint32_t pos = 0) {
         m_isQueued = queued;
         m_queuedMode = mode;
         m_queuePosition = pos;
         if (!queued) m_queueTimer = 0.0f;
     }
+
+    void SetMatchAssignment(const network::matchmaking::MatchAssignmentInfo& info) {
+        m_assignment = info;
+    }
+    [[nodiscard]] const network::matchmaking::MatchAssignmentInfo& GetMatchAssignment() const noexcept { return m_assignment; }
+
+    void SetErrorMessage(const std::string& err) {
+        m_errorMessage = err;
+    }
+    [[nodiscard]] const std::string& GetErrorMessage() const noexcept { return m_errorMessage; }
 
     void SetPendingInvite(const coordinator::MsgInviteReceivedNotification& notif) {
         m_hasPendingInvite = true;
@@ -73,6 +99,7 @@ public:
 
     [[nodiscard]] bool HasPendingInvite() const noexcept { return m_hasPendingInvite; }
     [[nodiscard]] const coordinator::MsgInviteReceivedNotification& GetPendingInvite() const noexcept { return m_pendingInvite; }
+    [[nodiscard]] bool IsQueued() const noexcept { return m_isQueued; }
 
 private:
     bool CheckHover(Rectangle r) const;
@@ -86,10 +113,14 @@ private:
     coordinator::MsgPartyStateNotification m_partyState;
     std::string m_selectedMode{ "solo" };
 
+    network::matchmaking::MatchmakingState m_matchState{ network::matchmaking::MatchmakingState::Idle };
     bool m_isQueued{ false };
     std::string m_queuedMode{ "solo" };
     uint32_t m_queuePosition{ 0 };
     float m_queueTimer{ 0.0f };
+
+    network::matchmaking::MatchAssignmentInfo m_assignment;
+    std::string m_errorMessage;
 
     bool m_hasPendingInvite{ false };
     coordinator::MsgInviteReceivedNotification m_pendingInvite;
@@ -99,4 +130,3 @@ private:
 };
 
 } // namespace wildbound::ui
-

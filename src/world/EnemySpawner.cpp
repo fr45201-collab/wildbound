@@ -172,7 +172,14 @@ std::string EnemySpawner::SelectRandomEnemyType() {
 
 entities::Enemy* EnemySpawner::SpawnEnemy(const std::string& type, Vector2 pos, combat::CombatSystem& combatSys) {
     uint32_t id = m_nextEnemyId++;
-    std::string name = (type == "skeleton") ? "Skeleton Warrior" : "Forest Goblin";
+    std::string name = "Forest Goblin";
+    if (type == "skeleton") name = "Skeleton Warrior";
+    else if (type == "slime") name = "Marsh Slime";
+    else if (type == "snake" || type == "viper") name = "Marsh Viper";
+    else if (type == "cyclops") name = "Mountain Cyclops";
+    else if (type == "wolf") name = "Forest Wolf";
+    else if (type == "wild_boar") name = "Wild Boar";
+    else if (type == "bat") name = "Cave Bat";
 
     auto enemy = std::make_unique<entities::Enemy>(id, name, type);
 

@@ -1,0 +1,55 @@
+{
+  "id": "snake",
+  "name": "Marsh Viper",
+  "type": "beast",
+  "faction": "monsters",
+  "spritesheet": "sheet_creature_snake",
+  "stats": {
+    "walk_speed": 70.0,
+    "run_speed": 125.0,
+    "normalize_diagonal": true
+  },
+  "health": {
+    "max_health": 35.0,
+    "initial_health": 35.0,
+    "regeneration_enabled": false,
+    "regeneration_rate": 0.0
+  },
+  "collision": {
+    "enabled": true,
+    "width": 16.0,
+    "height": 12.0,
+    "offset_x": 0.0,
+    "offset_y": 0.0
+  },
+  "combat": {
+    "default_attack": "viper_strike",
+    "attack_cooldown": 0.8,
+    "attack_range": 34.0
+  },
+  "ai": {
+    "behavior_script": "scripts/gameplay/ai/snake.lua",
+    "detection_radius": 150.0,
+    "attack_radius": 34.0,
+    "retreat_health_percent": 0.35,
+    "decision_interval": 0.15,
+    "patrol_radius": 110.0
+  },
+  "animations": {
+    "idle_down": "snake_idle_down",
+    "idle_up": "snake_idle_down",
+    "idle_left": "snake_idle_down",
+    "idle_right": "snake_idle_down",
+    "walk_down": "snake_move_down",
+    "walk_up": "snake_move_up",
+    "walk_left": "snake_move_left",
+    "walk_right": "snake_move_right",
+    "attack_down": "snake_attack_down",
+    "attack_up": "snake_attack_down",
+    "attack_left": "snake_attack_down",
+    "attack_right": "snake_attack_down",
+    "hurt": "snake_hurt_down",
+    "death": "snake_death_down"
+  }
+}
+

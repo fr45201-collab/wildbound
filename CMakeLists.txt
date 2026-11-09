@@ -600,6 +600,10 @@ set(WILDBOUND_SOURCES
     src/network/http/BackendClient.hpp
     src/network/http/BackendClient.cpp
 
+    # Client Matchmaking Connector (Phase 50E Stage 6B)
+    src/network/matchmaking/MatchmakingConnector.hpp
+    src/network/matchmaking/MatchmakingConnector.cpp
+
     # Security & Optimization (Phase 47)
     src/security/SecurityTypes.hpp
     src/security/RateLimiter.hpp
